@@ -2,50 +2,49 @@ const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
 
 /* A schema for validating the user registration form. */
-const userRegisterSchema = Joi.object({
-  Name: Joi.string().min(2).max(30).required().label("Name"),
-  Email: Joi.string()
+const supplierRegisterSchema = Joi.object({
+  name: Joi.string().min(2).max(30).required().label("Name"),
+  email: Joi.string()
     .min(5)
     .max(255)
     .required()
     .email()
     .rule({ message: "Invalid E-mail address" })
     .label("E-mail"),
-  Mobile: Joi.string()
+  mobile: Joi.string()
     .allow("")
     .length(10)
     .pattern(/^[0-9]+$/)
     .label("Mobile"),
-  Age: Joi.string().length(10).required().label("Age"),
-  Sex: Joi.string().required().label("Sex"),
-  Position: Joi.string()
+  address: Joi.string().required().label("Address"),
+  userType: Joi.string()
     .valid("Manager", "Site Manager", "Accountant", "Supplier")
     .required()
-    .label("Position"),
+    .label("userType"),
   password: passwordComplexity().required().label("Password"),
 });
 
 /* A schema for validating the user update form. */
 const userUpdateSchema = Joi.object({
-  Name: Joi.string().min(2).max(30).required().label("Name"),
-  Email: Joi.string()
+  name: Joi.string().min(2).max(30).required().label("Name"),
+  email: Joi.string()
     .min(5)
     .max(255)
     .required()
     .email()
     .rule({ message: "Invalid E-mail address" })
     .label("E-mail"),
-  Mobile: Joi.string()
+  mobile: Joi.string()
     .allow("")
     .length(10)
     .pattern(/^[0-9]+$/)
     .label("Mobile"),
-  Age: Joi.string().length(10).required().label("Age"),
-  Sex: Joi.string().required().label("Sex"),
-  Position: Joi.string()
+  age: Joi.string().length(10).required().label("Age"),
+  sex: Joi.string().required().label("Sex"),
+  userType: Joi.string()
     .valid("Manager", "Site Manager", "Accountant", "Supplier")
     .required()
-    .label("Position"),
+    .label("userType"),
 }).unknown(true);
 
 /* This is a schema for validating the login form. */
@@ -62,30 +61,30 @@ const loginSchema = Joi.object({
 
 /* A schema for validating the admin registration form. */
 const createUserSchema = Joi.object({
-  Name: Joi.string().min(2).max(30).required().label("Name"),
-  Email: Joi.string()
+  name: Joi.string().min(2).max(30).required().label("Name"),
+  email: Joi.string()
     .min(5)
     .max(255)
     .required()
     .email()
     .rule({ message: "Invalid E-mail address" })
     .label("E-mail"),
-  Mobile: Joi.string()
+  mobile: Joi.string()
     .allow("")
     .length(10)
     .pattern(/^[0-9]+$/)
     .label("Mobile"),
-  Age: Joi.string().length(10).required().label("Age"),
-  Sex: Joi.string().required().label("Sex"),
-  Position: Joi.string()
+  age: Joi.string().length(10).required().label("Age"),
+  sex: Joi.string().required().label("Sex"),
+  userType: Joi.string()
     .valid("Manager", "Site Manager", "Accountant", "Supplier")
     .required()
-    .label("Position"),
+    .label("userType"),
   password: passwordComplexity().required().label("Password"),
 }).unknown(true);
 
 module.exports = {
-  userRegisterSchema,
+  supplierRegisterSchema,
   userUpdateSchema,
   loginSchema,
   createUserSchema,
