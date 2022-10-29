@@ -1,25 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import Router from "./components/routers/Router";
+import { AuthContextProvider } from "./components/userManagement/context/UserContext";
 
-function App() {
+axios.defaults.withCredentials = true;
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContextProvider>
+      <Router />
+    </AuthContextProvider>
   );
-}
+};
 
 export default App;
