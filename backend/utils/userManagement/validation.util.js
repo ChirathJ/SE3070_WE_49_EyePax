@@ -1,0 +1,92 @@
+const Joi = require("joi");
+const passwordComplexity = require("joi-password-complexity");
+
+/* A schema for validating the user registration form. */
+const userRegisterSchema = Joi.object({
+  Name: Joi.string().min(2).max(30).required().label("Name"),
+  Email: Joi.string()
+    .min(5)
+    .max(255)
+    .required()
+    .email()
+    .rule({ message: "Invalid E-mail address" })
+    .label("E-mail"),
+  Mobile: Joi.string()
+    .allow("")
+    .length(10)
+    .pattern(/^[0-9]+$/)
+    .label("Mobile"),
+  Age: Joi.string().length(10).required().label("Age"),
+  Sex: Joi.string().required().label("Sex"),
+  Position: Joi.string()
+    .valid("Manager", "Site Manager", "Accountant", "Supplier")
+    .required()
+    .label("Position"),
+  password: passwordComplexity().required().label("Password"),
+});
+
+/* A schema for validating the user update form. */
+const userUpdateSchema = Joi.object({
+  Name: Joi.string().min(2).max(30).required().label("Name"),
+  Email: Joi.string()
+    .min(5)
+    .max(255)
+    .required()
+    .email()
+    .rule({ message: "Invalid E-mail address" })
+    .label("E-mail"),
+  Mobile: Joi.string()
+    .allow("")
+    .length(10)
+    .pattern(/^[0-9]+$/)
+    .label("Mobile"),
+  Age: Joi.string().length(10).required().label("Age"),
+  Sex: Joi.string().required().label("Sex"),
+  Position: Joi.string()
+    .valid("Manager", "Site Manager", "Accountant", "Supplier")
+    .required()
+    .label("Position"),
+}).unknown(true);
+
+/* This is a schema for validating the login form. */
+const loginSchema = Joi.object({
+  email: Joi.string()
+    .min(5)
+    .max(255)
+    .required()
+    .email()
+    .rule({ message: "Invalid E-mail address" })
+    .label("E-mail"),
+  password: Joi.string().required().label("Password"),
+});
+
+/* A schema for validating the admin registration form. */
+const createUserSchema = Joi.object({
+  Name: Joi.string().min(2).max(30).required().label("Name"),
+  Email: Joi.string()
+    .min(5)
+    .max(255)
+    .required()
+    .email()
+    .rule({ message: "Invalid E-mail address" })
+    .label("E-mail"),
+  Mobile: Joi.string()
+    .allow("")
+    .length(10)
+    .pattern(/^[0-9]+$/)
+    .label("Mobile"),
+  Age: Joi.string().length(10).required().label("Age"),
+  Sex: Joi.string().required().label("Sex"),
+  Position: Joi.string()
+    .valid("Manager", "Site Manager", "Accountant", "Supplier")
+    .required()
+    .label("Position"),
+  password: passwordComplexity().required().label("Password"),
+}).unknown(true);
+
+module.exports = {
+  userRegisterSchema,
+  userUpdateSchema,
+  loginSchema,
+  createUserSchema,
+};
