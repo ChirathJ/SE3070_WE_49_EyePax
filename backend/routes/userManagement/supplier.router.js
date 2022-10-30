@@ -10,7 +10,7 @@ const userAccess = require("../../middleware/accessChecker");
 router.post("/register", async (req, res) => {
   try {
     /* Validating the request body using the Joi schema. */
-    const validated = await validation.userRegisterSchema.validateAsync(
+    const validated = await validation.supplierRegisterSchema.validateAsync(
       req.body
     );
 
@@ -28,15 +28,17 @@ router.post("/register", async (req, res) => {
     const passwordHash = await bcrypt.hash(validated.password, salt);
 
     /* Generating a random string of length 10. */
-    const id = Math.random().toString(8).substring(5, 15);
+    var id = Math.random().toString(8).substring(5, 15);
+    id = "S" + id;
 
     // save a new user account to the db
     const newUser = new User({
       id: id,
-      name: validated.Name,
-      email: validated.Email,
-      mobile: validated.Mobile,
-      userType: validated.userType,
+      name: validated.name,
+      email: validated.email,
+      mobile: validated.mobile,
+      address: validated.address,
+      userType: "Supplier",
       passwordHash: passwordHash,
     });
 
@@ -82,37 +84,16 @@ router.get("/", userAccess, async (req, res) => {
     let users = [];
     let total;
     let totalPage = 1;
-    if (search !== undefined && search !== "") {
-      if (filter !== undefined && filter !== "Both") {
-        /* Finding all the admins in the database. */
-        users = await User.find({
-          firstName: { $regex: search, $options: "i" },
-          userType: filter,
-        });
-      } else {
-        /* Finding all the admins in the database. */
-        users = await User.find({
-          firstName: { $regex: search, $options: "i" },
-        });
-      }
-      total = users.length;
-    } else if (filter !== undefined && filter !== "Both") {
-      /* Finding all the admins in the database. */
-      users = await User.find({
-        userType: filter,
-      });
-      total = users.length;
-    } else {
-      /* Finding all the admins in the database. */
-      users = await User.find()
-        .skip((page - 1) * size)
-        .limit(size)
-        .exec();
 
-      /* count total users in the database. */
-      total = await User.countDocuments();
-      totalPage = parseInt(total / size + 1);
-    }
+    /* Finding all the admins in the database. */
+    users = await User.find()
+      .skip((page - 1) * size)
+      .limit(size)
+      .exec();
+
+    /* count total users in the database. */
+    total = await User.countDocuments();
+    totalPage = parseInt(total / size + 1);
     /* Sending the users object to the client. */
     res.json({ users: users, total: total, totalPage: totalPage });
   } catch (err) {

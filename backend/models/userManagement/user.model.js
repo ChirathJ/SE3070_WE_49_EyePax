@@ -2,13 +2,14 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    EmpID: { type: String, required: true, unique: true },
-    Name: { type: String, required: true },
-    Email: { type: String, required: true, unique: true },
-    Mobile: { type: Number },
-    Age: { type: Number, required: true },
-    Sex: { type: String, required: true },
-    Position: { type: String, required: true },
+    id: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    mobile: { type: Number, required: true },
+    age: { type: Number},
+    sex: { type: String},
+    address: { type: String},
+    userType: { type: String, required: true },
     passwordHash: { type: String, required: true },
   },
   {

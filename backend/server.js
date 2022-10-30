@@ -54,5 +54,6 @@ mongoose.connect(
 //
 
 //User management routes
+app.use("/supplier", require("./routes/userManagement/supplier.router"));
 app.use("/user", require("./routes/userManagement/user.router"));
 app.use("/", require("./routes/userManagement/authentication.router"));
