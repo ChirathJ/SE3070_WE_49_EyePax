@@ -3,6 +3,7 @@
   width: 500px;
   position: fixed;
   background-color: #2d2c33;
+  z-index: 1000;
 }
 .brand {
   height: 20%;
@@ -16,13 +17,13 @@
 
 .brand .title1 {
   font-family: "Kanit", sans-serif;
-  font-weight: 100;
+  font-weight: bold;
   font-size: 80px;
 }
 
 .brand .title2 {
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .links {
@@ -40,13 +41,13 @@
   width: 100%;
   height: 100px;
   list-style-type: none;
-  margin: 0;
+  margin: 10px;
   display: flex;
   flex-direction: row;
   color: white;
   justify-content: center;
   align-items: center;
-  font-size: 40px;
+  font-size: 35px;
 }
 
 .sidebar-list .sidebar-item:hover {
