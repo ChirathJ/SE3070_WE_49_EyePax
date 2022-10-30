@@ -1,8 +1,7 @@
 import axios from "axios";
 import Router from "./components/routers/Router";
 import { AuthContextProvider } from "./components/userManagement/context/UserContext";
-import "./App.css";
-import Sidebar from "./Components/Sidebar";
+import Sidebar from "./components/layout/Sidebar";
 
 axios.defaults.withCredentials = true;
 
