@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const product = require("./routes/productManagement/product.route");
 /* Loading the environment variables from the .env file. */
 dotenv.config();
 
@@ -57,3 +58,4 @@ mongoose.connect(
 app.use("/supplier", require("./routes/userManagement/supplier.router"));
 app.use("/user", require("./routes/userManagement/user.router"));
 app.use("/", require("./routes/userManagement/authentication.router"));
+app.use(product);

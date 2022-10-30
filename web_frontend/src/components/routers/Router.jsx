@@ -6,6 +6,11 @@ import Login from "../userManagement/authentication/Login";
 import Register from "../userManagement/authentication/Register";
 import Dashboard from "../layout/Dashboard";
 
+import AddProduct from "../productManagement/AddProduct";
+import ViewProduct from "../productManagement/ViewProduct";
+import UpdateProduct from "../productManagement/UpdateProduct";
+import ViewProducts from "../productManagement/ViewProducts";
+
 function Router() {
   /* Getting the userType from the AuthContext. */
   const { userType } = useContext(AuthContext);
@@ -18,6 +23,11 @@ function Router() {
             <>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+
+              <Route exact path="/product/new" element={<AddProduct />} />
+                <Route exact path="/viewp" element={<ViewProducts />} />
+                <Route exact path="/edit/:id" element={<UpdateProduct />} />
+                <Route exact path="/view/:id" element={<ViewProduct />} />
             </>
           )}
 
