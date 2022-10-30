@@ -8,8 +8,7 @@ import {
   Container
 } from "react-bootstrap";
 import axios from "axios";
-import { TextField } from '@mui/material';
-import { Modal, Table } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 const AddProduct = (props) => {
 
@@ -38,16 +37,16 @@ const AddProduct = (props) => {
 
       if(data){
         alert("Add Product Details Successfully");
-      navigate("/view")
+      navigate("/products")
       }
       }).catch((err)=>{
         if (!inpval.ProductCode || !inpval.ProductName || !inpval.Description || !inpval.Qty || !inpval.Price || !inpval.Image) {
           alert("Please enter all product details")
           return 0;
-      }else if(inpval.Qty>100){
-          alert("Maximum Partipants are 100")
+      }else if(inpval.Qty>20){
+          alert("Qty should be less than 20")
         }else if(inpval.Description.length>20){
-          alert("Client name should be less than 20 characters")
+          alert("Description should be less than 20 characters")
         }
       })
     }
@@ -55,9 +54,9 @@ const AddProduct = (props) => {
       setINP({...inpval, [e.target.name]: e.target.value});
   }
 
-  // const handlePhoto = (e) => {
-  //   setINP({...inpval, EventImage: e.target.files[0]});
-  // }
+  const handlePhoto = (e) => {
+    setINP({...inpval, Image: e.target.files[0]});
+  }
 
   return (
     <div style={{ marginLeft: "100px", marginTop: "10px", marginBottom: "100px" }}>
@@ -68,7 +67,7 @@ const AddProduct = (props) => {
         onHide={props.handleModalClose}
         backdrop="static"
       >
-        <a href='/view'><Modal.Header closeButton></Modal.Header></a>
+        <a href='/products'><Modal.Header closeButton></Modal.Header></a>
         <Modal.Title style={{ textAlign: "center" }}>Add Product</Modal.Title>
         <br></br>
         
@@ -144,8 +143,9 @@ const AddProduct = (props) => {
                 <Form.Label>Image :</Form.Label>
                 <input
                 class="border border-warning"
-                  type="image"
-                  value={inpval.Image} onChange={setdata} name="Image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhoto} name="Image"
                   style={{width:"250px", marginLeft:"74px", borderRadius:"10px"}}
                 />
               </Form.Group>
@@ -178,18 +178,9 @@ const AddProduct = (props) => {
 
               
 
-              
-              {/* <Form.Group className="mb-3">
-                <Form.Label>Event Image *</Form.Label>
-                <Form.Control
-                  placeholder="Event Image"
-                  type='file'
-                  accept="image/*"
-                  onChange={handlePhoto} name="EventImage"
-                />
-                </Form.Group> */}
+      
 <Col>
-<a href="/view"><Button variant="outline-warning" size="lg" style={{ width: "56%", marginLeft: "5px" }}>
+<a href="/products"><Button variant="outline-warning" size="lg" style={{ width: "56%", marginLeft: "5px" }}>
                 Cancel
               </Button></a>
               </Col>

@@ -8,7 +8,7 @@ let path = require('path');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, '../frontend/src/components/eventManagement/EventImages');
+        cb(null, '../backend/routes/productManagement/ProductImages');
     },
     filename: function(req, file, cb) {   
         cb(null, uuidv4() + '-' + Date.now() + path.extname(file.originalname));
@@ -27,18 +27,18 @@ const storage = multer.diskStorage({
   let upload = multer({ storage, fileFilter });
 
   
-router.post("/product/new",upload.single('EventImage') , async (req, res) => {
+router.post("/product/new",upload.single('Image') , async (req, res) => {
 
-     const { ProductCode, ProductName, Description, Qty, Price, Image} = req.body;
+     const { ProductCode, ProductName, Description, Qty, Price} = req.body;
 
-    if (!ProductCode || !ProductName || !Description || !Qty || !Price || !Image) {
+    if (!ProductCode || !ProductName || !Description || !Qty || !Price) {
         res.status(422).json("Please enter all data")
         return 0;
-    } else if (Qty > 100) {
-        res.status(420).json("Maximum Partipants are 100")
+    } else if (Qty > 20) {
+        res.status(420).json("Qty should be less than 20")
         return 0;
-    }else if (Qty.Description > 20) {
-        res.status(420).json("Client name should be less than 20 characters")
+    }else if (Qty.length > 20) {
+        res.status(420).json("Description should be less than 20 characters")
         return 0;
     }else{
     try {
@@ -48,7 +48,7 @@ router.post("/product/new",upload.single('EventImage') , async (req, res) => {
               Description: req.body.Description,
                Qty: req.body.Qty,
                 Price: req.body.Price,
-                 Image: req.body.Image,
+                 Image: req.file.filename,
         });
 
         await addproduct.save();
@@ -104,11 +104,11 @@ router.patch("/product/update/:id", async (req, res) => {
     if (!ProductCode || !ProductName || !Description || !Qty || !Price || !Image) {
         res.status(422).json("Please enter all data")
         return 0;
-    }else if (Qty > 100) {
-        res.status(420).json("Maximum Partipants are 100")
+    }else if (Qty > 20) {
+        res.status(420).json("Qty should be less than 20")
         return 0;
-    }else if (Description.length > 20) {
-        res.status(420).json("Client name should be less than 20 characters")
+    }else if (Qty.length > 20) {
+        res.status(420).json("Description should be less than 20 characters")
         return 0;
     }
     try {

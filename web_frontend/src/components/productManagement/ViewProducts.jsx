@@ -2,22 +2,15 @@ import React, { useState, useEffect, useContext } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { NavLink } from "react-router-dom";
 import { deldata } from "./context/ContextProvider";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SummarizeIcon from "@mui/icons-material/Summarize";
-import PaginationComponent from "./PaginationComponent";
 import {
-  Col,
-  Row,
   Button,
-  Form,
   Container,
-  Card
+  Card,
 } from "react-bootstrap";
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const ViewProducts = () => {
   const [getproductdata, setProductdata] = useState([]);
@@ -50,7 +43,7 @@ const ViewProducts = () => {
   useEffect(() => {
     getdata();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getdata()]);
+  }, []);
 
   const deleteproduct = async (id) => {
     const res2 = await fetch(`http://localhost:8000/product/delete/${id}`, {
@@ -75,7 +68,8 @@ const ViewProducts = () => {
 
   return (
     <>
-      <div className="container">
+    <Container>
+      <div className="" style={{}}>
         <div className="mt-5">
           
             
@@ -196,7 +190,7 @@ const ViewProducts = () => {
                           <td>{element.Description}</td>
                           <td>{element.Qty}</td>
                           <td>{element.Price}</td>
-                          <td>{element.Description}</td>
+                          <td></td>
                           <td>
                           <NavLink to={`/view/${element._id}`}>
                               
@@ -226,6 +220,7 @@ const ViewProducts = () => {
       
       
       </div>
+      </Container>
     </>
   );
 };

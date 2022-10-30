@@ -25,7 +25,7 @@ function Router() {
               <Route path="/register" element={<Register />} />
 
               <Route exact path="/product/new" element={<AddProduct />} />
-                <Route exact path="/viewp" element={<ViewProducts />} />
+                <Route exact path="/products" element={<ViewProducts />} />
                 <Route exact path="/edit/:id" element={<UpdateProduct />} />
                 <Route exact path="/view/:id" element={<ViewProduct />} />
             </>

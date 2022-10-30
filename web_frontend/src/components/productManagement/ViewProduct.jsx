@@ -43,10 +43,10 @@ const ViewProduct = () => {
         show={true}
         backdrop="static"
       >
-        <a href='/viewp'><Modal.Header closeButton></Modal.Header></a>
+        <a href='/products'><Modal.Header closeButton></Modal.Header></a>
         <Modal.Title style={{ textAlign: "center" }}>{getproductdata.ProductName}</Modal.Title>
         <br></br>
-        {/* <img src={typeof (getproductdata.EventImage) !== 'undefined' ? require(`../eventManagement/EventImages/${getproductdata.EventImage}`) : 'Error'} style={{ width: "400px", height: "300px", margin: "auto" }} alt="Event" /> */}
+        {/* <img src={typeof (getproductdata.Image) !== 'undefined' ? require(`../productManagement/ProductImages/${getproductdata.Image}`) : 'Error'} style={{ width: "400px", height: "300px", margin: "auto" }} alt="Product" /> */}
         <Modal.Body>
           <Table bordered responsive>
             <tbody>
@@ -95,7 +95,7 @@ const ViewProduct = () => {
           </Table>
         </Modal.Body>
         <Modal.Footer>
-          <a href='/view'><Button variant="danger">
+          <a href='/products'><Button variant="danger">
             Close
           </Button></a>
         </Modal.Footer>

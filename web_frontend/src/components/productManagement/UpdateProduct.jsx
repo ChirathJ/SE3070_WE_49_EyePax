@@ -76,13 +76,13 @@ const UpdateProduct = () => {
 
     if (res2.status === 422 || !data2) {
       alert("Please enter all product details");
-    }else if(Qty>100){
-      alert("Maximum Partipants are 100")
+    }else if(Qty>20){
+      alert("Qty should be less than 20")
     }else if(inpval.Description.length>20){
-      alert("Client name should be less than 20 characters")
+      alert("Description should be less than 20 characters")
     }else {
       alert("Update Product Details Successfully")
-      navigate("/view")
+      navigate("/products")
       setUPdata(data2);
     }
   }
@@ -114,7 +114,7 @@ const UpdateProduct = () => {
 
               
 
-              <NavLink to={`/view`}><Button variant="secondary" size="lg" style={{ width: "100%" }}>
+              <NavLink to={`/products`}><Button variant="secondary" size="lg" style={{ width: "100%" }}>
                 Back
               </Button></NavLink>
             </Col>
