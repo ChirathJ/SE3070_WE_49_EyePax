@@ -190,7 +190,7 @@ const ViewProducts = () => {
                           <td>{element.Description}</td>
                           <td>{element.Qty}</td>
                           <td>{element.Price}</td>
-                          <td></td>
+                          <td>{element.Supplier}</td>
                           <td>
                           <NavLink to={`/view/${element._id}`}>
                               

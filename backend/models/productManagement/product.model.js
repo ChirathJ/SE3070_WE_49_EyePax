@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const productSchema = new mongoose.Schema({
     ProductCode: {
         type: String,
@@ -23,7 +24,9 @@ const productSchema = new mongoose.Schema({
     },
     Image: {
         type: String
-    }
+    },
+    user: {type:mongoose.Schema.Types.ObjectId, ref:'user',
+    },
 });
 
 const products = new mongoose.model("products", productSchema);
