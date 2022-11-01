@@ -61,3 +61,4 @@ app.use("/", require("./routes/userManagement/authentication.router"));
 app.use(product);
 app.use("/order", require("./routes/orderManagement/order.route"));
 app.use("/cart", require("./routes/orderManagement/cart.route"));
+app.use("/inquiry", require("./routes/orderManagement/inquiry.route"));

@@ -9,14 +9,12 @@ router.post("/add", async (req, res) => {
     const oldData = req.body;
 
     const newItem = new Cart({
-      SiteManager: oldData.SiteManager,
-      Products: [
-        {
-          ProductDetails: oldData.ProductDetails,
-          Qty: oldData.Qty,
-          Total: oldData.Total,
-        },
-      ],
+      SiteManager: oldData.User._id,
+      ProductName: oldData.ProductName._id,
+      ProductId: oldData.ProductId._id,
+      Supplier: oldData.Supplier._id,
+      Qty: oldData.Qty,
+      Total: oldData.Total,
     });
 
     await newItem.save();
@@ -27,11 +25,10 @@ router.post("/add", async (req, res) => {
 });
 
 /* Get All Items in the Cart */
-router.get("/getAll", async (req, res) => {
+router.get("/getAll/:id", async (req, res) => {
   try {
-    const details = await Cart.find({})
-      .populate("SiteManager")
-      .populate("ProductDetails");
+    const id = req.params.id;
+    const details = await Cart.find({ SiteManager: id });
 
     return res.status(200).json({
       data: details,
@@ -41,5 +38,18 @@ router.get("/getAll", async (req, res) => {
   }
 });
 
+/* Delete All in the Cart */
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const details = await Cart.deleteMany({ id });
+
+    return res.status(200).json({
+      data: details,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+});
 
 module.exports = router;

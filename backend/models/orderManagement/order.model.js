@@ -8,11 +8,18 @@ const OrderSchema = new mongoose.Schema(
       ref: "user",
       required: true,
     },
-    Products: [
+    Cart: [
       {
-        ProductDetails: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "products",
+        ProductName: {
+          type: String,
+          required: true,
+        },
+        ProductId: {
+          type: String,
+          required: true,
+        },
+        Supplier: {
+          type: String,
           required: true,
         },
         Qty: {
@@ -25,7 +32,7 @@ const OrderSchema = new mongoose.Schema(
     SiteAddress: { type: String, required: true },
     DeliveryDate: { type: String, required: true },
     TotalPrice: { type: Number, required: true },
-    DeliveryStatus: { type: String, required: true },
+    DeliveryStatus: { type: String, required: true, default: "Not Delivered" },
     Comment: { type: String, required: false },
     Approval: { type: String, required: true, default: "Approved" },
   },
