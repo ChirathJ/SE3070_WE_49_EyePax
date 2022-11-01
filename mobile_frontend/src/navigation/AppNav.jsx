@@ -11,8 +11,8 @@ function AppNav() {
     
   return (
     <>
-    <ViewProducts/>
-      {userType === "null" && <Login />}
+    
+      {userType === "null" && <ViewProducts />}
       {userType === "Supplier" && <List />}
     </>
   );
