@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./style.css";
+import "../../../style.css";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
 const Login = () => {
@@ -47,7 +47,7 @@ const Login = () => {
   };
 
   return (
-    <div className="main">
+    <div className="main-login">
       <div className="sub-main">
         <div className="main-center">
           <h1 style={{ margin: "2%" }}>Login</h1>

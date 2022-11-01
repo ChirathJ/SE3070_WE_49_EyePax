@@ -74,12 +74,13 @@ const createUserSchema = Joi.object({
     .length(10)
     .pattern(/^[0-9]+$/)
     .label("Mobile"),
-  age: Joi.string().length(10).required().label("Age"),
+  age: Joi.string().length(2).required().label("Age"),
   sex: Joi.string().required().label("Sex"),
   userType: Joi.string()
     .valid("Manager", "Site Manager", "Accountant", "Supplier")
     .required()
     .label("userType"),
+  address: Joi.string().required().label("Address"),
   password: passwordComplexity().required().label("Password"),
 }).unknown(true);
 

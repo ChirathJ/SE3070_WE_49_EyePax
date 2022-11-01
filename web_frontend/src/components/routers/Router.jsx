@@ -11,15 +11,19 @@ import ViewProduct from "../productManagement/ViewProduct";
 import UpdateProduct from "../productManagement/UpdateProduct";
 import ViewProducts from "../productManagement/ViewProducts";
 import Sidebar from "../layout/Sidebar";
+import UserList from "../userManagement/user/UserList";
+import TopProfile from "../userManagement/user/TopProfile";
+import Profile from "../userManagement/user/Profile";
 
 function Router() {
   /* Getting the userType from the AuthContext. */
   const { userType } = useContext(AuthContext);
-
+  console.log(userType);
   return (
     <BrowserRouter>
       {userType !== null && <Sidebar />}
       <div className="App">
+        {userType !== null && <TopProfile />}
         <Routes>
           {userType === null && (
             <>
@@ -38,18 +42,11 @@ function Router() {
               <Route exact path="/dashboard" element={<Home />} />
 
               {/*User Routes for Admin*/}
-              {/* <Route path="/users/add" element={<AddUser />} />
-                <Route path="/users" element={<UserList />} />
-                <Route path="/users/update" element={<UpdateUser />} />
-                <Route path="/users/report" element={<UserReport />} /> */}
+              <Route path="/users" element={<UserList />} />
             </>
           )}
 
-          {userType === "Supplier" && (
-            <>
-              <Route exact path="/" element={<Dashboard />} />
-            </>
-          )}
+          {userType === "Supplier" && <></>}
 
           {userType === "Accountant" && (
             <>
@@ -68,12 +65,8 @@ function Router() {
           userType === "Accountant" ||
           userType === "Site Manager" ? (
             <>
-              {/* <Route path="/profile" element={<Profile />} />
-                <Route path="/profile/update" element={<UpdateProfile />} />
-                <Route
-                  path="/profile/change-password"
-                  element={<ChangePassword />}
-                /> */}
+              <Route exact path="/" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
             </>
           ) : (
             ""

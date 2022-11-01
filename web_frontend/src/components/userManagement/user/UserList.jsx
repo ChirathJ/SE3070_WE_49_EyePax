@@ -3,14 +3,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import SummarizeIcon from "@mui/icons-material/Summarize";
 import { Table } from "react-bootstrap";
-import PaginationComponent from "../../reservationManagement/layout/PaginationComponent";
+import PaginationComponent from "./PaginationComponent";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import EditIcon from "@mui/icons-material/Edit";
 import UserModal from "./UserModal";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import UpdateUser from "./UpdateUser";
+import AddUser from "./AddUser";
 
 const UserList = () => {
   const [search, setSearch] = useState("");
@@ -19,12 +20,20 @@ const UserList = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [totalItems, setTotalItems] = useState(10);
-  const [filter, setFilter] = useState("Both");
+  const [filter, setFilter] = useState("All");
   const [user, setUser] = useState("");
   const [show, setShow] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [showAdd, setShowAdd] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleCloseEdit = () => setShowEdit(false);
+  const handleShowEdit = () => setShowEdit(true);
+
+  const handleCloseAdd = () => setShowAdd(false);
+  const handleShowAdd = () => setShowAdd(true);
 
   const navigate = useNavigate();
 
@@ -34,10 +43,8 @@ const UserList = () => {
       /* Checking if the name contains the search string or if the search string is empty. */
       return (
         <tr key={index}>
-          <td>{index + 1}</td>
-          <td>
-            {current.firstName} {current.lastName}
-          </td>
+          <td>{current.id}</td>
+          <td>{current.name}</td>
           <td>{current.email}</td>
           <td className="d-flex justify-content-center">
             <button
@@ -49,9 +56,7 @@ const UserList = () => {
             &nbsp;
             <button
               className="btn btn-outline-warning"
-              onClick={() => {
-                updateUser(current);
-              }}
+              onClick={updateUser.bind(this, current)}
             >
               <EditIcon />
             </button>
@@ -82,9 +87,13 @@ const UserList = () => {
    * When the user clicks the update button, navigate to the update page and pass the user object as
    * state.
    */
-  async function updateUser(data) {
-    data.dob = data.dob.substring(0, 10);
-    navigate("/users/update", { state: data });
+  function updateUser(data) {
+    setUser(data);
+    handleShowEdit();
+  }
+
+  function addNew() {
+    handleShowAdd();
   }
 
   /**
@@ -111,17 +120,25 @@ const UserList = () => {
     }
   };
 
-  const adminFilter = (e) => {
+  const accountantFilter = (e) => {
     e.preventDefault();
-    setFilter("Admin");
+    setFilter("Accountant");
   };
-  const customerFilter = (e) => {
+  const managerFilter = (e) => {
     e.preventDefault();
-    setFilter("Customer");
+    setFilter("Manager");
   };
-  const bothFilter = (e) => {
+  const siteManagerFilter = (e) => {
     e.preventDefault();
-    setFilter("Both");
+    setFilter("Site Manager");
+  };
+  const supplierFilter = (e) => {
+    e.preventDefault();
+    setFilter("Supplier");
+  };
+  const allFilter = (e) => {
+    e.preventDefault();
+    setFilter("All");
   };
 
   const handleKeyDown = async (event) => {
@@ -164,102 +181,116 @@ const UserList = () => {
   }, [currentPage, filter, totalItems]);
 
   return (
-    <div className="main">
-      {show === true && <UserModal user={user} handleClose={handleClose} />}
-      <div className="sub-main">
-        <div className="head-left">
-          <h1>Users</h1>
-          <a
-            href="/users/add"
-            style={{ marginLeft: "40px", marginRight: "20px" }}
-          >
+    <div>
+      <div className="topHeading">
+        <h1>Users</h1>
+      </div>
+      <div className="main">
+        {show === true && <UserModal user={user} handleClose={handleClose} />}
+        {showEdit === true && (
+          <UpdateUser state={user} handleClose={handleCloseEdit} />
+        )}
+        {showAdd === true && <AddUser handleClose={handleCloseAdd} />}
+        <div className="sub-main">
+          <div className="head-left">
             <button
-              className="btn btn-outline-success"
-              style={{ width: "100px", height: "50px" }}
+              className="btn btn-warning"
+              style={{
+                marginLeft: "40px",
+                marginRight: "20px",
+                width: "200px",
+                height: "50px",
+              }}
+              onClick={addNew.bind(this)}
             >
-              <AddCircleIcon /> Add
+              <AddCircleIcon /> Add User
             </button>
-          </a>
-          <h1 style={{ color: "gray" }}>|</h1>
-          <a href="/users/report" style={{ marginInline: "20px" }}>
-            <button
-              className="btn btn-outline-primary"
-              style={{ width: "120px", height: "50px" }}
-            >
-              <SummarizeIcon /> Report
-            </button>
-          </a>
-        </div>
-        <div className="head-right">
-          <input
-            type="text"
-            placeholder="Search"
-            className="search-input"
-            onKeyDown={handleKeyDown}
-            onChange={(e) => setSearch(e.target.value)}
-          ></input>
-          <h1 style={{ color: "gray" }}>|</h1>
-          <div className="dropdown">
-            <a
-              href="*"
-              id="dropdownLink"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <button
-                className="btn btn-outline-primary"
-                style={{ width: "130px", height: "50px", marginInline: "20px" }}
+            <input
+              type="text"
+              placeholder="Search"
+              className="search-input"
+              onKeyDown={handleKeyDown}
+              onChange={(e) => setSearch(e.target.value)}
+            ></input>
+            <div className="dropdown">
+              <a
+                href="*"
+                id="dropdownLink"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
-                <FilterAltIcon /> {filter}
-              </button>
-            </a>
-
-            <ul className="dropdown-menu" aria-labelledby="dropdownLink">
-              <button
-                className="dropdown-item"
-                type="button"
-                onClick={adminFilter}
-              >
-                Admins
-              </button>
-              <button
-                className="dropdown-item"
-                type="button"
-                onClick={customerFilter}
-              >
-                Customers
-              </button>
-              <button
-                className="dropdown-item"
-                type="button"
-                onClick={bothFilter}
-              >
-                Both
-              </button>
-            </ul>
+                <button
+                  className="btn btn-primary"
+                  style={{
+                    width: "200px",
+                    height: "50px",
+                    marginInline: "20px",
+                  }}
+                >
+                  <FilterAltIcon /> {filter}
+                </button>
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="dropdownLink">
+                <button
+                  className="dropdown-item"
+                  type="button"
+                  onClick={accountantFilter}
+                >
+                  Accountant
+                </button>
+                <button
+                  className="dropdown-item"
+                  type="button"
+                  onClick={managerFilter}
+                >
+                  Manager
+                </button>
+                <button
+                  className="dropdown-item"
+                  type="button"
+                  onClick={siteManagerFilter}
+                >
+                  Site Manager
+                </button>
+                <button
+                  className="dropdown-item"
+                  type="button"
+                  onClick={supplierFilter}
+                >
+                  Supplier
+                </button>
+                <button
+                  className="dropdown-item"
+                  type="button"
+                  onClick={allFilter}
+                >
+                  All
+                </button>
+              </ul>
+            </div>
           </div>
+          <hr />
+          <Table className="table table-hover">
+            <thead className="thead-dark">
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>{userList()}</tbody>
+          </Table>
+          <hr />
+          <PaginationComponent
+            pageNo={currentPage}
+            setPageNo={setCurrentPage}
+            itemsPerPage={totalItems}
+            setItemsPerPage={setTotalItems}
+            totalCount={total}
+            pageCount={totalPage}
+          />
         </div>
-        <hr />
-        <Table className="table table-hover">
-          <thead className="thead-dark">
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>{userList()}</tbody>
-        </Table>
-        <hr />
-        <PaginationComponent
-          pageNo={currentPage}
-          setPageNo={setCurrentPage}
-          itemsPerPage={totalItems}
-          setItemsPerPage={setTotalItems}
-          totalCount={total}
-          pageCount={totalPage}
-        />
       </div>
     </div>
   );

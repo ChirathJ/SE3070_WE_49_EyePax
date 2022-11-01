@@ -1,4 +1,5 @@
 import React from "react";
+import LogOut from "../userManagement/authentication/Logout";
 import { SidebarData } from "./SidebarData";
 import "./styles/SidebarStyles.css";
 
@@ -26,6 +27,7 @@ export default function Sidebar() {
           })}
         </ul>
       </div>
+      <LogOut />
     </div>
   );
 }

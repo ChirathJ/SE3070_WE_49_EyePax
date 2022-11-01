@@ -1,24 +1,33 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import countryList from "react-select-country-list";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 
-const UpdateProfile = () => {
-  const { state } = useLocation();
+const UpdateProfile = (props) => {
+  const { state, handleClose } = props;
 
-  const [firstName, setFirstName] = useState(state?.firstName);
-  const [lastName, setLastName] = useState(state?.lastName);
+  const [name, setName] = useState(state?.name);
   const [email, setEmail] = useState(state?.email);
-  const [dob, setDob] = useState(state?.dob);
   const [mobile, setMobile] = useState(state?.mobile);
-  const [tempCountry, setTempCountry] = useState("");
-
-  const [country, setCountry] = useState();
+  const [age, setAge] = useState(state?.age);
+  const [tempSex, setTempSex] = useState(state?.sex);
+  const [sex, setSex] = useState(state?.sex);
+  const [tempUserType, setTempUserType] = useState(state?.userType);
+  const [userType, setUserType] = useState(state?.userType);
+  const [address, setAddress] = useState(state?.address);
   const [loading, setLoading] = useState(false);
 
-  const options = useMemo(() => countryList().getData(), []);
+  const typeOptions = [
+    { value: "Manager", label: "Manager" },
+    { value: "Accountant", label: "Accountant" },
+    { value: "Site Manager", label: "Site Manager" },
+  ];
+
+  const sexOptions = [
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" },
+  ];
 
   const navigate = useNavigate();
 
@@ -34,11 +43,13 @@ const UpdateProfile = () => {
 
       /* Creating an object with the same name as the variables. */
       const updateData = {
-        firstName,
-        lastName,
-        dob,
+        name,
+        email,
         mobile,
-        country,
+        age,
+        sex,
+        userType,
+        address,
       };
 
       /* Sending a post request to the server with the user's details. */
@@ -69,89 +80,96 @@ const UpdateProfile = () => {
    * When the user clicks the reset button, clear all the form fields.
    */
   const resetForm = () => {
-    setFirstName(state.firstName);
-    setLastName(state.lastName);
-    setDob(state.dob);
+    setName(state.name);
+    setEmail(state.email);
     setMobile(state.mobile);
-    setTempCountry({
-      label: countryList().getLabel(state?.country),
-    });
+    setAge(state.age);
+    setSex(state.sex);
+    setUserType(state.userType);
+    setAddress(state.address);
   };
 
-  /**
-   * When the user selects a country, set the country to the value of the selected country and set the
-   * temporary country to the selected country.
-   */
-  const countryHandler = (e) => {
-    setCountry(e.value);
-    setTempCountry(e);
+  const userTypeHandler = (e) => {
+    setUserType(e.value);
+    setTempUserType(e);
+  };
+  const sexHandler = (e) => {
+    setSex(e.value);
+    setTempSex(e);
   };
 
   useEffect(() => {
-    if (state?.country !== undefined) {
-      setTempCountry({
-        label: countryList().getLabel(state?.country),
+    if (state?.sex !== undefined) {
+      setTempSex({
+        label: state?.sex,
       });
-      setCountry(state?.country);
+      setSex(state?.sex);
+    }
+    if (state?.userType !== undefined) {
+      setTempUserType({
+        label: state?.userType,
+      });
+      setUserType(state?.userType);
     }
   }, [state]);
 
   return (
-    <div className="main">
-      <div className="sub-main">
-        <h1>Update</h1>
-        <hr />
+    <Modal show={true} onHide={handleClose} className="modal-lg">
+      <Modal.Header closeButton>
+        <Modal.Title>
+          <h1>Update Profile</h1>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
         <form onSubmit={update} border="dark">
           <Container>
             <Row className="justify-content-md-center">
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Label>First Name</Form.Label>
+                  <Form.Label>Name*</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="First Name"
                     required
-                    onChange={(e) => setFirstName(e.target.value)}
-                    value={firstName}
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
                   />
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Label>Last Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Last Name"
-                    required
-                    onChange={(e) => setLastName(e.target.value)}
-                    value={lastName}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row className="justify-content-md-center">
-              <Col>
-                <Form.Group className="mb-3">
-                  <Form.Label>E-mail</Form.Label>
+                  <Form.Label>E-mail*</Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="E-mail"
-                    disabled
+                    required
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                   />
                 </Form.Group>
               </Col>
+            </Row>
+            <Row className="justify-content-md-center">
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Label>Phone Number</Form.Label>
+                  <Form.Label>Phone Number*</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Phone Number"
                     maxLength="10"
-                    required
                     onChange={(e) => setMobile(e.target.value)}
                     value={mobile}
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3">
+                  <Form.Label>Age*</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Age"
+                    onChange={(e) => setAge(e.target.value)}
+                    value={age}
                   />
                 </Form.Group>
               </Col>
@@ -159,23 +177,34 @@ const UpdateProfile = () => {
             <Row className="justify-content-md-center">
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Label>Date Of Birth</Form.Label>
-                  <Form.Control
-                    type="date"
-                    placeholder="Date Of Birth"
-                    required
-                    onChange={(e) => setDob(e.target.value)}
-                    value={dob}
+                  <Form.Label>Sex*</Form.Label>
+                  <Select
+                    options={sexOptions}
+                    value={tempSex}
+                    onChange={sexHandler}
                   />
                 </Form.Group>
               </Col>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Label>Country</Form.Label>
+                  <Form.Label>User Type*</Form.Label>
                   <Select
-                    options={options}
-                    value={tempCountry}
-                    onChange={countryHandler}
+                    options={typeOptions}
+                    value={tempUserType}
+                    onChange={userTypeHandler}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row className="justify-content-md-center">
+              <Col>
+                <Form.Group className="mb-3">
+                  <Form.Label>Address*</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Address"
+                    onChange={(e) => setAddress(e.target.value)}
+                    value={address}
                   />
                 </Form.Group>
               </Col>
@@ -196,7 +225,7 @@ const UpdateProfile = () => {
                   variant="primary"
                   size="lg"
                   type="submit"
-                  style={{ width: "70%", margin: "5px" }}
+                  style={{ width: "70%", float: "left", margin: "5px" }}
                 >
                   {loading ? (
                     <>
@@ -208,15 +237,15 @@ const UpdateProfile = () => {
                       <span className="sr-only">Updating...</span>
                     </>
                   ) : (
-                    "Update"
+                    "Update Profile"
                   )}
                 </Button>
               </Col>
             </Row>
           </Container>
         </form>
-      </div>
-    </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 

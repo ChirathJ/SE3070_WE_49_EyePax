@@ -2,21 +2,32 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 
-const AddUser = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+const AddUser = (props) => {
+  const { handleClose } = props;
+
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [dob, setDob] = useState("");
   const [mobile, setMobile] = useState("");
+  const [age, setAge] = useState("");
+  const [tempSex, setTempSex] = useState("");
+  const [sex, setSex] = useState("");
   const [tempUserType, setTempUserType] = useState("");
   const [userType, setUserType] = useState("");
+  const [address, setAddress] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const options = [
-    { value: "Admin", label: "Admin" },
-    { value: "Customer", label: "Customer" },
+  const typeOptions = [
+    { value: "Manager", label: "Manager" },
+    { value: "Accountant", label: "Accountant" },
+    { value: "Site Manager", label: "Site Manager" },
+  ];
+
+  const sexOptions = [
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" },
   ];
 
   const navigate = useNavigate();
@@ -33,12 +44,14 @@ const AddUser = () => {
 
       /* Creating an object with the same name as the variables. */
       const UserData = {
-        firstName,
-        lastName,
+        name,
         email,
-        dob,
         mobile,
+        age,
+        sex,
         userType,
+        address,
+        password,
       };
 
       /* Sending a post request to the server with the user's details. */
@@ -55,8 +68,7 @@ const AddUser = () => {
         setLoading(false);
         alert(result?.data?.Message);
         /* Reloading the page. */
-        navigate("/users/add");
-        window.location.reload();
+        navigate("/users");
       }
     } catch (err) {
       setLoading(false);
@@ -69,57 +81,50 @@ const AddUser = () => {
    * When the user clicks the reset button, clear all the form fields.
    */
   const resetForm = (e) => {
-    setFirstName("");
-    setLastName("");
+    setName("");
     setEmail("");
-    setDob("");
     setMobile("");
+    setAge("");
+    setSex("");
+    setTempSex("");
+    setUserType("");
     setTempUserType("");
+    setAddress("");
+    setPassword("");
   };
 
-  /**
-   * When the user selects a country, set the country to the value of the selected country and set the
-   * temporary country to the selected country.
-   */
   const userTypeHandler = (e) => {
     setUserType(e.value);
     setTempUserType(e);
   };
+  const sexHandler = (e) => {
+    setSex(e.value);
+    setTempSex(e);
+  };
 
   return (
-    <div className="main">
-      <div className="sub-main">
-        <h1>Add User</h1>
-        <hr />
+    <Modal show={true} onHide={handleClose} className="modal-lg">
+      <Modal.Header closeButton>
+        <Modal.Title>
+          <h1>Add User</h1>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
         <form onSubmit={register} border="dark">
           <Container>
             <Row className="justify-content-md-center">
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Label>First Name*</Form.Label>
+                  <Form.Label>Name*</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="First Name"
                     required
-                    onChange={(e) => setFirstName(e.target.value)}
-                    value={firstName}
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
                   />
                 </Form.Group>
               </Col>
-              <Col>
-                <Form.Group className="mb-3">
-                  <Form.Label>Last Name*</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Last Name"
-                    required
-                    onChange={(e) => setLastName(e.target.value)}
-                    value={lastName}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row className="justify-content-md-center">
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Label>E-mail*</Form.Label>
@@ -132,9 +137,11 @@ const AddUser = () => {
                   />
                 </Form.Group>
               </Col>
+            </Row>
+            <Row className="justify-content-md-center">
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Label>Phone Number</Form.Label>
+                  <Form.Label>Phone Number*</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Phone Number"
@@ -144,16 +151,26 @@ const AddUser = () => {
                   />
                 </Form.Group>
               </Col>
+              <Col>
+                <Form.Group className="mb-3">
+                  <Form.Label>Age*</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Age"
+                    onChange={(e) => setAge(e.target.value)}
+                    value={age}
+                  />
+                </Form.Group>
+              </Col>
             </Row>
             <Row className="justify-content-md-center">
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Label>Date Of Birth</Form.Label>
-                  <Form.Control
-                    type="date"
-                    placeholder="Date Of Birth"
-                    onChange={(e) => setDob(e.target.value)}
-                    value={dob}
+                  <Form.Label>Sex*</Form.Label>
+                  <Select
+                    options={sexOptions}
+                    value={tempSex}
+                    onChange={sexHandler}
                   />
                 </Form.Group>
               </Col>
@@ -161,13 +178,38 @@ const AddUser = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>User Type*</Form.Label>
                   <Select
-                    options={options}
+                    options={typeOptions}
                     value={tempUserType}
                     onChange={userTypeHandler}
                   />
                 </Form.Group>
               </Col>
             </Row>
+            <Row className="justify-content-md-center">
+              <Col>
+                <Form.Group className="mb-3">
+                  <Form.Label>Address*</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Address"
+                    onChange={(e) => setAddress(e.target.value)}
+                    value={address}
+                  />
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3">
+                  <Form.Label>Password*</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <hr />
             <Row className="justify-content-md-center">
               <Col>
                 <Button
@@ -184,7 +226,7 @@ const AddUser = () => {
                   variant="primary"
                   size="lg"
                   type="submit"
-                  style={{ width: "70%", margin: "5px" }}
+                  style={{ width: "70%", float: "left", margin: "5px" }}
                 >
                   {loading ? (
                     <>
@@ -203,8 +245,8 @@ const AddUser = () => {
             </Row>
           </Container>
         </form>
-      </div>
-    </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 
