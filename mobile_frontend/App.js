@@ -9,6 +9,8 @@ function App() {
       <AppNav />
     </AuthContextProvider>
   );
-}
+};
+
 
 export default App;
+
