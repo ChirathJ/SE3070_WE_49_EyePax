@@ -25,7 +25,8 @@ const productSchema = new mongoose.Schema({
     Image: {
         type: String
     },
-    user: {type:mongoose.Schema.Types.ObjectId, ref:'user',
+    user: {type:mongoose.Schema.Types.ObjectId,
+    required: true
     },
 });
 

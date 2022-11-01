@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
   let upload = multer({ storage, fileFilter });
 
   
-router.post("/product/new",userAccess, upload.single('Image') , async (req, res) => {
+router.post("/product/new", upload.single('Image') , userAccess, async (req, res) => {
 
      const { ProductCode, ProductName, Description, Qty, Price, user} = req.body;
 
@@ -50,7 +50,7 @@ router.post("/product/new",userAccess, upload.single('Image') , async (req, res)
                Qty: req.body.Qty,
                 Price: req.body.Price,
                  Image: req.file.filename,
-                 //user: req.body.user._id
+                 user: req.body.user._id
         });
 
         await addproduct.save();

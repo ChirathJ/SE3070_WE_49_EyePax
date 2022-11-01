@@ -37,6 +37,7 @@ const ViewProducts = () => {
       setProductdata(data.getproductdata);
       
       console.log("get data");
+      console.log(data.getproductdata);
     }
   };
 
@@ -164,7 +165,7 @@ const ViewProducts = () => {
 
                       return false;
                     }
-                  }).map((element, id) => {
+                  }).map((element, id, user) => {
                     return (
                       <>
                         <tr>
@@ -190,7 +191,7 @@ const ViewProducts = () => {
                           <td>{element.Description}</td>
                           <td>{element.Qty}</td>
                           <td>{element.Price}</td>
-                          <td>{element.Supplier}</td>
+                          <td>{element.user.name}</td>
                           <td>
                           <NavLink to={`/view/${element._id}`}>
                               
