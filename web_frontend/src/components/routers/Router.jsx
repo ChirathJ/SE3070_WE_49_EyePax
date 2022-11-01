@@ -10,14 +10,16 @@ import AddProduct from "../productManagement/AddProduct";
 import ViewProduct from "../productManagement/ViewProduct";
 import UpdateProduct from "../productManagement/UpdateProduct";
 import ViewProducts from "../productManagement/ViewProducts";
+import Sidebar from "../layout/Sidebar";
 
 function Router() {
   /* Getting the userType from the AuthContext. */
   const { userType } = useContext(AuthContext);
 
   return (
-    <div className="App">
-      <BrowserRouter>
+    <BrowserRouter>
+      {userType !== null && <Sidebar />}
+      <div className="App">
         <Routes>
           {userType === null && (
             <>
@@ -25,9 +27,9 @@ function Router() {
               <Route path="/register" element={<Register />} />
 
               <Route exact path="/product/new" element={<AddProduct />} />
-                <Route exact path="/products" element={<ViewProducts />} />
-                <Route exact path="/edit/:id" element={<UpdateProduct />} />
-                <Route exact path="/view/:id" element={<ViewProduct />} />
+              <Route exact path="/products" element={<ViewProducts />} />
+              <Route exact path="/edit/:id" element={<UpdateProduct />} />
+              <Route exact path="/view/:id" element={<ViewProduct />} />
             </>
           )}
 
@@ -65,7 +67,10 @@ function Router() {
             </>
           )}
 
-          {userType === "Supplier" || userType === "Manager" || userType === "Accountant" || userType === "Site Manager" ? (
+          {userType === "Supplier" ||
+          userType === "Manager" ||
+          userType === "Accountant" ||
+          userType === "Site Manager" ? (
             <>
               {/* <Route path="/profile" element={<Profile />} />
                 <Route path="/profile/update" element={<UpdateProfile />} />
@@ -80,8 +85,8 @@ function Router() {
 
           <Route exact path="*" element={<Login />} />
         </Routes>
-      </BrowserRouter>
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }
 
