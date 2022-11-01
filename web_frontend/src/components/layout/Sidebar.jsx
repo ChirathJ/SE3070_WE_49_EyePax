@@ -1,6 +1,7 @@
 import React from "react";
 import { SidebarData } from "./SidebarData";
 import "./styles/SidebarStyles.css";
+import { Button } from "react-bootstrap";
 
 export default function Sidebar() {
   return (

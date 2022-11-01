@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const OrderSchema = new mongoose.Schema(
   {
-    OrderId: { type: String, required: true },
+    OrderId: { type: String, required: true, unique: true },
     SiteManager: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",

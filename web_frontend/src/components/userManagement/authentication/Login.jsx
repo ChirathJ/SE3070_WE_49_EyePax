@@ -92,7 +92,7 @@ const Login = () => {
               variant="warning"
               size="lg"
               type="submit"
-              style={{ width: "40%", float: "center", margin: "5px" }}
+              style={{ width: "60%", float: "center", margin: "5px" }}
             >
               {loading ? (
                 <>
@@ -118,7 +118,7 @@ const Login = () => {
               variant="secondary"
               size="lg"
               type="submit"
-              style={{ width: "40%", float: "center", margin: "5px" }}
+              style={{ width: "60%", float: "center", margin: "5px" }}
             >
               Register
             </Button>
