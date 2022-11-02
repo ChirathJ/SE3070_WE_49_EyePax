@@ -7,12 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { CardList } from "react-native-card-list";
-import { deldata } from "./context/ContextProvider";
 import { Text, Card, Button, Icon } from "@rneui/themed";
-import NavigationStack from "../../navigation/NavigationStack";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ViewProducts from "./ViewProducts";
 
 const ViewProduct = ({navigation, id}) => {
   const [getproductdata, setProductdata] = useState([]);
@@ -85,7 +81,7 @@ const ViewProduct = ({navigation, id}) => {
                   iconStyle={{ marginRight: 10 }}
                 />
               }
-              onPress={() => navigation.navigate('ViewProducts')}
+              onPress={() => navigation.navigate('ViewProducts', {screen: 'ViewProducts'})}
               buttonStyle={{
                 borderRadius: 0,
                 marginLeft: 0,
@@ -95,6 +91,10 @@ const ViewProduct = ({navigation, id}) => {
               }}
               title="Back to Items"
             />
+            <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('ViewProducts')}
+      />
           </Card>
         </View>
       </ScrollView>
