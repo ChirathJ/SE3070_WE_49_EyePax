@@ -1,25 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import axios from "axios";
 import AuthContext from "../context/UserContext";
 import { useContext } from "react";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 
 export default function Cart() {
   const { userId } = useContext(AuthContext);
-  useEffect(() => {
-    async function fetchData() {
-      const data = await axios.get(
-        `http://192.168.1.2:8000/cart/getAll/${userId}`
-      );
-    }
-    fetchData();
+  const [cartList, setCartList] = useState([]);
 
-    console.log(data);
+  async function getAllData() {
+    try {
+      await axios
+        .get(`http://192.168.1.2:8000/cart/getAll/${userId}`)
+        .then((res) => {
+          if (res.status === 200) {
+            setCartList(res.data.data);
+          }
+        });
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  useEffect(() => {
+    getAllData();
   }, []);
 
   return (
-    <View>
-      <Text>Cart</Text>
+    <SafeAreaView style={styles.container}>
+    <View style={styles.titleContainer}>
+      <Text style={styles.mainTitle}>Hello World</Text>
     </View>
+  </SafeAreaView>
   );
 }

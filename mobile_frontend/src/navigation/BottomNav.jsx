@@ -2,8 +2,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import List from "../components/List";
 import Cart from "../components/Cart";
 import Order from "../components/Order";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import ViewProducts from "../components/Product/ViewProducts";
+import ViewProduct from "../components/Product/ViewProduct";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +34,7 @@ const Tabs = () => {
         },
       }}
     >
-      <Tab.Screen name="Suppliers" component={List} />
+      <Tab.Screen name="Suppliers" component={ViewProduct} />
       <Tab.Screen name="Cart" component={Cart} />
       <Tab.Screen name="Orders" component={Order} />
     </Tab.Navigator>

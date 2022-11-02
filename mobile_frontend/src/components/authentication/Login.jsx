@@ -33,6 +33,7 @@ export default function Login() {
       /* Checking if the status is true. */
       if (result) {
         setType(result.data.type);
+        console.log(result.data.type);
       }
     } catch (err) {
       // setLoading(false);

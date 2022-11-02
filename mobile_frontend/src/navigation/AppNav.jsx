@@ -10,7 +10,7 @@ function AppNav() {
   return (
     <>
       {userType === null && <Login />}
-      {userType === "Supplier" && (
+      {userType === "Site Manager" && (
         <NavigationContainer>
           <Tabs />
         </NavigationContainer>
