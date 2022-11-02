@@ -48,6 +48,10 @@ function Router() {
           {userType === "Supplier" && (
             <>
               <Route exact path="/" element={<Dashboard />} />
+              <Route exact path="/product/new" element={<AddProduct />} />
+                <Route exact path="/products" element={<ViewProducts />} />
+                <Route exact path="/edit/:id" element={<UpdateProduct />} />
+                <Route exact path="/view/:id" element={<ViewProduct />} />
             </>
           )}
 

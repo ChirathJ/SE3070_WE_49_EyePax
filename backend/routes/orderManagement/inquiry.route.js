@@ -9,7 +9,7 @@ router.post("/add", async (req, res) => {
     const oldData = req.body;
 
     const inquiry = new Inquiry({
-      Order: oldData.Order._id,
+      Order: oldData.Order,
       inquiry: oldData.Inquiry,
     });
 

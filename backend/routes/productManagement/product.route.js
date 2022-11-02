@@ -4,6 +4,7 @@ const products = require("../../models/productManagement/product.model");
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 let path = require('path');
+const userAccess = require("../../middleware/accessChecker");
 
 
 const storage = multer.diskStorage({
@@ -27,9 +28,9 @@ const storage = multer.diskStorage({
   let upload = multer({ storage, fileFilter });
 
   
-router.post("/product/new",upload.single('Image') , async (req, res) => {
+router.post("/product/new", upload.single('Image') , userAccess, async (req, res) => {
 
-     const { ProductCode, ProductName, Description, Qty, Price} = req.body;
+     const { ProductCode, ProductName, Description, Qty, Price, user} = req.body;
 
     if (!ProductCode || !ProductName || !Description || !Qty || !Price) {
         res.status(422).json("Please enter all data")
@@ -49,6 +50,7 @@ router.post("/product/new",upload.single('Image') , async (req, res) => {
                Qty: req.body.Qty,
                 Price: req.body.Price,
                  Image: req.file.filename,
+                 user: req.body.user._id
         });
 
         await addproduct.save();

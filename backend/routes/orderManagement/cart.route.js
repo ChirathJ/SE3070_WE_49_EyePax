@@ -9,10 +9,10 @@ router.post("/add", async (req, res) => {
     const oldData = req.body;
 
     const newItem = new Cart({
-      SiteManager: oldData.User._id,
-      ProductName: oldData.ProductName._id,
-      ProductId: oldData.ProductId._id,
-      Supplier: oldData.Supplier._id,
+      SiteManager: oldData.SiteManager,
+      ProductName: oldData.ProductName,
+      ProductId: oldData.ProductId,
+      Supplier: oldData.Supplier,
       Qty: oldData.Qty,
       Total: oldData.Total,
     });
@@ -29,7 +29,7 @@ router.get("/getAll/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const details = await Cart.find({ SiteManager: id });
-
+  
     return res.status(200).json({
       data: details,
     });

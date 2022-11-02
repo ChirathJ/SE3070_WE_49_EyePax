@@ -12,7 +12,7 @@ router.post("/add", async (req, res) => {
 
     const newOrder = new Orders({
       OrderId: "SP" + uuidv4(),
-      SiteManager: oldData.User._id,
+      SiteManager: oldData.SiteManager,
       Cart: oldData.Cart, // send this as an array
       SiteAddress: oldData.ClientName,
       DeliveryDate: oldData.EventStartTime,
