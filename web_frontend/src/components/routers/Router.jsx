@@ -14,6 +14,7 @@ import Sidebar from "../layout/Sidebar";
 import UserList from "../userManagement/user/UserList";
 import TopProfile from "../userManagement/user/TopProfile";
 import Profile from "../userManagement/user/Profile";
+import SupplierList from "../productManagement/SupplierList";
 
 function Router() {
   /* Getting the userType from the AuthContext. */
@@ -31,9 +32,10 @@ function Router() {
               <Route path="/register" element={<Register />} />
 
               <Route exact path="/product/new" element={<AddProduct />} />
-              <Route exact path="/products" element={<ViewProducts />} />
+              <Route exact path="/products/:id" element={<ViewProducts />} />
               <Route exact path="/edit/:id" element={<UpdateProduct />} />
               <Route exact path="/view/:id" element={<ViewProduct />} />
+              <Route exact path="/products" element={<SupplierList />} />
             </>
           )}
 

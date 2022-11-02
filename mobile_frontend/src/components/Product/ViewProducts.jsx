@@ -64,10 +64,10 @@ function ViewProducts() {
             }}
           />
           <Text style={{ marginBottom: 10 }}>
-            {getproductdata.ProductName}
+            {element.ProductName}
           </Text>
           <Text style={{ marginBottom: 10 }}>
-            {getproductdata.Qty} Units remaining
+            {element.Qty} Units remaining
           </Text>
           <Button
             icon={
