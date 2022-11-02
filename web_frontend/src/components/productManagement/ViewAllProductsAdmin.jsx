@@ -7,6 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
+import axios from "axios";
 
 const ViewAllProductsAdmin = () => {
   const [getproductdata, setProductdata] = useState([]);
@@ -27,9 +28,7 @@ const ViewAllProductsAdmin = () => {
       console.log("error ");
     } else {
       setProductdata(data.getproductdata);
-
       console.log("get data");
-      console.log(data.getproductdata);
     }
   };
 
@@ -58,6 +57,36 @@ const ViewAllProductsAdmin = () => {
     }
   };
 
+  const rejectProduct = async (id) => {
+    const result = await axios.put(
+      "http://localhost:8000/product/update-status/" + id,
+      { Status: "Rejected" }
+    );
+
+    if (result.status === 422) {
+      console.log("error");
+    } else {
+      alert("Rejected Product Successfully");
+      console.log("Rejected Product Successfully");
+      getdata();
+    }
+  };
+
+  const approvedProduct = async (id) => {
+    const result = await axios.put(
+      "http://localhost:8000/product/update-status/" + id,
+      { Status: "Approved" }
+    );
+
+    if (result.status === 422) {
+      console.log("error");
+    } else {
+      alert("Approved Product Successfully");
+      console.log("Approved Product Successfully");
+      getdata();
+    }
+  };
+
   return (
     <div>
       <div className="topHeading">
@@ -81,112 +110,117 @@ const ViewAllProductsAdmin = () => {
 
           <hr></hr>
 
-            <Table striped style={{ textAlign: "center" }}>
-              <thead>
-                <tr style={{ textAlign: "center" }}>
-                  <th scope="col">
-                    <b>#</b>
-                  </th>
-                  <th>Product Name</th>
-                  <th>Description</th>
-                  <th>Qty</th>
-                  <th>Price(LKR)</th>
-                  <th>Supplier</th>
-                  <th>Action</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {getproductdata
-                  .filter((element) => {
-                    if (searchTerm === "") {
-                      return element;
-                    } else if (
-                      element.ProductCode.toLowerCase().includes(
-                        searchTerm.toLowerCase()
-                      ) ||
-                      element.ProductName.toLowerCase().includes(
-                        searchTerm.toLowerCase()
-                      ) ||
-                      element.Qty.toLowerCase().includes(
-                        searchTerm.toLowerCase()
-                      ) ||
-                      element.Price.toLowerCase().includes(
-                        searchTerm.toLowerCase()
-                      )
-                    ) {
-                      return element;
-                    } else {
-                      return false;
-                    }
-                  })
-                  .map((element, id, user) => {
-                    return (
-                      <>
-                        <tr>
-                          <td>{id + 1}</td>
-                          <td>
-                            <Dropdown>
-                              <Dropdown.Toggle id="" variant="">
-                                {element.ProductName}
-                              </Dropdown.Toggle>
-
-                              <Dropdown.Menu variant="">
-                                <Dropdown.Item href="#/action-2">
-                                  <NavLink to={`/view/${element._id}`}>
-                                    <i className="btn btn-outline-success">
-                                      <RemoveRedEyeIcon></RemoveRedEyeIcon> View
-                                      Product
-                                    </i>
-                                  </NavLink>
-                                </Dropdown.Item>
-                                <Dropdown.Divider />
-                                <Dropdown.Item href="#/action-3">
-                                  <NavLink to={`/edit/${element._id}`}>
-                                    <i className="btn btn-outline-warning">
-                                      <EditIcon></EditIcon> Edit Product
-                                    </i>
-                                  </NavLink>
-                                </Dropdown.Item>
-                                <Dropdown.Divider />
-                                <Dropdown.Item href="#/action-4">
-                                  <i
-                                    className="btn btn-outline-danger"
-                                    onClick={() => deleteproduct(element._id)}
-                                  >
-                                    <DeleteIcon></DeleteIcon> Delete Product
+          <Table striped style={{ textAlign: "center" }}>
+            <thead>
+              <tr style={{ textAlign: "center" }}>
+                <th scope="col">
+                  <b>#</b>
+                </th>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Price(LKR)</th>
+                <th>Supplier</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {getproductdata
+                .filter((element) => {
+                  if (searchTerm === "") {
+                    return element;
+                  } else if (
+                    element.ProductCode.toLowerCase().includes(
+                      searchTerm.toLowerCase()
+                    ) ||
+                    element.ProductName.toLowerCase().includes(
+                      searchTerm.toLowerCase()
+                    ) ||
+                    element.Qty.toLowerCase().includes(
+                      searchTerm.toLowerCase()
+                    ) ||
+                    element.Price.toLowerCase().includes(
+                      searchTerm.toLowerCase()
+                    )
+                  ) {
+                    return element;
+                  } else {
+                    return false;
+                  }
+                })
+                .map((element, id, user) => {
+                  return (
+                    <>
+                      <tr>
+                        <td>{id + 1}</td>
+                        <td>
+                          <Dropdown>
+                            <Dropdown.Toggle id="" variant="">
+                              {element.ProductName}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu variant="">
+                              <Dropdown.Item href="#/action-2">
+                                <NavLink to={`/view/${element._id}`}>
+                                  <i className="btn btn-outline-success">
+                                    <RemoveRedEyeIcon></RemoveRedEyeIcon> View
+                                    Product
                                   </i>
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </td>
-                          <td>{element.Description}</td>
-                          <td>{element.Qty}</td>
-                          <td>{element.Price}</td>
-                          <td>{element.user.name}</td>
-                          <td>
-                            <NavLink to={`/view/${element._id}`}>
-                              <Button
-                                className="btn btn-warning my-1 my-sm-0"
-                                style={{ margin: "10px" }}
-                              >
-                                Approve
-                              </Button>
-                            </NavLink>
-                            <NavLink to={`/delete/${element._id}`}>
-                              <Button className="btn btn-black my-1 my-sm-0">
-                                Reject
-                              </Button>
-                            </NavLink>
-                          </td>
-                        </tr>
-                      </>
-                    );
-                  })}
-              </tbody>
-            </Table>
-          </div>
+                                </NavLink>
+                              </Dropdown.Item>
+                              <Dropdown.Divider />
+                              <Dropdown.Item href="#/action-3">
+                                <NavLink to={`/edit/${element._id}`}>
+                                  <i className="btn btn-outline-warning">
+                                    <EditIcon></EditIcon> Edit Product
+                                  </i>
+                                </NavLink>
+                              </Dropdown.Item>
+                              <Dropdown.Divider />
+                              <Dropdown.Item href="#/action-4">
+                                <i
+                                  className="btn btn-outline-danger"
+                                  onClick={() => deleteproduct(element._id)}
+                                >
+                                  <DeleteIcon></DeleteIcon> Delete Product
+                                </i>
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </td>
+                        <td>{element.Description}</td>
+                        <td>{element.Qty}</td>
+                        <td>{element.Price}</td>
+                        <td>{element.user.name}</td>
+                        <td>{element.Status}</td>
+                        <td>
+                          <NavLink>
+                            <Button
+                              className="btn btn-warning my-1 my-sm-0"
+                              style={{ margin: "10px" }}
+                              onClick={() => approvedProduct(element._id)}
+                            >
+                              Approve
+                            </Button>
+                          </NavLink>
+                          <NavLink>
+                            <Button
+                              className="btn btn-black my-1 my-sm-0"
+                              onClick={() => rejectProduct(element._id)}
+                            >
+                              Reject
+                            </Button>
+                          </NavLink>
+                        </td>
+                      </tr>
+                    </>
+                  );
+                })}
+            </tbody>
+          </Table>
         </div>
+      </div>
     </div>
   );
 };
