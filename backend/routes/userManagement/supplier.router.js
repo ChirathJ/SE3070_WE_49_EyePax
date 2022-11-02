@@ -15,7 +15,7 @@ router.post("/register", async (req, res) => {
     );
 
     /* Checking if the Name is already in the database. */
-    const user = await User.findOne({ Email: validated.Email });
+    const user = await User.findOne({ email: validated.email });
 
     /* Checking if the Name is already in the database. */
     if (user)

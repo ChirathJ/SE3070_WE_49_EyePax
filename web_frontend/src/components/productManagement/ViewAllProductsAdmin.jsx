@@ -4,34 +4,32 @@ import { NavLink } from "react-router-dom";
 import { deldata } from "./context/ContextProvider";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
-import axios from "axios";
 
-const ViewProducts = () => {
+const ViewAllProductsAdmin = () => {
   const [getproductdata, setProductdata] = useState([]);
 
   const { setDLTdata } = useContext(deldata);
   const [searchTerm, setSearchTerm] = useState("");
 
   const getdata = async () => {
-    const res = await axios.get("http://localhost:8000/product/view-current");
-    // const res = await fetch(`http://localhost:8000/product/view-current`, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // const data = await res.json();
+    const res = await fetch(`http://localhost:8000/product/viewp`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
 
-    console.log(res.data);
-
-    if (res.status === 422 || !res) {
+    if (res.status === 422 || !data) {
       console.log("error ");
     } else {
-      setProductdata(res.data.getproductdata);
+      setProductdata(data.getproductdata);
 
       console.log("get data");
+      console.log(data.getproductdata);
     }
   };
 
@@ -63,25 +61,11 @@ const ViewProducts = () => {
   return (
     <div>
       <div className="topHeading">
-        <h1>Product</h1>
+        <h1>All Products</h1>
       </div>
       <div className="main">
         <div className="sub-main">
           <div className="head-left">
-            <a href="/product/new">
-              <button
-                className="btn btn-warning my-1 my-sm-0"
-                style={{
-                  marginLeft: "40px",
-                  marginRight: "20px",
-                  width: "200px",
-                  height: "50px",
-                }}
-                type="submit"
-              >
-                Add Product
-              </button>
-            </a>
             <form className="form-inline my-2 my-lg-0">
               <input
                 className="search-input"
@@ -97,7 +81,6 @@ const ViewProducts = () => {
 
           <hr></hr>
 
-          <div className="container">
             <Table striped style={{ textAlign: "center" }}>
               <thead>
                 <tr style={{ textAlign: "center" }}>
@@ -109,6 +92,7 @@ const ViewProducts = () => {
                   <th>Qty</th>
                   <th>Price(LKR)</th>
                   <th>Supplier</th>
+                  <th>Action</th>
                   <th></th>
                 </tr>
               </thead>
@@ -180,6 +164,21 @@ const ViewProducts = () => {
                           <td>{element.Qty}</td>
                           <td>{element.Price}</td>
                           <td>{element.user.name}</td>
+                          <td>
+                            <NavLink to={`/view/${element._id}`}>
+                              <Button
+                                className="btn btn-warning my-1 my-sm-0"
+                                style={{ margin: "10px" }}
+                              >
+                                Approve
+                              </Button>
+                            </NavLink>
+                            <NavLink to={`/delete/${element._id}`}>
+                              <Button className="btn btn-black my-1 my-sm-0">
+                                Reject
+                              </Button>
+                            </NavLink>
+                          </td>
                         </tr>
                       </>
                     );
@@ -188,9 +187,8 @@ const ViewProducts = () => {
             </Table>
           </div>
         </div>
-      </div>
     </div>
   );
 };
 
-export default ViewProducts;
+export default ViewAllProductsAdmin;
