@@ -7,6 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
+import axios from "axios";
 
 const ViewProductsAdmin = () => {
   const [getproductdata, setProductdata] = useState([]);
@@ -18,7 +19,7 @@ const ViewProductsAdmin = () => {
 
   const getdata = async () => {
     const res = await fetch(
-      `http://localhost:8000/product/view-supplier/` + id,
+      `http://localhost:8000/product/view-current/` + id,
       {
         method: "GET",
         headers: {
@@ -42,6 +43,36 @@ const ViewProductsAdmin = () => {
     getdata();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const rejectProduct = async (id) => {
+    const result = await axios.put(
+      "http://localhost:8000/product/update-status/" + id,
+      { Status: "Rejected" }
+    );
+
+    if (result.status === 422) {
+      console.log("error");
+    } else {
+      alert("Rejected Product Successfully");
+      console.log("Rejected Product Successfully");
+      getdata();
+    }
+  };
+
+  const approvedProduct = async (id) => {
+    const result = await axios.put(
+      "http://localhost:8000/product/update-status/" + id,
+      { Status: "Approved" }
+    );
+
+    if (result.status === 422) {
+      console.log("error");
+    } else {
+      alert("Approved Product Successfully");
+      console.log("Approved Product Successfully");
+      getdata();
+    }
+  };
 
   const deleteproduct = async (id) => {
     const res2 = await fetch(`http://localhost:8000/product/delete/${id}`, {
@@ -97,6 +128,7 @@ const ViewProductsAdmin = () => {
                 <th>Qty</th>
                 <th>Price(LKR)</th>
                 <th>Supplier</th>
+                <th>Status</th>
                 <th>Action</th>
                 <th></th>
               </tr>
@@ -169,17 +201,22 @@ const ViewProductsAdmin = () => {
                         <td>{element.Qty}</td>
                         <td>{element.Price}</td>
                         <td>{element.user.name}</td>
+                        <td>{element.Status}</td>
                         <td>
-                          <NavLink to={`/view/${element._id}`}>
+                          <NavLink>
                             <Button
                               className="btn btn-warning my-1 my-sm-0"
                               style={{ margin: "10px" }}
+                              onClick={() => approvedProduct(element._id)}
                             >
                               Approve
                             </Button>
                           </NavLink>
-                          <NavLink to={`/delete/${element._id}`}>
-                            <Button className="btn btn-black my-1 my-sm-0">
+                          <NavLink>
+                            <Button
+                              className="btn btn-black my-1 my-sm-0"
+                              onClick={() => rejectProduct(element._id)}
+                            >
                               Reject
                             </Button>
                           </NavLink>

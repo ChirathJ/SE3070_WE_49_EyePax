@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const products = require("../../models/productManagement/product.model");
-const User = require("../../models/userManagement/user.model");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 let path = require("path");
@@ -76,7 +75,7 @@ router.get("/product/viewp", async (req, res) => {
     const pageCount = Math.ceil(count / itemsPerPage);
 
     const getproductdata = await products
-      .find()
+      .find({ Status: "Approved" })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(itemsPerPage)
@@ -95,7 +94,7 @@ router.get("/product/view-current", userAccess, async (req, res) => {
     const skip = (pageNo - 1) * itemsPerPage;
     const count = await products.estimatedDocumentCount();
     const pageCount = Math.ceil(count / itemsPerPage);
-    
+
     const getproductdata = await products
       .find({ user: req.body.user._id })
       .sort({ createdAt: -1 })
@@ -109,16 +108,16 @@ router.get("/product/view-current", userAccess, async (req, res) => {
   }
 });
 
-router.get("/product/view-supplier/:id", async (req, res) => {
-    try {
+router.get("/product/view-current/:id", async (req, res) => {
+  try {
     const { id } = req.params;
-      
+
     const pageNo = req.query.pageNo || 1;
     const itemsPerPage = req.query.pageSize || 10;
     const skip = (pageNo - 1) * itemsPerPage;
     const count = await products.estimatedDocumentCount();
     const pageCount = Math.ceil(count / itemsPerPage);
-    
+
     const getproductdata = await products
       .find({ user: id })
       .sort({ createdAt: -1 })
@@ -172,6 +171,20 @@ router.patch("/product/update/:id", async (req, res) => {
     const updateproduct = await products.findByIdAndUpdate(id, req.body, {
       new: true,
     });
+
+    res.status(201).json(updateproduct);
+  } catch (error) {
+    res.status(422).json(error);
+  }
+});
+
+// update product data
+
+router.put("/product/update-status/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updateproduct = await products.findByIdAndUpdate(id, req.body);
 
     res.status(201).json(updateproduct);
   } catch (error) {

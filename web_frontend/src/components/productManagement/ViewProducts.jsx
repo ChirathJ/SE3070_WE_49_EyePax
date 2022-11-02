@@ -109,6 +109,7 @@ const ViewProducts = () => {
                   <th>Qty</th>
                   <th>Price(LKR)</th>
                   <th>Supplier</th>
+                  <th>Status</th>
                   <th></th>
                 </tr>
               </thead>
@@ -180,6 +181,7 @@ const ViewProducts = () => {
                           <td>{element.Qty}</td>
                           <td>{element.Price}</td>
                           <td>{element.user.name}</td>
+                          <td>{element.Status}</td>
                         </tr>
                       </>
                     );
