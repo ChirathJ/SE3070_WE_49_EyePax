@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Table } from "react-bootstrap";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import UserModal from "../userManagement/user/UserModal";
+import OrderModal from "./OrderModal";
 
 const OrderListSupplier = () => {
   const [search, setSearch] = useState("");
-  const [order, setOrder] = useState([]);
-  const [user, setUser] = useState("");
+  const [orders, setOrders] = useState([]);
+  const [order, setOrder] = useState("");
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -16,7 +16,7 @@ const OrderListSupplier = () => {
 
   function OrderListSupplier() {
     /* Returning the data in the form of a table. */
-    return order?.map((current, index) => {
+    return orders?.map((current, index) => {
       /* Checking if the name contains the search string or if the search string is empty. */
       return (
         <tr key={index}>
@@ -42,7 +42,7 @@ const OrderListSupplier = () => {
    * When the user clicks on a row, the user's data is set to the state and the modal is shown.
    */
   function viewUser(data) {
-    setUser(data);
+    setOrder(data);
     handleShow();
   }
 
@@ -56,7 +56,7 @@ const OrderListSupplier = () => {
         const result = await axios.get(`http://localhost:8000/order/getAll`);
         console.log(result);
         /* Setting the state of the notes and totalPage variables. */
-        setOrder(result?.data?.data);
+        setOrders(result?.data?.data);
       } catch (error) {
         console.error(error);
         alert(error);
@@ -71,7 +71,9 @@ const OrderListSupplier = () => {
         <h1>Orders</h1>
       </div>
       <div className="main">
-        {show === true && <UserModal user={user} handleClose={handleClose} />}
+        {show === true && (
+          <OrderModal order={order} handleClose={handleClose} />
+        )}
         <div className="sub-main">
           <div className="head-left">
             <input

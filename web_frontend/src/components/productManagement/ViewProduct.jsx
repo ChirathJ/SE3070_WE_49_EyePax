@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Modal, Button, Table } from "react-bootstrap";
 import "./Styles/PopUpStyles.css";
@@ -41,7 +41,6 @@ const ViewProduct = () => {
           {getproductdata.ProductName}
         </Modal.Title>
         <br></br>
-        {/* <img src={typeof (getproductdata.Image) !== 'undefined' ? require(`../productManagement/ProductImages/${getproductdata.Image}`) : 'Error'} style={{ width: "400px", height: "300px", margin: "auto" }} alt="Product" /> */}
         <Modal.Body>
           <Table bordered responsive>
             <tbody>
