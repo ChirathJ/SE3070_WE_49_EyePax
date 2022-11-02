@@ -18,6 +18,9 @@ const OrderSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
+        ProductImage: {
+          type: String,
+        },
         Supplier: {
           type: String,
           required: true,
@@ -32,9 +35,9 @@ const OrderSchema = new mongoose.Schema(
     SiteAddress: { type: String, required: true },
     DeliveryDate: { type: String, required: true },
     TotalPrice: { type: Number, required: true },
-    DeliveryStatus: { type: String, required: true, default: "Not Delivered" },
+    DeliveryStatus: { type: String, default: "Not Delivered" },
     Comment: { type: String, required: false },
-    Approval: { type: String, required: true, default: "Approved" },
+    Approval: { type: String, default: "Approved" },
   },
   { timestamps: true }
 );

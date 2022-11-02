@@ -10,11 +10,13 @@ import {
 import { Text, Card, Button, Icon } from "@rneui/themed";
 import ViewProducts from "./ViewProducts";
 
-const ViewProduct = ({navigation, id}) => {
+const ViewProduct = ({ navigation, route }) => {
+  const id = route.params.id;
+  console.log(id, "id")
   const [getproductdata, setProductdata] = useState([]);
 
   const getdata = async () => {
-    const res = await fetch(`http://192.168.178.248:8000/product/view/${id}`, {
+    const res = await fetch(`http://192.168.1.2:8000/product/view/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -26,8 +28,7 @@ const ViewProduct = ({navigation, id}) => {
     if (res.status === 422 || !data) {
       console.log("error ");
     } else {
-      setProductdata(data);
-      console.log("get data");
+      setProductdata(data);    
     }
   };
 

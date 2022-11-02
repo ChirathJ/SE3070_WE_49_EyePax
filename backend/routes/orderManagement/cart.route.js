@@ -12,6 +12,7 @@ router.post("/add", async (req, res) => {
       SiteManager: oldData.SiteManager,
       ProductName: oldData.ProductName,
       ProductId: oldData.ProductId,
+      ProductImage: oldData.ProductImage,
       Supplier: oldData.Supplier,
       Qty: oldData.Qty,
       Total: oldData.Total,
@@ -29,7 +30,7 @@ router.get("/getAll/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const details = await Cart.find({ SiteManager: id });
-  
+
     return res.status(200).json({
       data: details,
     });
@@ -42,7 +43,7 @@ router.get("/getAll/:id", async (req, res) => {
 router.delete("/delete/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const details = await Cart.deleteMany({ id });
+    const details = await Cart.deleteMany({ SiteManager: id });
 
     return res.status(200).json({
       data: details,

@@ -1,11 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import List from "../components/List";
-import Cart from "../components/Cart";
-import Order from "../components/Order";
-import Icon from "react-native-vector-icons/FontAwesome5";
+import { Icon } from "@rneui/themed";
 import ViewProducts from "../components/Product/ViewProducts";
-import ViewProduct from "../components/Product/ViewProduct";
+import ViewCart from "../components/Order/ViewCart";
+import ViewOrder from "../components/Order/ViewOrder";
 import SupplierList from "../components/Product/SupplierList";
+import DeliveryDetails from "../components/Order/DeliveryDetails";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,6 +14,7 @@ const Tabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           display: "flex",
           position: "absolute",
@@ -35,9 +35,42 @@ const Tabs = () => {
         },
       }}
     >
-      <Tab.Screen name="Suppliers" component={ViewProducts} />
-      <Tab.Screen name="Cart" component={Cart} />
-      <Tab.Screen name="Orders" component={Order} />
+      <Tab.Screen
+        name="Suppliers"
+        component={ViewProducts}
+        options={{
+          tabBarIcon: () => (
+            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={ViewCart}
+        options={{
+          tabBarIcon: () => (
+            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Orders"
+        component={ViewOrder}
+        options={{
+          tabBarIcon: () => (
+            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          ),
+        }}
+      />
+      {/* <Tab.Screen
+        name="Delivery"
+        component={DeliveryDetails}
+        options={{
+          tabBarIcon: () => (
+            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          ),
+        }}
+      /> */}
     </Tab.Navigator>
   );
 };

@@ -18,7 +18,7 @@ const SupplierList = () => {
 
   const getdata = async () => {
 
-    const res = await fetch(`http://192.168.178.248:8000/product/viewp`, {
+    const res = await fetch(`http://192.168.1.2:8000/product/viewp`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -32,10 +32,7 @@ const SupplierList = () => {
     }else if(data.user){
 
     } else {
-      setProductdata(data.getproductdata);
-      
-      console.log("get data");
-      console.log(data.getproductdata);
+      setProductdata(data.getproductdata);     
     }
   };
 
