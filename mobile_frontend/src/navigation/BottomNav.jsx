@@ -1,9 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Icon } from "@rneui/themed";
 import ViewProducts from "../components/Product/ViewProducts";
 import ViewCart from "../components/Order/ViewCart";
-import Order from "../components/Order";
-import { KeyboardAvoidingView } from "react-native";
-import AuthContext from "../context/UserContext";
+import ViewOrder from "../components/Order/ViewOrder";
+import SupplierList from "../components/Product/SupplierList";
+import DeliveryDetails from "../components/Order/DeliveryDetails";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,13 +32,45 @@ const Tabs = () => {
           borderTopLeftRadius: 15,
           borderTopRightRadius: 15,
           height: 70,
-       
         },
       }}
     >
-      <Tab.Screen name="Suppliers" component={ViewProducts} />
-      <Tab.Screen name="Cart" component={ViewCart} />
-      <Tab.Screen name="Orders" component={Order} />
+      <Tab.Screen
+        name="Suppliers"
+        component={ViewProducts}
+        options={{
+          tabBarIcon: () => (
+            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={ViewCart}
+        options={{
+          tabBarIcon: () => (
+            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Orders"
+        component={ViewOrder}
+        options={{
+          tabBarIcon: () => (
+            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          ),
+        }}
+      />
+      {/* <Tab.Screen
+        name="Delivery"
+        component={DeliveryDetails}
+        options={{
+          tabBarIcon: () => (
+            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          ),
+        }}
+      /> */}
     </Tab.Navigator>
   );
 };

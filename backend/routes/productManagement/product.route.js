@@ -30,7 +30,7 @@ const storage = multer.diskStorage({
   
 router.post("/product/new", upload.single('Image') , userAccess, async (req, res) => {
 
-     const { ProductCode, ProductName, Description, Qty, Price, user} = req.body;
+     const { ProductCode, ProductName, Description, Qty, Price, user, name} = req.body;
 
     if (!ProductCode || !ProductName || !Description || !Qty || !Price) {
         res.status(422).json("Please enter all data")

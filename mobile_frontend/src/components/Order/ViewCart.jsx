@@ -21,6 +21,7 @@ function ViewCart() {
   const [comment, setComment] = useState("");
   let total = 0;
   const [totalPrice, setTotalPrice] = useState(total);
+  const [clearCart, setClearCart] = useState(false);
 
   const navigation = useNavigation();
 
@@ -41,11 +42,9 @@ function ViewCart() {
         SiteAddress: siteAddress,
         DeliveryDate: deliveryDate,
         TotalPrice: totalPrice,
-        DeliveryStatus: "",
         Comment: comment,
-        Approval: "",
       };
-      console.log(orderObject, "orderObject");
+
       await axios
         .post(`http://192.168.1.2:8000/order/add`, orderObject)
         .then((res) => {
@@ -66,16 +65,12 @@ function ViewCart() {
         .then((res) => {
           if (res.status === 200) {
             alert("Cart Cleared!");
+            setClearCart(true);
           }
         });
     } catch (error) {
       alert(error);
     }
-  }
-
-  function updateTotal(price) {
-    total = total + price;
-    setTotalPrice(total);
   }
 
   async function getAllData() {
@@ -86,7 +81,7 @@ function ViewCart() {
           if (res.status === 200) {
             setCartList(res.data.data);
             setTotalPrice(0);
-            cartList.forEach((item) => setTotalPrice(totalPrice + item.Total));
+            cartList.forEach((item) => {total = total + item.Total});
           }
         });
     } catch (error) {
@@ -95,8 +90,9 @@ function ViewCart() {
   }
 
   useEffect(() => {
+    total = 0;
     getAllData();
-  }, [cartList]);
+  }, []);
 
   return (
     <View>
@@ -119,7 +115,7 @@ function ViewCart() {
             fontSize: 20,
           }}
         >
-          Total Price: Rs.{totalPrice}
+          Total Price: Rs.{total}
         </Text>
       </View>
 
@@ -179,7 +175,6 @@ function ViewCart() {
           );
         })}
       </ScrollView>
-      {console.log()}
 
       <View style={styles.row}>
         <View>
@@ -216,7 +211,7 @@ function ViewCart() {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.deleteBtn} onPress={handleDeleteOrder}>
-          <Text>Delete Order</Text>
+          <Text style={{ color: "red" }}>Delete Order</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -239,6 +234,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "black",
     justifyContent: "center",
     alignItems: "center",
+    marginLeft: 5,
   },
   row: {
     flexDirection: "row",

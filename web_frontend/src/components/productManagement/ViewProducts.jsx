@@ -156,7 +156,7 @@ const ViewProducts = () => {
                           return false;
                         }
                       })
-                      .map((element, id, user) => {
+                      .map((element, id) => {
                         return (
                           <>
                             <tr>
