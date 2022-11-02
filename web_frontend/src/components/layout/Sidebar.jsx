@@ -2,6 +2,7 @@ import React from "react";
 import LogOut from "../userManagement/authentication/Logout";
 import { SidebarData } from "./SidebarData";
 import "./styles/SidebarStyles.css";
+import { Button } from "react-bootstrap";
 
 export default function Sidebar() {
   return (
