@@ -1,11 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import countries from "react-select-country-list";
-import "../authentication/style.css";
+import "../../../style.css";
+import UpdateProfile from "./UpdateProfile";
 
 function Profile() {
   const [userData, setUserData] = useState("");
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const navigate = useNavigate();
 
@@ -33,16 +37,8 @@ function Profile() {
    * When the user clicks the update button, navigate to the update page and pass the userData object as
    * state.
    */
-  async function updateUser() {
-    navigate("/profile/update", { state: userData });
-  }
-
-  /**
-   * When the user clicks the change password button, navigate to the change password page and pass the userData object as
-   * state.
-   */
-  async function changePassword() {
-    navigate("/profile/change-password", { state: userData });
+  function updateUser() {
+    handleShow();
   }
 
   /**
@@ -73,116 +69,108 @@ function Profile() {
   }, []);
 
   return (
-    <div className="main-profile">
-      <div className="sub-main-profile">
-        {userData ? (
-          <>
-            <div>
-              <h1>
-                {userData?.firstName} {userData?.lastName}
-              </h1>
-              <hr />
-            </div>
-            <table className="table table-bordered">
-              <tbody>
-                <tr key={1}>
-                  <td>
-                    <h3>E-mail</h3>
-                  </td>
-                  <td>
-                    <h3>{userData?.email}</h3>
-                  </td>
-                </tr>
-                <tr key={2}>
-                  <td>
-                    <h3>Mobile</h3>
-                  </td>
-                  <td>
-                    <h3>{userData?.mobile}</h3>
-                  </td>
-                </tr>
-                <tr key={3}>
-                  <td>
-                    <h3>Date of birth</h3>
-                  </td>
-                  <td>
-                    <h3>{userData?.dob?.toString()?.substring(0, 10)}</h3>
-                  </td>
-                </tr>
-                <tr key={4}>
-                  <td>
-                    <h3>Country</h3>
-                  </td>
-                  <td>
-                    {userData?.country !== undefined && (
-                      <h3>{countries().getLabel(userData?.country)}</h3>
-                    )}
-                  </td>
-                </tr>
-                <tr key={5}>
-                  <td>
-                    <h3>User Type</h3>
-                  </td>
-                  <td>
-                    <h3>{userData?.userType}</h3>
-                  </td>
-                </tr>
-                <tr key={6}>
-                  <td>
-                    <h3>Verified</h3>
-                  </td>
-                  {userData?.verified === true && (
-                    <td>
-                      <h3>Verified</h3>
-                    </td>
-                  )}
-                  {userData?.verified === false && (
-                    <td>
-                      <h3>Not Verified</h3>
-                    </td>
-                  )}
-                </tr>
-                <tr key={7}>
-                  <td>
-                    <h3>Created by</h3>
-                  </td>
-                  {userData?.adminCreated === true && (
-                    <td>
-                      <h3>Admin</h3>
-                    </td>
-                  )}
-                  {userData?.adminCreated === false && (
-                    <td>
-                      <h3>User</h3>
-                    </td>
-                  )}
-                </tr>
-              </tbody>
-            </table>
-          </>
-        ) : (
-          <h1>Loading...</h1>
+    <div>
+      <div className="topHeading">
+        <h1>User Profile</h1>
+      </div>
+      <div className="main-profile">
+        {show === true && (
+          <UpdateProfile state={userData} handleClose={handleClose} />
         )}
+        <div className="sub-main-profile">
+          {userData ? (
+            <>
+              <div>
+                <h1>{userData?.name}</h1>
+                <hr />
+              </div>
+              <table className="table table-striped">
+                <tbody>
+                  <tr key={1}>
+                    <td>
+                      <h3>ID</h3>
+                    </td>
+                    <td>
+                      <h3>{userData?.id}</h3>
+                    </td>
+                  </tr>
+                  <tr key={2}>
+                    <td>
+                      <h3>E-mail</h3>
+                    </td>
+                    <td>
+                      <h3>{userData?.email}</h3>
+                    </td>
+                  </tr>
+                  <tr key={3}>
+                    <td>
+                      <h3>Mobile</h3>
+                    </td>
+                    <td>
+                      <h3>{userData?.mobile}</h3>
+                    </td>
+                  </tr>
+                  <tr key={4}>
+                    <td>
+                      <h3>Age</h3>
+                    </td>
+                    <td>
+                      <h3>
+                        {userData?.age === undefined ? "-" : userData?.age}
+                      </h3>
+                    </td>
+                  </tr>
+                  <tr key={5}>
+                    <td>
+                      <h3>Sex</h3>
+                    </td>
+                    <td>
+                      <h3>
+                        {userData?.sex === undefined ? "-" : userData?.sex}
+                      </h3>
+                    </td>
+                  </tr>
+                  <tr key={6}>
+                    <td>
+                      <h3>Address</h3>
+                    </td>
+                    <td>
+                      <h3>
+                        {userData?.address === undefined
+                          ? "-"
+                          : userData?.address}
+                      </h3>
+                    </td>
+                  </tr>
+                  <tr key={7}>
+                    <td>
+                      <h3>User Type</h3>
+                    </td>
+                    <td>
+                      <h3>{userData?.userType}</h3>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <h1>Loading...</h1>
+          )}
 
-        <div className="main-center">
-          <button
-            className="btn btn-primary account-button"
-            onClick={updateUser}
-          >
-            Edit
-          </button>
-          <button
-            className="btn btn-warning account-button"
-            onClick={changePassword}
-          >
-            Change Password
-          </button>
-          <button
-            className="btn btn-danger account-button"
-            onClick={deleteUser}
-          >
-            Delete
-          </button>
+          <div className="main-center">
+            <button
+              className="btn btn-primary forgot-button"
+              onClick={updateUser}
+            >
+              Update Profile
+            </button>
+            <button
+              className="btn btn-danger forgot-button"
+              onClick={deleteUser}
+            >
+              Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>
