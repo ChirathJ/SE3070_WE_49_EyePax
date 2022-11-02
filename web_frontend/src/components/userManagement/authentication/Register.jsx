@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import Select from "react-select";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -72,7 +71,7 @@ const Register = () => {
   };
 
   return (
-    <div className="main">
+    <div className="main-register">
       <div className="sub-main">
         <div className="main-center">
           <h1>Supplier Register</h1>
@@ -166,7 +165,7 @@ const Register = () => {
                   variant="warning"
                   size="lg"
                   type="submit"
-                  style={{ width: "70%", margin: "5px" }}
+                  style={{ width: "70%", margin: "5px", float: "left" }}
                 >
                   {loading ? (
                     <>

@@ -6,56 +6,6 @@ const validation = require("../../utils/userManagement/validation.util");
 const service = require("../../utils/userManagement/service.util");
 const userAccess = require("../../middleware/accessChecker");
 
-/* The above code is a route handler for the /register route. It is used to register a new user. */
-router.post("/register", async (req, res) => {
-  try {
-    /* Validating the request body using the Joi schema. */
-    const validated = await validation.userRegisterSchema.validateAsync(
-      req.body
-    );
-
-    /* Checking if the Name is already in the database. */
-    const user = await User.findOne({ Email: validated.Email });
-
-    /* Checking if the Name is already in the database. */
-    if (user)
-      return res.status(400).json({
-        errorMessage: "An account with this Email already exists.",
-      });
-
-    // hash the password
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(validated.password, salt);
-
-    /* Generating a random string of length 10. */
-    const id = Math.random().toString(8).substring(5, 15);
-
-    // save a new user account to the db
-    const newUser = new User({
-      id: id,
-      name: validated.Name,
-      email: validated.Email,
-      mobile: validated.Mobile,
-      userType: validated.userType,
-      passwordHash: passwordHash,
-    });
-
-    /* Saving the new User to the database. */
-    await newUser.save();
-
-    /* Sending a response to the client. */
-    res.status(201).send({ Message: "User created successfully." });
-  } catch (err) {
-    if (err.isJoi === true) {
-      console.error(err);
-      return res.status(422).send({ errorMessage: err.details[0].message });
-    } else {
-      console.error(err);
-      res.status(500).send(err);
-    }
-  }
-});
-
 /* This is a route handler for the /profile route. It is used to get the user information. */
 router.get("/profile", userAccess, async (req, res) => {
   try {
@@ -83,20 +33,20 @@ router.get("/", userAccess, async (req, res) => {
     let total;
     let totalPage = 1;
     if (search !== undefined && search !== "") {
-      if (filter !== undefined && filter !== "Both") {
+      if (filter !== undefined && filter !== "All") {
         /* Finding all the admins in the database. */
         users = await User.find({
-          firstName: { $regex: search, $options: "i" },
+          name: { $regex: search, $options: "i" },
           userType: filter,
         });
       } else {
         /* Finding all the admins in the database. */
         users = await User.find({
-          firstName: { $regex: search, $options: "i" },
+          name: { $regex: search, $options: "i" },
         });
       }
       total = users.length;
-    } else if (filter !== undefined && filter !== "Both") {
+    } else if (filter !== undefined && filter !== "All") {
       /* Finding all the admins in the database. */
       users = await User.find({
         userType: filter,
@@ -121,14 +71,23 @@ router.get("/", userAccess, async (req, res) => {
   }
 });
 
+/* This is a route handler for the / route. It is used to get all the users. */
+router.get("/get-count", userAccess, async (req, res) => {
+  try {
+    total = await User.countDocuments();
+    /* Sending the users object to the client. */
+    res.json({ total: total });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+});
+
 /* This is a route handler for the update route. It is updating the user account. */
 router.put("/update", userAccess, async (req, res) => {
   try {
-    /* Validating the request body using the Joi schema. */
-    const validated = await validation.userUpdateSchema.validateAsync(req.body);
-
     /* Updating the user account. */
-    await User.findByIdAndUpdate(req.body.user._id, validated).exec();
+    await User.findByIdAndUpdate(req.body.user._id, req.body).exec();
 
     res.status(201).send({ Message: "Successfully updated the user." });
   } catch (err) {
@@ -156,30 +115,26 @@ router.post("/create-user", userAccess, async (req, res) => {
         errorMessage: "An account with this email already exists.",
       });
 
-    /* Generating a random string of length 10. */
-    const oneTimePassword = crypto.randomBytes(10).toString("hex");
-
     // hash the password
     const salt = await bcrypt.genSalt();
-    const hashedPassword = await bcrypt.hash(oneTimePassword, salt);
+    const hashedPassword = await bcrypt.hash(validated.password, salt);
 
+    var id = Math.random().toString(8).substring(5, 15);
+    id = "E" + id;
     // save a new user account to the db
     const newUser = new User({
-      firstName: validated.firstName,
-      lastName: validated.lastName,
+      id: id,
+      name: validated.name,
       email: validated.email,
       mobile: validated.mobile,
-      dob: validated.dob,
-      passwordHash: hashedPassword,
+      age: validated.age,
+      sex: validated.sex,
       userType: validated.userType,
-      adminCreated: true,
+      address: validated.address,
+      passwordHash: hashedPassword,
     });
-
     /* Saving the new user to the database. */
-    const savedUser = await newUser.save();
-
-    /* Sending an verification email to the user. */
-    await email.sendVerification(savedUser.email, oneTimePassword);
+    await newUser.save();
 
     /* Sending a response to the client. */
     res.status(201).send({ Message: "Successfully created a new user" });
@@ -227,14 +182,13 @@ router.delete("/delete/:id", userAccess, async (req, res) => {
 });
 
 /* The above code is a route that is used to update an admin. */
-router.put("/update/admin", userAccess, async (req, res) => {
+router.put("/update/admin/:id", userAccess, async (req, res) => {
   try {
-    /* Validating the request body using the Joi schema. */
-    const validated = await validation.userUpdateSchema.validateAsync(req.body);
+    const id = req.params.id;
 
     /* Calling the function updateAdmin from functions.util.js and passing the validated id and validated
 object. */
-    await User.findByIdAndUpdate(validated.id, validated);
+    await User.findByIdAndUpdate(id, req.body);
 
     /* Sending a response to the client. */
     res.status(201).send({ Message: "Successfully updated" });
