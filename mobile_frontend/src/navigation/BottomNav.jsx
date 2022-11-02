@@ -5,6 +5,7 @@ import Order from "../components/Order";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ViewProducts from "../components/Product/ViewProducts";
 import ViewProduct from "../components/Product/ViewProduct";
+import SupplierList from "../components/Product/SupplierList";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,7 +35,7 @@ const Tabs = () => {
         },
       }}
     >
-      <Tab.Screen name="Suppliers" component={ViewProduct} />
+      <Tab.Screen name="Suppliers" component={ViewProducts} />
       <Tab.Screen name="Cart" component={Cart} />
       <Tab.Screen name="Orders" component={Order} />
     </Tab.Navigator>

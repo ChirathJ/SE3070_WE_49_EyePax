@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
+import { PricingCard, lightColors } from "@rneui/themed";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import { Text, Card, Button, Icon } from "@rneui/themed";
+import ViewProducts from "./ViewProducts";
 
-const ViewProduct = ({navigation}) => {
+const ViewProduct = ({navigation, id}) => {
   const [getproductdata, setProductdata] = useState([]);
 
-  const { id } = useParams("");
-
   const getdata = async () => {
-    const res = await fetch(`http://192.168.1.2:8000/product/view/${id}`, {
+    const res = await fetch(`http://192.168.178.248:8000/product/view/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -47,6 +54,7 @@ const ViewProduct = ({navigation}) => {
             <Text style={{ marginBottom: 10 }}>
               Total Price {getproductdata.Price}
             </Text>
+            
             <Button
               icon={
                 <Icon
@@ -55,6 +63,7 @@ const ViewProduct = ({navigation}) => {
                   iconStyle={{ marginRight: 10 }}
                 />
               }
+              
               buttonStyle={{
                 borderRadius: 0,
                 marginLeft: 0,
@@ -72,15 +81,20 @@ const ViewProduct = ({navigation}) => {
                   iconStyle={{ marginRight: 10 }}
                 />
               }
+              onPress={() => navigation.navigate('ViewProducts', {screen: 'ViewProducts'})}
               buttonStyle={{
                 borderRadius: 0,
                 marginLeft: 0,
                 marginRight: 0,
                 marginBottom: 0,
-                backgroundColor: "",
+                backgroundColor: "#ab9046",
               }}
               title="Back to Items"
             />
+            <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('ViewProducts')}
+      />
           </Card>
         </View>
       </ScrollView>
@@ -89,3 +103,20 @@ const ViewProduct = ({navigation}) => {
 };
 
 export default ViewProduct;
+
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    justifyContent: "center",
+    margin: "10%",
+    backgroundColor: "#F5FCFF"
+  },
+
+  container1: {
+    justifyContent: "center",
+    margin: "10%",
+    backgroundColor: "#F5FCFF",
+    float: "right",
+    width: "30%",
+  },
+});

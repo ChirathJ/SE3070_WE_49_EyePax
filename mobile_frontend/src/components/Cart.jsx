@@ -4,8 +4,6 @@ import AuthContext from "../context/UserContext";
 import { useContext } from "react";
 import {
   SafeAreaView,
-  View,
-  Text,
   FlatList,
   TouchableOpacity,
   StyleSheet,

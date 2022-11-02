@@ -26,7 +26,7 @@ export default function Login() {
 
       /* Sending a POST request to the server with the user's email and password. */
       const result = await axios.post(
-        "http://192.168.1.2:8000/login",
+        "http://exp://e8-x7a.anonymous.mobile-frontend.exp.direct:8000/login",
         loginData
       );
 
