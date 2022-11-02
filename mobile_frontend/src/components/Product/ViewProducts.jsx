@@ -9,9 +9,6 @@ import {
 import { CardList } from "react-native-card-list";
 import { deldata } from "./context/ContextProvider";
 import { Text, Card, Button, Icon } from "@rneui/themed";
-// import { Link, useNavigation } from "@react-navigation/native";
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 function ViewProducts({ navigation }) {
   const [getproductdata, setProductdata] = useState([]);
@@ -73,8 +70,8 @@ function ViewProducts({ navigation }) {
                       iconStyle={{ marginRight: 10 }}
                       onPress={() => {
                         /* 1. Navigate to the Details route with params */
-                        navigation.navigate('ViewPrduct', {
-                          id: ._id,
+                        navigation.navigate('ViewProduct', {
+                          id: _id,
                     
                         });
                       }}

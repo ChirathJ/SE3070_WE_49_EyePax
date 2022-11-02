@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import { PricingCard, lightColors } from "@rneui/themed";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import { CardList } from "react-native-card-list";
+import { deldata } from "./context/ContextProvider";
+import { Text, Card, Button, Icon } from "@rneui/themed";
+import NavigationStack from "../../navigation/NavigationStack";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const ViewProduct = (id) => {
+const ViewProduct = ({navigation, id}) => {
   const [getproductdata, setProductdata] = useState([]);
-
-  
 
   const getdata = async () => {
     const res = await fetch(`http://192.168.178.248:8000/product/view/${id}`, {
@@ -75,13 +85,13 @@ const ViewProduct = (id) => {
                   iconStyle={{ marginRight: 10 }}
                 />
               }
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate('ViewProducts')}
               buttonStyle={{
                 borderRadius: 0,
                 marginLeft: 0,
                 marginRight: 0,
                 marginBottom: 0,
-                backgroundColor: "",
+                backgroundColor: "#ab9046",
               }}
               title="Back to Items"
             />
@@ -93,3 +103,20 @@ const ViewProduct = (id) => {
 };
 
 export default ViewProduct;
+
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    justifyContent: "center",
+    margin: "10%",
+    backgroundColor: "#F5FCFF"
+  },
+
+  container1: {
+    justifyContent: "center",
+    margin: "10%",
+    backgroundColor: "#F5FCFF",
+    float: "right",
+    width: "30%",
+  },
+});
