@@ -39,7 +39,6 @@ async function userAccess(req, res, next) {
     /* Checking if the user has a token, if they do, it verifies the token and returns the user's
 information. */
     const result = await checkToken(req);
-
     /* Checking if the user is a Supplier. */
     if (!result) {
       return res.status(401).json({ errorMessage: "Unauthorized" });

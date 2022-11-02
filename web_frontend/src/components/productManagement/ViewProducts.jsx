@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { NavLink } from "react-router-dom";
 import { deldata } from "./context/ContextProvider";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Button, Container, Card } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import Dropdown from "react-bootstrap/Dropdown";
+import axios from "axios";
 
 const ViewProducts = () => {
   const [getproductdata, setProductdata] = useState([]);
@@ -15,21 +15,23 @@ const ViewProducts = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const getdata = async () => {
-    const res = await fetch(`http://localhost:8000/product/viewp`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
+    const res = await axios.get("http://localhost:8000/product/view-current");
+    // const res = await fetch(`http://localhost:8000/product/view-current`, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+    // const data = await res.json();
 
-    if (res.status === 422 || !data) {
+    console.log(res.data);
+
+    if (res.status === 422 || !res) {
       console.log("error ");
     } else {
-      setProductdata(data.getproductdata);
+      setProductdata(res.data.getproductdata);
 
       console.log("get data");
-      console.log(data.getproductdata);
     }
   };
 
@@ -59,63 +61,93 @@ const ViewProducts = () => {
   };
 
   return (
-    <>
-      <Container>
-        <div className="" style={{}}>
-          <div className="mt-5">
-            <nav
-              className="navbar navbar-expand-lg navbar-light"
-              style={{ marginLeft: "100px" }}
-            >
-              <h1
-                className="navbar-brand"
+    <div>
+      <div className="topHeading">
+        <h1>Product</h1>
+      </div>
+      <div className="main">
+        <div className="sub-main">
+          <div className="head-left">
+            <a href="/product/new">
+              <button
+                className="btn btn-warning my-1 my-sm-0"
                 style={{
-                  marginRight: "100px",
-                  marginLeft: "100px",
-                  fontSize: "40px",
+                  marginLeft: "40px",
+                  marginRight: "20px",
+                  width: "200px",
+                  height: "50px",
                 }}
+                type="submit"
               >
-                Products
-              </h1>
-            </nav>
-            <Card style={{ backgroundColor: "" }}>
-              <nav
-                className="navbar navbar-expand-lg navbar-light"
-                style={{ marginLeft: "100px" }}
-              >
-                <a href="/product/new" style={{ marginRight: "10px" }}>
-                  <button
-                    className="btn btn-warning my-1 my-sm-0"
-                    style={{}}
-                    type="submit"
-                  >
-                    Add Product
-                  </button>
-                </a>
+                Add Product
+              </button>
+            </a>
+            <form className="form-inline my-2 my-lg-0">
+              <input
+                className="search-input"
+                placeholder="Search Products"
+                type="search"
+                name="searchQuery"
+                onChange={(product) => {
+                  setSearchTerm(product.target.value);
+                }}
+              ></input>
+            </form>
+          </div>
 
-                <div style={{}}>
-                  <form className="form-inline my-2 my-lg-0">
-                    <input
-                      className="form-control mr-sm-2"
-                      style={{
-                        width: "530px",
-                        marginLeft: "100px",
-                        marginRight: "0px",
-                        borderRadius: "25px",
-                      }}
-                      placeholder="Search Products"
-                      type="search"
-                      name="searchQuery"
-                      onChange={(product) => {
-                        setSearchTerm(product.target.value);
-                      }}
-                    ></input>
-                  </form>
-                </div>
-              </nav>
+          <hr></hr>
 
-              <hr></hr>
+          <div className="container">
+            <Table striped style={{ textAlign: "center" }}>
+              <thead>
+                <tr style={{ textAlign: "center" }}>
+                  <th scope="col">
+                    <b>#</b>
+                  </th>
+                  <th>Product Name</th>
+                  <th>Description</th>
+                  <th>Qty</th>
+                  <th>Price(LKR)</th>
+                  <th>Supplier</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {getproductdata
+                  .filter((element) => {
+                    if (searchTerm === "") {
+                      return element;
+                    } else if (
+                      element.ProductCode.toLowerCase().includes(
+                        searchTerm.toLowerCase()
+                      ) ||
+                      element.ProductName.toLowerCase().includes(
+                        searchTerm.toLowerCase()
+                      ) ||
+                      element.Qty.toLowerCase().includes(
+                        searchTerm.toLowerCase()
+                      ) ||
+                      element.Price.toLowerCase().includes(
+                        searchTerm.toLowerCase()
+                      )
+                    ) {
+                      return element;
+                    } else {
+                      return false;
+                    }
+                  })
+                  .map((element, id, user) => {
+                    return (
+                      <>
+                        <tr>
+                          <td>{id + 1}</td>
+                          <td>
+                            <Dropdown>
+                              <Dropdown.Toggle id="" variant="">
+                                {element.ProductName}
+                              </Dropdown.Toggle>
 
+<<<<<<< HEAD
               <div className="container">
                 <Table striped style={{ textAlign: "center" }}>
                   <thead>
@@ -225,10 +257,51 @@ const ViewProducts = () => {
                 </Table>
               </div>
             </Card>
+=======
+                              <Dropdown.Menu variant="">
+                                <Dropdown.Item href="#/action-2">
+                                  <NavLink to={`/view/${element._id}`}>
+                                    <i className="btn btn-outline-success">
+                                      <RemoveRedEyeIcon></RemoveRedEyeIcon> View
+                                      Product
+                                    </i>
+                                  </NavLink>
+                                </Dropdown.Item>
+                                <Dropdown.Divider />
+                                <Dropdown.Item href="#/action-3">
+                                  <NavLink to={`/edit/${element._id}`}>
+                                    <i className="btn btn-outline-warning">
+                                      <EditIcon></EditIcon> Edit Product
+                                    </i>
+                                  </NavLink>
+                                </Dropdown.Item>
+                                <Dropdown.Divider />
+                                <Dropdown.Item href="#/action-4">
+                                  <i
+                                    className="btn btn-outline-danger"
+                                    onClick={() => deleteproduct(element._id)}
+                                  >
+                                    <DeleteIcon></DeleteIcon> Delete Product
+                                  </i>
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </td>
+                          <td>{element.Description}</td>
+                          <td>{element.Qty}</td>
+                          <td>{element.Price}</td>
+                          <td>{element.user.name}</td>
+                        </tr>
+                      </>
+                    );
+                  })}
+              </tbody>
+            </Table>
+>>>>>>> 66ae832833011bb7c15008809f23c10fc155531b
           </div>
         </div>
-      </Container>
-    </>
+      </div>
+    </div>
   );
 };
 
