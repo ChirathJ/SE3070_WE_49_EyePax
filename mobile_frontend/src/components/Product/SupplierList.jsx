@@ -16,7 +16,7 @@ const SupplierList = () => {
 
   const getdata = async () => {
 
-    const res = await fetch(`http://localhost:8000/product/viewp`, {
+    const res = await fetch(`http://192.168.178.248/product/viewp`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

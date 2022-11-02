@@ -10,6 +10,8 @@ import { CardList } from "react-native-card-list";
 import { deldata } from "./context/ContextProvider";
 import { Text, Card, Button, Icon } from "@rneui/themed";
 // import { Link, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 function ViewProducts({ navigation }) {
   const [getproductdata, setProductdata] = useState([]);
@@ -18,14 +20,10 @@ function ViewProducts({ navigation }) {
   const [searchTerm, setSearchTerm] = useState("");
   // const navigate = useNavigate();
 
-<<<<<<< HEAD
- const getdata = async () => {
 
-    const res = await fetch(`http://q2-8qm.anonymous.mobile-frontend.exp.direct:8000/product/viewp`, {
-=======
+
   const getdata = async () => {
-    const res = await fetch(`http://192.168.1.2:8000/product/viewp`, {
->>>>>>> 25a3606446973fac6b3d471770eee226dffdd945
+    const res = await fetch(`http://192.168.178.248:8000/product/viewp`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -66,13 +64,20 @@ function ViewProducts({ navigation }) {
                 <Text style={{ marginBottom: 10 }}>
                   {element.Qty} Units remaining
                 </Text>
-
+                
                 <Button
                   icon={
                     <Icon
                       name="code"
                       color="#ffffff"
                       iconStyle={{ marginRight: 10 }}
+                      onPress={() => {
+                        /* 1. Navigate to the Details route with params */
+                        navigation.navigate('ViewPrduct', {
+                          id: ._id,
+                    
+                        });
+                      }}
                     />
                   }
                   buttonStyle={{
@@ -82,10 +87,8 @@ function ViewProducts({ navigation }) {
                     marginBottom: 0,
                     width: "50%",
                   }}
-                  title="View"
-                  onPress={() =>
-                    navigation.navigate("ViewProduct", { id: element._id })
-                  }
+                  
+                  
                 />
               </Card>
             );

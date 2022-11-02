@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import { PricingCard, lightColors } from "@rneui/themed";
 
-const ViewProduct = ({navigation}) => {
+const ViewProduct = (id) => {
   const [getproductdata, setProductdata] = useState([]);
 
-  const { id } = useParams("");
+  
 
   const getdata = async () => {
-    const res = await fetch(`http://192.168.1.2:8000/product/view/${id}`, {
+    const res = await fetch(`http://192.168.178.248:8000/product/view/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -48,6 +48,7 @@ const ViewProduct = ({navigation}) => {
             <Text style={{ marginBottom: 10 }}>
               Total Price {getproductdata.Price}
             </Text>
+            
             <Button
               icon={
                 <Icon
@@ -56,6 +57,7 @@ const ViewProduct = ({navigation}) => {
                   iconStyle={{ marginRight: 10 }}
                 />
               }
+              
               buttonStyle={{
                 borderRadius: 0,
                 marginLeft: 0,
@@ -73,6 +75,7 @@ const ViewProduct = ({navigation}) => {
                   iconStyle={{ marginRight: 10 }}
                 />
               }
+              onPress={() => navigation.goBack()}
               buttonStyle={{
                 borderRadius: 0,
                 marginLeft: 0,
