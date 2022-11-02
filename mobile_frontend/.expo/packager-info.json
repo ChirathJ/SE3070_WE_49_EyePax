@@ -2,8 +2,14 @@
   "expoServerPort": 19000,
   "packagerPort": 19000,
   "packagerPid": null,
+<<<<<<< HEAD
   "expoServerNgrokUrl": "https://q2-8qm.anonymous.mobile-frontend.exp.direct",
   "packagerNgrokUrl": "https://q2-8qm.anonymous.mobile-frontend.exp.direct",
   "ngrokPid": 14516,
+=======
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
+>>>>>>> 25a3606446973fac6b3d471770eee226dffdd945
   "webpackServerPort": null
 }
