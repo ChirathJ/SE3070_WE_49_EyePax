@@ -46,7 +46,7 @@ const ViewProduct = () => {
         <a href='/products'><Modal.Header closeButton></Modal.Header></a>
         <Modal.Title style={{ textAlign: "center" }}>{getproductdata.ProductName}</Modal.Title>
         <br></br>
-        {/* <img src={typeof (getproductdata.Image) !== 'undefined' ? require(`../productManagement/ProductImages/${getproductdata.Image}`) : 'Error'} style={{ width: "400px", height: "300px", margin: "auto" }} alt="Product" /> */}
+       <img src={typeof (getproductdata.Image) !== 'undefined' ? require(`../productManagement/ProductImages/${getproductdata.Image}`) : 'Error'} style={{ width: "400px", height: "300px", margin: "auto" }} alt="Product" />
         <Modal.Body>
           <Table bordered responsive>
             <tbody>

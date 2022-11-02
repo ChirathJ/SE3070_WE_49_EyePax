@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useNavigate, NavLink } from 'react-router-dom'
 import { updatedata } from './context/ContextProvider'
 import { Col, Row, Button, Form, Container } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 
-const UpdateProduct = () => {
+const UpdateProduct = (props) => {
 
   const { setUPdata } = useContext(updatedata)
 
@@ -88,73 +89,139 @@ const UpdateProduct = () => {
   }
 
   return (
-    <div style={{ marginLeft: "100px", marginTop: "10px", marginBottom: "100px" }}>
+    
+
+<div style={{ marginLeft: "100px", marginTop: "10px", marginBottom: "100px" }}>
       <Container>
-        <h1>Update Product - {inpval.ProductCode}</h1>
-        <hr></hr>
+        <Modal
+        dialogClassName="my-modal"
+        show={true}
+        onHide={props.handleModalClose}
+        backdrop="static"
+      >
+        <a href='/products'><Modal.Header closeButton></Modal.Header></a>
+        <Modal.Title style={{ textAlign: "center" }}>Add Product</Modal.Title>
+        <br></br>
+        
+        <Modal.Body>
         <form className="formCard" border="dark">
           <Row className="justify-content-md-center">
-            <Col>
+            
               <Form.Group className="mb-3">
-                <Form.Label>Product Code</Form.Label>
-                <Form.Control value={inpval.ProductCode} onChange={setdata} name="ProductCode" />
+                <Form.Label>Product Code :</Form.Label>
+                <input
+                class="border border-warning"
+                  
+                  value={inpval.ProductCode} onChange={setdata} name="ProductCode"
+                  style={{width:"700px", marginLeft:"25px", borderRadius:"10px"}}
+                />
               </Form.Group>
-
+              </Row>
+              <Row className="justify-content-md-center">
               <Form.Group className="mb-3">
-                <Form.Label>Product Name</Form.Label>
-                <Form.Control value={inpval.ProductName} onChange={setdata} name="ProductName" />
+                <Form.Label>Product Name :</Form.Label>
+                <input
+                class="border border-warning"
+                  
+                  value={inpval.ProductName} onChange={setdata} name="ProductName"
+                  style={{width:"700px", marginLeft:"20px", borderRadius:"10px"}}
+                />
               </Form.Group>
-
+              </Row>
+              <Row className="justify-content-md-center">
               <Form.Group className="mb-3">
-                <Form.Label>Price</Form.Label>
-                <Form.Control value={inpval.Price} onChange={setdata} name="Price" />
-              </Form.Group>
-
-              
-
-              
-
-              <NavLink to={`/products`}><Button variant="secondary" size="lg" style={{ width: "100%" }}>
-                Back
-              </Button></NavLink>
-            </Col>
-
-            <Col>
-              
-
-              <Form.Group className="mb-3">
-                <Form.Label>Qty</Form.Label>
-                <Form.Control value={inpval.Qty} onChange={setdata} name="Qty" />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Image</Form.Label>
-                <Form.Control value={inpval.Image} onChange={setdata} name="Image" />
-              </Form.Group>
-
-              
-              {/* <Form.Group className="mb-3">
-                <Form.Label>Event Image *</Form.Label>
-                <Form.Control type='file' onChange={setdata} name="EventImage" />
-              </Form.Group> */}
-              <Button variant="primary" size="lg" type="submit" style={{ width: "100%" }} onClick={updateproduct}>
-                Submit
-              </Button>
-            </Col>
-
-            <Col>
-              <Form.Group className="mb-3">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
+                <Form.Label>Description :</Form.Label>
+                <input
+                class="border border-warning"
+                  
                   as="textarea"
                   rows={8}
                   value={inpval.Description} onChange={setdata} name="Description"
+                  style={{width:"700px", marginLeft:"43px", borderRadius:"10px"}}
                 />
               </Form.Group>
-            </Col>
-          </Row>
+              </Row>
+
+              <Row className="justify-content-md-center">
+                <Col>
+              <Form.Group className="mb-3">
+              
+                <Form.Label>Qty :</Form.Label>
+                <input
+                class="border border-warning"
+                  
+                  value={inpval.Qty} onChange={setdata} name="Qty"
+                  style={{width:"300px", marginLeft:"97px", borderRadius:"10px"}}
+                />
+                
+                </Form.Group>
+                </Col>
+                <Col>
+                <Form.Group className="mb-3">
+                <Form.Label>Price :</Form.Label>
+                <input
+                  class="border border-warning"
+                  placeholder="Enter Price"
+                  value={inpval.Price} onChange={setdata} name="Price"
+                  style={{width:"250px", marginLeft:"35px", borderRadius:"10px"}}
+                />
+              </Form.Group>
+              </Col>
+              </Row>
+
+              <Row className="justify-content-md-center">
+                <Col>
+                <Form.Group className="mb-3">
+                <Form.Label>Image :</Form.Label>
+                <input
+                class="border border-warning"
+                  type="file"
+                  accept="image/*"
+                  onChange={{}} name="Image"
+                  style={{width:"250px", marginLeft:"74px", borderRadius:"10px"}}
+                />
+              </Form.Group>
+              </Col>
+              <Col>
+              <Form.Label>* Product will enable to purchase after manager approval</Form.Label></Col>
+              </Row>
+              
+              
+
+              
+
+              <Row className="justify-content-md-center">
+<Col>
+<Button variant="primary" size="lg" type="submit" style={{ width: "100%" }} onClick={updateproduct}>
+                Submit
+              </Button>
+
+              
+           
+              
+
+              </Col>
+
+              
+
+      
+<Col>
+<NavLink to={`/products`}><Button variant="secondary" size="lg" style={{ width: "100%" }}>
+                Back
+              </Button></NavLink>
+              </Col>
+            </Row>
+
+            
+          
         </form>
+
+        
+
+        </Modal.Body>
+        </Modal>
       </Container>
+   
     </div>
   )
 }

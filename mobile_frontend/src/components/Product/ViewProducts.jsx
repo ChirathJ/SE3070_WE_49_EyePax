@@ -78,12 +78,11 @@ function ViewProducts({ navigation }) {
             return (
               <Card key={id}>
                 <Card.Divider />
-                <Card.Image
+                {/* <Card.Image
                   style={{ padding: 0 }}
-                  source={{
-                    uri: "https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg",
-                  }}
-                />
+                  
+                  src={typeof (getproductdata.Image) !== 'undefined' ? require(`web_frontend/src/components/productManagement/ProductImages/${getproductdata.Image}`) : 'Error'} />
+                 */}
                 <Text style={{ marginBottom: 10 }}>{element.ProductName}</Text>
                 <Text style={{ marginBottom: 10 }}>
                   {element.Qty} Units remaining
@@ -98,6 +97,7 @@ function ViewProducts({ navigation }) {
                       
                     />
                   }
+                  title='View'
                   onPress={(element) => {
                     /* 1. Navigate to the Details route with params */
                     navigation.navigate('ViewProduct', {

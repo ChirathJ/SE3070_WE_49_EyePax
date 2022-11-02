@@ -9,7 +9,7 @@ const userAccess = require("../../middleware/accessChecker");
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, '../backend/routes/productManagement/ProductImages');
+        cb(null, '../web_frontend/src/components/productManagement/ProductImages');
     },
     filename: function(req, file, cb) {   
         cb(null, uuidv4() + '-' + Date.now() + path.extname(file.originalname));

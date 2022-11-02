@@ -156,7 +156,7 @@ const ViewProducts = () => {
                           return false;
                         }
                       })
-                      .map((element, id) => {
+                      .map((element, id, user) => {
                         return (
                           <>
                             <tr>
@@ -203,19 +203,19 @@ const ViewProducts = () => {
                               <td>{element.Price}</td>
                               <td>{element.user.name}</td>
                               <td>
-                                <NavLink to={`/view/${element._id}`}>
+                                
                                   <Button
                                     className="btn btn-warning my-1 my-sm-0"
                                     style={{ margin: "10px" }}
                                   >
                                     Approve
                                   </Button>
-                                </NavLink>
-                                <NavLink to={`/delete/${element._id}`}>
+                                
+                                
                                   <Button className="btn btn-black my-1 my-sm-0">
                                     Reject
                                   </Button>
-                                </NavLink>
+                                
                               </td>
                             </tr>
                           </>
