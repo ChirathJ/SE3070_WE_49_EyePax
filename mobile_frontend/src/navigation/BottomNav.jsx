@@ -4,6 +4,8 @@ import ViewProducts from "../components/Product/ViewProducts";
 import ViewCart from "../components/Order/ViewCart";
 import ViewOrder from "../components/Order/ViewOrder";
 import SupplierList from "../components/Product/SupplierList";
+import ViewSingleCartItem from "../components/Order/ViewSingleCartItem";
+import Inquiry from "../components/Order/Inquiry";
 import DeliveryDetails from "../components/Order/DeliveryDetails";
 
 const Tab = createBottomTabNavigator();
@@ -62,7 +64,25 @@ const Tabs = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
+        name="Order1"
+        component={ViewSingleCartItem}
+        options={{
+          tabBarIcon: () => (
+            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Inquiry"
+        component={Inquiry}
+        options={{
+          tabBarIcon: () => (
+            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Delivery"
         component={DeliveryDetails}
         options={{
@@ -70,7 +90,7 @@ const Tabs = () => {
             <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
           ),
         }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 };

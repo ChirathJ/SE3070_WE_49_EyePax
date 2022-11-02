@@ -101,6 +101,7 @@ function ViewCart() {
           style={{
             color: "black",
             marginTop: 50,
+            marginLeft: 50,
             fontSize: 30,
             fontWeight: "bold",
           }}

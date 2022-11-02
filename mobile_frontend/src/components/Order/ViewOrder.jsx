@@ -101,16 +101,6 @@ function ViewOrder() {
           );
         })}
       </ScrollView>
-
-      <View style={styles.column}>
-        <TouchableOpacity style={styles.inquiryBtn}>
-          <Text>Make Inquiry</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.deliveryBtn}>
-          <Text>Delivery Details</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }
@@ -123,25 +113,5 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-  },
-  inquiryBtn: {
-    width: "100%",
-    backgroundColor: "#ffa500",
-    padding: 10,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    borderColor: "#ffa500",
-    marginBottom: 10,
-    marginTop: 10,
-  },
-  deliveryBtn: {
-    width: "100%",
-    backgroundColor: "#d3d3d3",
-    padding: 10,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    borderColor: "black",
   },
 });
