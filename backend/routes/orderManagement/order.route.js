@@ -14,18 +14,19 @@ router.post("/add", async (req, res) => {
       OrderId: "SP" + uuidv4(),
       SiteManager: oldData.SiteManager,
       Cart: oldData.Cart, // send this as an array
-      SiteAddress: oldData.ClientName,
-      DeliveryDate: oldData.EventStartTime,
-      TotalPrice: oldData.EventEndTime,
-      DeliveryStatus: oldData.NoOfParticipants,
-      Comment: oldData.EventStatus,
-      Approval: oldData.EventLocation,
+      SiteAddress: oldData.SiteAddress,
+      DeliveryDate: oldData.DeliveryDate,
+      TotalPrice: oldData.TotalPrice,
+      DeliveryStatus: oldData.DeliveryStatus,
+      Comment: oldData.Comment,
+      Approval: oldData.Approval,
     });
 
     await newOrder.save();
-    await Cart.deleteMany({ SiteManager: oldData.User._id });
+    await Cart.deleteMany({ SiteManager: oldData.SiteManager });
     return res.status(201).json({ message: "Order Confirmed Successfully" });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ message: error });
   }
 });

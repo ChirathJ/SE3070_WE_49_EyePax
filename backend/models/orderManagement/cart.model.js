@@ -15,6 +15,9 @@ const CartSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    ProductImage: {
+      type: String,
+    },
     Supplier: {
       type: String,
       required: true,

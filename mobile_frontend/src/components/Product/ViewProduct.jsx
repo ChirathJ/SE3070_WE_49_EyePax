@@ -20,8 +20,7 @@ const ViewProduct = ({navigation}) => {
     if (res.status === 422 || !data) {
       console.log("error ");
     } else {
-      setProductdata(data);
-      console.log("get data");
+      setProductdata(data);    
     }
   };
 

@@ -1,10 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import List from "../components/List";
-import Cart from "../components/Cart";
-import Order from "../components/Order";
-import Icon from "react-native-vector-icons/FontAwesome5";
 import ViewProducts from "../components/Product/ViewProducts";
-import ViewProduct from "../components/Product/ViewProduct";
+import ViewCart from "../components/Order/ViewCart";
+import Order from "../components/Order";
+import { KeyboardAvoidingView } from "react-native";
+import AuthContext from "../context/UserContext";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,6 +13,7 @@ const Tabs = () => {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           display: "flex",
           position: "absolute",
@@ -31,11 +31,12 @@ const Tabs = () => {
           borderTopLeftRadius: 15,
           borderTopRightRadius: 15,
           height: 70,
+       
         },
       }}
     >
-      <Tab.Screen name="Suppliers" component={ViewProduct} />
-      <Tab.Screen name="Cart" component={Cart} />
+      <Tab.Screen name="Suppliers" component={ViewProducts} />
+      <Tab.Screen name="Cart" component={ViewCart} />
       <Tab.Screen name="Orders" component={Order} />
     </Tab.Navigator>
   );

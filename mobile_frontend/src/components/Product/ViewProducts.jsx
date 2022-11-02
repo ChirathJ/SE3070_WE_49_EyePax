@@ -31,9 +31,6 @@ function ViewProducts({ navigation }) {
       console.log("error ");
     } else {
       setProductdata(data.getproductdata);
-
-      console.log("get data");
-      console.log(data.getproductdata);
     }
   };
 

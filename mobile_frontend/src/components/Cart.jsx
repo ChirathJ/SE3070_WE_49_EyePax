@@ -1,45 +1,21 @@
 import { useEffect, useState } from "react";
-import { View, Text } from "react-native";
-import axios from "axios";
-import AuthContext from "../context/UserContext";
-import { useContext } from "react";
-import {
-  SafeAreaView,
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ViewCart from "./Order/ViewCart";
+import ViewSingleCartItem from "./Order/ViewSingleCartItem";
 
-export default function Cart() {
-  const { userId } = useContext(AuthContext);
-  const [cartList, setCartList] = useState([]);
-
-  async function getAllData() {
-    try {
-      await axios
-        .get(`http://192.168.1.2:8000/cart/getAll/${userId}`)
-        .then((res) => {
-          if (res.status === 200) {
-            setCartList(res.data.data);
-          }
-        });
-    } catch (error) {
-      alert(error);
-    }
-  }
-
-  useEffect(() => {
-    getAllData();
-  }, []);
-
+export default function CartNavigationStack() {
+  const Stack = createNativeStackNavigator();
   return (
-    <SafeAreaView style={styles.container}>
-    <View style={styles.titleContainer}>
-      <Text style={styles.mainTitle}>Hello World</Text>
-    </View>
-  </SafeAreaView>
+    <NavigationContainer independent={true}>
+      <Stack.Navigator>
+        <Stack.Screen name="ViewCart" component={ViewCart} />
+        <Stack.Screen
+          name="ViewSingleCartItem"
+          component={ViewSingleCartItem}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

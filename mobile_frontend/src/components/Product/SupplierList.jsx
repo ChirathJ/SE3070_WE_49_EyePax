@@ -30,10 +30,7 @@ const SupplierList = () => {
     }else if(data.user){
 
     } else {
-      setProductdata(data.getproductdata);
-      
-      console.log("get data");
-      console.log(data.getproductdata);
+      setProductdata(data.getproductdata);     
     }
   };
 
