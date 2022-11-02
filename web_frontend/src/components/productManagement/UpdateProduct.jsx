@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useParams, useNavigate, NavLink } from 'react-router-dom'
-import { updatedata } from './context/ContextProvider'
+import React, { useContext, useEffect, useState } from "react";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
+import { updatedata } from "./context/ContextProvider";
 import { Col, Row, Button, Form, Container } from "react-bootstrap";
 
-
 const UpdateProduct = () => {
-
-  const { setUPdata } = useContext(updatedata)
+  const { setUPdata } = useContext(updatedata);
 
   const navigate = useNavigate("");
 
@@ -16,19 +14,18 @@ const UpdateProduct = () => {
     Description: "",
     Qty: "",
     Price: "",
-    Image: ""
-  })
+    Image: "",
+  });
 
   const setdata = (e) => {
-   
     const { name, value } = e.target;
     setINP((preval) => {
       return {
         ...preval,
-        [name]: value
-      }
-    })
-  }
+        [name]: value,
+      };
+    });
+  };
 
   const { id } = useParams("");
 
@@ -36,17 +33,16 @@ const UpdateProduct = () => {
     const res = await fetch(`http://localhost:8000/product/view/${id}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
     const data = await res.json();
 
-
     if (res.status === 422 || !data) {
-      console.log("Please enter all product details")
+      console.log("Please enter all product details");
       return 0;
     } else {
-      setINP(data)
+      setINP(data);
       console.log("get data");
     }
   };
@@ -64,31 +60,37 @@ const UpdateProduct = () => {
     const res2 = await fetch(`http://localhost:8000/product/update/${id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ProductCode, ProductName, Price, Image, Qty, Description
-      })
+        ProductCode,
+        ProductName,
+        Price,
+        Image,
+        Qty,
+        Description,
+      }),
     });
 
     const data2 = await res2.json();
-   
 
     if (res2.status === 422 || !data2) {
       alert("Please enter all product details");
-    }else if(Qty>20){
-      alert("Qty should be less than 20")
-    }else if(inpval.Description.length>20){
-      alert("Description should be less than 20 characters")
-    }else {
-      alert("Update Product Details Successfully")
-      navigate("/products")
+    } else if (Qty > 20) {
+      alert("Qty should be less than 20");
+    } else if (inpval.Description.length > 20) {
+      alert("Description should be less than 20 characters");
+    } else {
+      alert("Update Product Details Successfully");
+      navigate("/products");
       setUPdata(data2);
     }
-  }
+  };
 
   return (
-    <div style={{ marginLeft: "100px", marginTop: "10px", marginBottom: "100px" }}>
+    <div
+      style={{ marginLeft: "100px", marginTop: "10px", marginBottom: "100px" }}
+    >
       <Container>
         <h1>Update Product - {inpval.ProductCode}</h1>
         <hr></hr>
@@ -97,47 +99,68 @@ const UpdateProduct = () => {
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Product Code</Form.Label>
-                <Form.Control value={inpval.ProductCode} onChange={setdata} name="ProductCode" />
+                <Form.Control
+                  value={inpval.ProductCode}
+                  onChange={setdata}
+                  name="ProductCode"
+                />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Product Name</Form.Label>
-                <Form.Control value={inpval.ProductName} onChange={setdata} name="ProductName" />
+                <Form.Control
+                  value={inpval.ProductName}
+                  onChange={setdata}
+                  name="ProductName"
+                />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Price</Form.Label>
-                <Form.Control value={inpval.Price} onChange={setdata} name="Price" />
+                <Form.Control
+                  value={inpval.Price}
+                  onChange={setdata}
+                  name="Price"
+                />
               </Form.Group>
 
-              
-
-              
-
-              <NavLink to={`/products`}><Button variant="secondary" size="lg" style={{ width: "100%" }}>
-                Back
-              </Button></NavLink>
+              <NavLink to={`/products`}>
+                <Button variant="secondary" size="lg" style={{ width: "100%" }}>
+                  Back
+                </Button>
+              </NavLink>
             </Col>
 
             <Col>
-              
-
               <Form.Group className="mb-3">
                 <Form.Label>Qty</Form.Label>
-                <Form.Control value={inpval.Qty} onChange={setdata} name="Qty" />
+                <Form.Control
+                  value={inpval.Qty}
+                  onChange={setdata}
+                  name="Qty"
+                />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Image</Form.Label>
-                <Form.Control value={inpval.Image} onChange={setdata} name="Image" />
+                <Form.Control
+                  value={inpval.Image}
+                  onChange={setdata}
+                  name="Image"
+                />
               </Form.Group>
 
-              
               {/* <Form.Group className="mb-3">
                 <Form.Label>Event Image *</Form.Label>
                 <Form.Control type='file' onChange={setdata} name="EventImage" />
               </Form.Group> */}
-              <Button variant="primary" size="lg" type="submit" style={{ width: "100%" }} onClick={updateproduct}>
+              <Button
+                variant="primary"
+                size="lg"
+                type="submit"
+                style={{ width: "100%" }}
+                onClick={updateproduct}
+              >
                 Submit
               </Button>
             </Col>
@@ -148,7 +171,9 @@ const UpdateProduct = () => {
                 <Form.Control
                   as="textarea"
                   rows={8}
-                  value={inpval.Description} onChange={setdata} name="Description"
+                  value={inpval.Description}
+                  onChange={setdata}
+                  name="Description"
                 />
               </Form.Group>
             </Col>
@@ -156,12 +181,7 @@ const UpdateProduct = () => {
         </form>
       </Container>
     </div>
-  )
-}
+  );
+};
 
 export default UpdateProduct;
-
-
-
-
-

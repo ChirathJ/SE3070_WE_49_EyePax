@@ -45,7 +45,7 @@ correct, it is sending an error message to the user. */
         secure: true,
         sameSite: "none",
       })
-      .send({ type: user.userType });
+      .send({ type: user.userType, userId: user._id });
   } catch (err) {
     if (err.isJoi === true) {
       console.error(err);

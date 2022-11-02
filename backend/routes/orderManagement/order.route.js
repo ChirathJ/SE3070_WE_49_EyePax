@@ -34,7 +34,24 @@ router.post("/add", async (req, res) => {
 router.get("/getAll/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const details = await Orders.find({ SiteManager: id });
+    const details = await Orders.find({ SiteManager: id })
+      .populate("Cart")
+      .populate("SiteManager");
+
+    return res.status(200).json({
+      data: details,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+});
+
+/* Get All Orders */
+router.get("/getAll", async (req, res) => {
+  try {
+    const details = await Orders.find()
+      .populate("SiteManager")
+      .populate("Cart");
 
     return res.status(200).json({
       data: details,
