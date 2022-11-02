@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -12,10 +12,46 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
 export default function DeliveryDetails() {
+  const id = "63625be8985430bcd416fc01";
   const { userId } = useContext(AuthContext);
-  const [orderList, setOrderList] = useState([]);
-  const [deliveryStatus, setDeliveryStatus] = useState("");
+  const [orderId, setOrderId] = useState("");
+  const [totalPrice, setTotalPrice] = useState("");
+  const [productsList, setProductsList] = useState([]);
   const navigation = useNavigation();
+
+  async function getOrder() {
+    try {
+      await axios
+        .get(`http://192.168.1.2:8000/order/getById/${id}`)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res.data.data);
+            setOrderId(res.data.data.OrderId.substring(0, 8));
+            setTotalPrice(res.data.data.TotalPrice);
+            setProductsList(res.data.data.Cart);
+          }
+        });
+    } catch (error) {
+      alert(error);
+    }
+  }
+  
+  async function makeDelivery() {
+    try {
+      await axios
+        .put(`http://192.168.1.2:8000/order/update/${id}`)
+        .then((res) => {
+          alert("Marked as Delivered");
+        });
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  useEffect(() => {
+    getOrder();
+  }, []);
+
   return (
     <View>
       <Text
@@ -30,11 +66,36 @@ export default function DeliveryDetails() {
         Delivery Details
       </Text>
 
+      <View>
+        <Text
+          style={{
+            color: "green",
+            fontSize: 25,
+            marginLeft: 50,
+          }}
+        >
+          Total Price : Rs. {totalPrice}
+        </Text>
+        <Text
+          style={{
+            color: "grey",
+            fontSize: 20,
+            marginLeft: 90,
+          }}
+        >
+          Order Id : {orderId}
+        </Text>
+      </View>
+
       <ScrollView style={{ height: "58%", marginBottom: 10 }}>
-        {orderList.map((element, id) => {
+        {productsList.map((element, id) => {
           return (
             <Card key={id}>
               <Card.Divider />
+              <Card.Image
+                style={{ padding: 0 }}
+                source= {{ uri: `http://192.168.1.2:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`}}
+              />
               <Text
                 style={{
                   marginBottom: 10,
@@ -42,55 +103,24 @@ export default function DeliveryDetails() {
                   fontWeight: "bold",
                 }}
               >
-                Order ID : {element.OrderId.substring(0, 8)}
+                {element.ProductName}
               </Text>
+              <Text style={{ marginBottom: 10 }}>{element.Supplier}</Text>
+              <Text style={{ marginBottom: 10 }}>{element.ProductId}</Text>
               <Text style={{ marginBottom: 10 }}>
-                Status :{" "}
-                {element.DeliveryStatus === "Not Delivered" ? (
-                  <Text style={{ color: "red", fontSize: 15 }}>
-                    {element.DeliveryStatus}
-                  </Text>
-                ) : (
-                  <Text style={{ color: "green", fontSize: 15 }}>
-                    {element.DeliveryStatus}
-                  </Text>
-                )}
+                Total : Rs.{element.Total}
               </Text>
-
-              <Button
-                icon={
-                  <Icon
-                    name="code"
-                    color="#ffffff"
-                    iconStyle={{ marginRight: 10 }}
-                  />
-                }
-                buttonStyle={{
-                  borderRadius: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  marginBottom: 0,
-                  width: "50%",
-                }}
-                title="View"
-                onPress={() =>
-                  navigation.navigate("ViewSingleCartItem", {
-                    state: element._id,
-                  })
-                }
-              />
+              <Text style={{ marginBottom: 10, color: "blue" }}>
+                {element.Qty} Units
+              </Text>
             </Card>
           );
         })}
       </ScrollView>
 
       <View style={styles.column}>
-        <TouchableOpacity style={styles.inquiryBtn}>
-          <Text>Make Inquiry</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.deliveryBtn}>
-          <Text>Delivery Details</Text>
+        <TouchableOpacity style={styles.deliveryBtn} onPress={makeDelivery}>
+          <Text>Mark as Delivered</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -104,7 +134,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  inquiryBtn: {
+  deliveryBtn: {
     width: "100%",
     backgroundColor: "#ffa500",
     padding: 10,
@@ -114,14 +144,5 @@ const styles = StyleSheet.create({
     borderColor: "#ffa500",
     marginBottom: 10,
     marginTop: 10,
-  },
-  deliveryBtn: {
-    width: "100%",
-    backgroundColor: "#d3d3d3",
-    padding: 10,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    borderColor: "black",
   },
 });

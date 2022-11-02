@@ -26,7 +26,7 @@ router.post("/add", async (req, res) => {
     await Cart.deleteMany({ SiteManager: oldData.SiteManager });
     return res.status(201).json({ message: "Order Confirmed Successfully" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({ message: error });
   }
 });
@@ -80,7 +80,7 @@ router.get("/getById/:id", async (req, res) => {
 router.put("/update/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const deliveryStatus = req.body.DeliveryStatus;
+    const deliveryStatus = "Delivered";
     const details = await Orders.findByIdAndUpdate(id, {
       DeliveryStatus: deliveryStatus,
     }).exec();
