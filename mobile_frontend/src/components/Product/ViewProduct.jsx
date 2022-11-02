@@ -37,15 +37,65 @@ const ViewProduct = () => {
 
 return (
   <>
-    <ScrollView>
-      <PricingCard
-        color={lightColors.primary}
-        title={getproductdata.ProductName}
-        Qty={getproductdata.Qty}
-        price={getproductdata.Price}
-        info={['1 User', 'Basic Support', 'All Core Features']}
-        button={{ title: ' Add to cart', icon: 'flight-takeoff' }}
-      />
+   <ScrollView>
+      <View style={styles.container}>
+        
+       
+        <Card>
+          <Card.Title>{getproductdata.ProductName}</Card.Title>
+          <Text>{getproductdata.Qty} Units remaining</Text>
+          <Card.Divider />
+          <Card.Image
+            style={{ padding: 0 }}
+            source={{
+              uri:
+                'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+            }}
+          />
+          <Text style={{ marginBottom: 10 }}>
+            Units {getproductdata.Qty}
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            Total Price   {getproductdata.Price}
+          </Text>
+          <Button
+            icon={
+              <Icon
+                name="code"
+                color="#0a0906"
+                iconStyle={{ marginRight: 10 }}
+              />
+              
+            }
+            buttonStyle={{
+              borderRadius: 0,
+              marginLeft: 0,
+              marginRight: 0,
+              marginBottom: 10,
+              backgroundColor: '#f0ac0e',
+            }}
+            title="Add to Cart"
+          />
+          <Button
+            icon={
+              <Icon
+                name="code"
+                color="#0a0906"
+                iconStyle={{ marginRight: 10 }}
+              />
+              
+            }
+            buttonStyle={{
+              borderRadius: 0,
+              marginLeft: 0,
+              marginRight: 0,
+              marginBottom: 0,
+              backgroundColor: ''
+            }}
+            title="Back to Items"
+          />
+        </Card>
+      </View>
     </ScrollView>
   </>
 );

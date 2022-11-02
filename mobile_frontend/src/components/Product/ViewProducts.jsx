@@ -48,21 +48,48 @@ function ViewProducts() {
 
   return (
     <>
-<View style={styles.container}>
-    {getproductdata.map((element, id) => {
+                  
+
+                  <View style={styles.item}>
+                  {getproductdata.map((element, id) => {
                     return (
-                      <>
-                      <Card>
-                      <Text>aa</Text>
-          <Text>b</Text>
-          <Button title="Solid Button" />
-          </Card>
-                      </>
-                    );
+        <Card>
+          
+          <Card.Divider />
+          <Card.Image
+            style={{ padding: 0 }}
+            source={{
+              uri:
+                'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+            }}
+          />
+          <Text style={{ marginBottom: 10 }}>
+            {getproductdata.ProductName}
+          </Text>
+          <Text style={{ marginBottom: 10 }}>
+            {getproductdata.Qty} Units remaining
+          </Text>
+          <Button
+            icon={
+              <Icon
+                name="code"
+                color="#ffffff"
+                iconStyle={{ marginRight: 10 }}
+              />
+            }
+            buttonStyle={{
+              borderRadius: 0,
+              marginLeft: 0,
+              marginRight: 0,
+              marginBottom: 0,
+              width:'50%'
+            }}
+            title="View"
+          />
+        </Card>
+        );
                   })}
-                  </View>
-                  <View style={styles.container}><Text>a</Text></View>
-                  <View style={styles.container1}><Text>a</Text></View>
+        </View>
       </>
   );
   
