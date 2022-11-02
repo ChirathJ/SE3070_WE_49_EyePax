@@ -20,12 +20,16 @@ const Tabs = () => {
           left: 0,
           right: 0,
           elevation: 10,
-          //   backgroundColor: "#ffffff",
-          backgroundColor: "tomato",
+          backgroundColor: "#ffffff",
+          borderTopWidth: 2,
+          borderLeftWidth: 2,
+          borderRightWidth: 2,
+          borderTopColor: "#D3D3D3",
+          borderLeftColor: "#D3D3D3",
+          borderRightColor: "#D3D3D3",
           borderTopLeftRadius: 15,
           borderTopRightRadius: 15,
           height: 70,
-          ...styles.shadow,
         },
       }}
     >
@@ -35,18 +39,5 @@ const Tabs = () => {
     </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  shadow: {
-    shadowColor: "#7F5DF0",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 5,
-  },
-});
 
 export default Tabs;
