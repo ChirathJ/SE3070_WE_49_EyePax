@@ -17,7 +17,7 @@ function ViewProducts() {
 
  const getdata = async () => {
 
-    const res = await fetch(`http://q2-8qm.anonymous.mobile-frontend.exp.direct:80/product/viewp`, {
+    const res = await fetch(`http://q2-8qm.anonymous.mobile-frontend.exp.direct:8000/product/viewp`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
