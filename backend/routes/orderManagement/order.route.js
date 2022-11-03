@@ -112,4 +112,34 @@ router.get("/search/:searchTerm", async (req, res) => {
   }
 });
 
+/* Get Orders According to Deliver Status */
+router.get("/:deliveryStatus", async (req, res) => {
+  try {
+    const details = await Orders.count({
+      DeliveryStatus: req.params.deliveryStatus,
+    });
+
+    return res.status(200).json({
+      data: details,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+});
+
+/* Get Orders According to Approval Status */
+router.get("/approval/:status", async (req, res) => {
+  try {
+    const details = await Orders.count({
+      Approval: req.params.status,
+    });
+
+    return res.status(200).json({
+      data: details,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+});
+
 module.exports = router;
