@@ -12,7 +12,7 @@ const SupplierList = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const getdata = async () => {
-    const res = await fetch(`http://192.168.1.190:8000/product/viewp`, {
+    const res = await fetch(`http://192.168.1.2:8000/product/viewp`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
