@@ -2,12 +2,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Table } from "react-bootstrap";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import UserModal from "../userManagement/user/UserModal";
 import OrderModal from "./OrderModal";
+import { useNavigate } from "react-router-dom";
 
 const OrderList = () => {
-  const [search, setSearch] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [orders, setOrders] = useState([]);
   const [order, setOrder] = useState("");
   const [show, setShow] = useState(false);
@@ -15,36 +14,68 @@ const OrderList = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const navigate = useNavigate();
+
   function OrderList() {
     /* Returning the data in the form of a table. */
-    return orders?.map((current, index) => {
-      /* Checking if the name contains the search string or if the search string is empty. */
-      return (
-        <tr key={index}>
-          <td>{current.SiteManager.name}</td>
-          <td>{current.Cart.length}</td>
-          <td>{current.SiteAddress}</td>
-          <td>{current.TotalPrice}</td>
-          <td>{current.DeliveryStatus}</td>
-          <td>
-            <button
-              className="btn btn-outline-secondary"
-              onClick={viewUser.bind(this, current)}
-            >
-              <RemoveRedEyeIcon />
-            </button>
-          </td>
-        </tr>
-      );
-    });
+    return orders
+      ?.filter((element) => {
+        if (searchTerm === "") {
+          return element;
+        } else if (
+          element.SiteManager.name
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          element.SiteAddress.toLowerCase().includes(
+            searchTerm.toLowerCase()
+          ) ||
+          element.Approval.toLowerCase().includes(searchTerm.toLowerCase())
+        ) {
+          return element;
+        } else {
+          return false;
+        }
+      })
+      .map((current, index) => {
+        /* Checking if the name contains the search string or if the search string is empty. */
+        return (
+          <tr key={index}>
+            <td>{current.SiteManager.name}</td>
+            <td>{current.Cart.length}</td>
+            <td>{current.SiteAddress}</td>
+            <td>{current.TotalPrice}</td>
+            <td>{current.DeliveryStatus}</td>
+            <td>{current.Approval}</td>
+            <td>
+              <button
+                className="btn btn-outline-secondary"
+                onClick={viewOrder.bind(this, current)}
+              >
+                Orders
+              </button>
+              &nbsp;
+              <button
+                className="btn btn-outline-secondary"
+                onClick={viewProducts.bind(this, current.Cart)}
+              >
+                Products
+              </button>
+            </td>
+          </tr>
+        );
+      });
   }
 
   /**
    * When the user clicks on a row, the user's data is set to the state and the modal is shown.
    */
-  function viewUser(data) {
+  function viewOrder(data) {
     setOrder(data);
     handleShow();
+  }
+
+  function viewProducts(data) {
+    navigate("/orders/products", { state: data });
   }
 
   useEffect(() => {
@@ -82,7 +113,7 @@ const OrderList = () => {
               placeholder="Search"
               className="search-input"
               // onKeyDown={handleKeyDown}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             ></input>
           </div>
           <hr />
@@ -94,6 +125,7 @@ const OrderList = () => {
                 <th>Site Address</th>
                 <th>Total Price</th>
                 <th>Delivery Status</th>
+                <th>Approval</th>
                 <th>Action</th>
               </tr>
             </thead>

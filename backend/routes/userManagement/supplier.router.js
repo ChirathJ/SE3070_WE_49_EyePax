@@ -28,7 +28,7 @@ router.post("/register", async (req, res) => {
     const passwordHash = await bcrypt.hash(validated.password, salt);
 
     /* Generating a random string of length 10. */
-    var id = Math.random().toString(8).substring(5, 15);
+    var id = Math.random().toString(8).substring(5, 10);
     id = "S" + id;
 
     // save a new user account to the db

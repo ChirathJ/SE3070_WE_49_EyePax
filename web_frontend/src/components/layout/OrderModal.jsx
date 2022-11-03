@@ -58,7 +58,9 @@ const OrderModal = (props) => {
                 <h3>Delivery Date</h3>
               </td>
               <td>
-                <h3>{order?.DeliveryDate}</h3>
+                <h3>
+                  {order?.DeliveryDate?.toString()?.substring(0, 10)}
+                </h3>
               </td>
             </tr>
             <tr key={7}>

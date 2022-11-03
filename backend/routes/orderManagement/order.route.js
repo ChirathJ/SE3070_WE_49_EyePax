@@ -92,6 +92,20 @@ router.put("/update/:id", async (req, res) => {
   }
 });
 
+/* Update Delivery Status */
+router.put("/update/Approval/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const details = await Orders.findByIdAndUpdate(id, req.body).exec();
+
+    return res.status(200).json({
+      data: details,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+});
+
 /* Search an Order */
 router.get("/search/:searchTerm", async (req, res) => {
   try {

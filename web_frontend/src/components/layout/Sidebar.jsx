@@ -68,7 +68,12 @@ export default function Sidebar() {
         title: "Orders",
         path: "/orders",
         icon: <FaCube />,
-      }
+      },
+      {
+        title: "Suppliers",
+        path: "/suppliers",
+        icon: <FaTruck />,
+      },
     ];
   } else if (userType === "Site Manager") {
     SidebarData = [

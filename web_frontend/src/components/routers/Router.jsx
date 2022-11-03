@@ -20,6 +20,7 @@ import ViewAllProductsAdmin from "../productManagement/ViewAllProductsAdmin";
 import OrderList from "../layout/OrderList";
 import OrderListSupplier from "../layout/OrderListSupplier";
 import OrderListAccountant from "../layout/OrderListAccountant";
+import ViewOrdersProductAdmin from "../layout/ViewOrdersProductAdmin";
 
 function Router() {
   /* Getting the userType from the AuthContext. */
@@ -62,9 +63,13 @@ function Router() {
               />
               <Route exact path="/suppliers" element={<SupplierList />} />
 
-              {/*User Routes for Admin*/}
               <Route path="/users" element={<UserList />} />
               <Route exact path="/orders" element={<OrderList />} />
+              <Route
+                exact
+                path="/orders/products"
+                element={<ViewOrdersProductAdmin />}
+              />
             </>
           )}
 
@@ -82,8 +87,19 @@ function Router() {
 
           {userType === "Accountant" && (
             <>
-              <Route exact path="/" element={<Dashboard />} />
+              <Route exact path="/dashboard" element={<Dashboard />} />
               <Route exact path="/orders" element={<OrderListAccountant />} />
+              <Route
+                exact
+                path="/orders/products"
+                element={<ViewOrdersProductAdmin />}
+              />
+              <Route exact path="/suppliers" element={<SupplierList />} />
+              <Route
+                exact
+                path="/products/:id"
+                element={<ViewProductsAdmin />}
+              />
             </>
           )}
 
