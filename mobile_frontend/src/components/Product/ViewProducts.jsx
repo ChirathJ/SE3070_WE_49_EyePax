@@ -95,12 +95,11 @@ function ViewProducts({ navigation }) {
                         iconStyle={{ marginRight: 10 }}
                       />
                     }
-                    onPress={(element) => {
-                      /* 1. Navigate to the Details route with params */
+                    onPress={() =>
                       navigation.navigate("ViewProduct", {
                         id: element._id,
-                      });
-                    }}
+                      })
+                    }
                     buttonStyle={{
                       borderRadius: 0,
                       marginLeft: 0,

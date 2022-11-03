@@ -1,20 +1,20 @@
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ViewCart from "./Order/ViewCart";
-import ViewSingleCartItem from "./Order/ViewSingleCartItem";
+import AddNote from "./Order/AddNote";
+import ViewOrder from "./Order/ViewOrder";
 
 export default function CartNavigationStack() {
   const Stack = createNativeStackNavigator();
   return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator>
-        <Stack.Screen name="ViewCart" component={ViewCart} />
-        <Stack.Screen
-          name="ViewSingleCartItem"
-          component={ViewSingleCartItem}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="ViewCart" component={ViewCart} />
+      <Stack.Screen name="AddNote" component={AddNote} />
+      <Stack.Screen name="Order" component={ViewOrder} />
+    </Stack.Navigator>
   );
 }

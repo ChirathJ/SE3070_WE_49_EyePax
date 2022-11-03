@@ -8,77 +8,63 @@ import {
 } from "react-native";
 import AuthContext from "../../context/UserContext";
 import axios from "axios";
-import { Button, Icon } from "@rneui/themed";
 
-export default function Inquiry({ navigation, route }) {
-  const id = route.params.id;
+export default function AddNote({ navigation, route }) {
+  const object = route.params.orderObject;
   const { userId } = useContext(AuthContext);
-  const [inquiry, setInquiry] = useState("");
+  const [comment, setComment] = useState("");
 
-  async function sendInquiry() {
+  async function sendOrder() {
     try {
-      const inquiryObjet = {
-        Order: id,
-        Inquiry: inquiry,
-        SiteManager: userId,
+      const data = {
+        Comment: comment,
+        Approval: "Pending",
       };
+      const newObject = Object.assign(object, data);
 
-      await axios
-        .post(`http://192.168.1.2:8000/inquiry/add`, inquiryObjet)
-        .then((res) => {
-          if (res.status === 201) {
-            alert(res.data.message);
-            navigation.navigate("ViewSingleOrder", {
-              id: id,
-            });
-          }
-        });
+      if (comment === "" || comment === null) {
+        alert("Please Enter a Note");
+      } else {
+        await axios
+          .post(`http://192.168.1.2:8000/order/add`, newObject)
+          .then((res) => {
+            if (res.status === 201) {
+              alert(res.data.message);
+              navigation.navigate("Order", {});
+            }
+          });
+      }
     } catch (error) {
       alert(error);
     }
   }
-
   return (
     <View>
       <View style={styles.row}>
-        <Button
-          buttonStyle={{
-            marginTop: 50,
-            marginLeft: 0,
-            width: "50%",
-            backgroundColor: "#f2f2f2",
-          }}
-          icon={<Icon name="chevron-left" color="black" />}
-          onPress={() =>
-            navigation.navigate("ViewSingleOrder", {
-              id: id,
-            })
-          }
-        />
         <Text
           style={{
             color: "black",
             marginTop: 50,
-            marginLeft: 0,
+            marginLeft: 50,
             fontSize: 30,
             fontWeight: "bold",
           }}
         >
-          Inquiry
+          Request Approval
         </Text>
       </View>
 
-      <Text style={styles.TextTitle}>Enter Your Inquiry</Text>
+      <Text style={styles.TextTitle}>Enter Your Note</Text>
       <TextInput
         multiline={true}
-        onChangeText={(text) => setInquiry(text)}
-        value={inquiry}
+        onChangeText={(text) => setComment(text)}
+        value={comment}
         style={styles.TextInput}
         editable={true}
         autoFocus={true}
       />
 
-      <TouchableOpacity onPress={sendInquiry}>
+      <TouchableOpacity onPress={sendOrder}>
         <Text style={styles.inquiryBtn}> Send </Text>
       </TouchableOpacity>
     </View>

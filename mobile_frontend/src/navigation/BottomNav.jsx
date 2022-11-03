@@ -1,12 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "@rneui/themed";
-import ViewProducts from "../components/Product/ViewProducts";
-import ViewCart from "../components/Order/ViewCart";
-import ViewOrder from "../components/Order/ViewOrder";
-import SupplierList from "../components/Product/SupplierList";
-import ViewSingleCartItem from "../components/Order/ViewSingleCartItem";
-import Inquiry from "../components/Order/Inquiry";
-import DeliveryDetails from "../components/Order/DeliveryDetails";
+import Product from "../components/Product";
+import Cart from "../components/Cart";
+import Order from "../components/Order";
 
 const Tab = createBottomTabNavigator();
 
@@ -39,55 +35,40 @@ const Tabs = () => {
     >
       <Tab.Screen
         name="Suppliers"
-        component={ViewProducts}
+        component={Product}
         options={{
-          tabBarIcon: () => (
-            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          tabBarIcon: ({ focused }) => (
+            <Icon
+              name="local-shipping"
+              color={focused ? "#ffa500" : "#000000"}
+              style={{ marginRight: 10 }}
+            />
           ),
         }}
       />
       <Tab.Screen
         name="Cart"
-        component={ViewCart}
+        component={Cart}
         options={{
-          tabBarIcon: () => (
-            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          tabBarIcon: ({ focused }) => (
+            <Icon
+              name="shopping-cart"
+              color={focused ? "#ffa500" : "#000000"}
+              iconStyle={{ marginRight: 10 }}
+            />
           ),
         }}
       />
       <Tab.Screen
         name="Orders"
-        component={ViewOrder}
+        component={Order}
         options={{
-          tabBarIcon: () => (
-            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Order1"
-        component={ViewSingleCartItem}
-        options={{
-          tabBarIcon: () => (
-            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Inquiry"
-        component={Inquiry}
-        options={{
-          tabBarIcon: () => (
-            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Delivery"
-        component={DeliveryDetails}
-        options={{
-          tabBarIcon: () => (
-            <Icon name="code" color="#000000" iconStyle={{ marginRight: 10 }} />
+          tabBarIcon: ({ focused }) => (
+            <Icon
+              name="inventory"
+              color={focused ? "#ffa500" : "#000000"}
+              iconStyle={{ marginRight: 10 }}
+            />
           ),
         }}
       />

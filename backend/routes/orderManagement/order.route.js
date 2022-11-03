@@ -1,7 +1,6 @@
 const express = require("express");
 const Orders = require("../../models/orderManagement/order.model");
 const router = express.Router();
-const { v4: uuidv4 } = require("uuid");
 const Cart = require("../../models/orderManagement/cart.model");
 
 /* Add New Order */
@@ -11,7 +10,7 @@ router.post("/add", async (req, res) => {
     const oldData = req.body;
 
     const newOrder = new Orders({
-      OrderId: "SP" + uuidv4(),
+      OrderId: "SP" + Math.floor(Math.random() * 900000 + 100000),
       SiteManager: oldData.SiteManager,
       Cart: oldData.Cart, // send this as an array
       SiteAddress: oldData.SiteAddress,
@@ -31,11 +30,11 @@ router.post("/add", async (req, res) => {
   }
 });
 
-/* Get All Orders */
+/* Get All Orders By Site Manager's Id*/
 router.get("/getAll/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const details = await Orders.find({ SiteManager: id })
+    const details = await Orders.find({ SiteManager: id, Approval: "Approved" })
       .populate("Cart")
       .populate("SiteManager");
 

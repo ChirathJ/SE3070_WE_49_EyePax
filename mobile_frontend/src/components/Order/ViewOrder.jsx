@@ -1,15 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { Text, Card, Button, Icon } from "@rneui/themed";
 import AuthContext from "../../context/UserContext";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import SearchBar from "react-native-dynamic-search-bar";
 
 function ViewOrder() {
   const { userId } = useContext(AuthContext);
@@ -30,9 +25,25 @@ function ViewOrder() {
     }
   }
 
+  async function searchOrder(term) {
+    try {
+      if (term !== "" || term !== undefined) {
+        await axios
+          .get(`http://192.168.1.2:8000/order/search/${term}`)
+          .then((res) => {
+            if (res.status === 200) {
+              setOrderList(res.data.data);
+            }
+          });
+      }
+    } catch (error) {
+      alert(error);
+    }
+  }
+
   useEffect(() => {
     getAllOrder();
-  }, [orderList]);
+  }, []);
 
   return (
     <View>
@@ -48,6 +59,17 @@ function ViewOrder() {
         Orders
       </Text>
 
+      <View style={{ margin: 10, backgroundColor: "white" }}>
+        <SearchBar
+          type="search"
+          placeholder="Search Orders"
+          onChangeText={(order) => {
+            searchOrder(order);
+          }}
+          onClearPress={getAllOrder}
+        />
+      </View>
+
       <ScrollView style={{ height: "58%", marginBottom: 10 }}>
         {orderList.map((element, id) => {
           return (
@@ -60,7 +82,7 @@ function ViewOrder() {
                   fontWeight: "bold",
                 }}
               >
-                Order ID : {element.OrderId.substring(0, 8)}
+                Order ID : {element.OrderId}
               </Text>
               <Text style={{ marginBottom: 10 }}>
                 Status :{" "}
@@ -76,13 +98,7 @@ function ViewOrder() {
               </Text>
 
               <Button
-                icon={
-                  <Icon
-                    name="code"
-                    color="#ffffff"
-                    iconStyle={{ marginRight: 10 }}
-                  />
-                }
+                title="View"
                 buttonStyle={{
                   borderRadius: 0,
                   marginLeft: 0,
@@ -90,10 +106,16 @@ function ViewOrder() {
                   marginBottom: 0,
                   width: "50%",
                 }}
-                title="View"
+                icon={
+                  <Icon
+                    name="chevron-right"
+                    color="#ffffff"
+                    iconStyle={{ marginRight: 10 }}
+                  />
+                }
                 onPress={() =>
-                  navigation.navigate("ViewSingleCartItem", {
-                    state: element._id,
+                  navigation.navigate("ViewSingleOrder", {
+                    id: element._id,
                   })
                 }
               />

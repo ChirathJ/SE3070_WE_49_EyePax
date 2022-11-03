@@ -1,32 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { Text, Card, Button, Icon } from "@rneui/themed";
-import AuthContext from "../../context/UserContext";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
 
-export default function DeliveryDetails() {
-  const id = "63625be8985430bcd416fc01";
-  const { userId } = useContext(AuthContext);
+export default function DeliveryDetails({ navigation, route }) {
+  const id = route.params.id;
   const [orderId, setOrderId] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
   const [productsList, setProductsList] = useState([]);
-  const navigation = useNavigation();
+  const [deliveryStatus, setIsDeliveryStatus] = useState("");
+  const [isDelivered, setIsDelivered] = useState(false);
 
-  async function getOrder() {
+  async function getOrderDelivery() {
     try {
       await axios
         .get(`http://192.168.1.2:8000/order/getById/${id}`)
         .then((res) => {
           if (res.status === 200) {
-            console.log(res.data.data);
-            setOrderId(res.data.data.OrderId.substring(0, 8));
+            setIsDeliveryStatus(res.data.data.DeliveryStatus);
+            setOrderId(res.data.data.OrderId);
             setTotalPrice(res.data.data.TotalPrice);
             setProductsList(res.data.data.Cart);
           }
@@ -35,13 +27,14 @@ export default function DeliveryDetails() {
       alert(error);
     }
   }
-  
+
   async function makeDelivery() {
     try {
       await axios
         .put(`http://192.168.1.2:8000/order/update/${id}`)
         .then((res) => {
           alert("Marked as Delivered");
+          navigation.navigate("ViewSingleOrder", { id: id });
         });
     } catch (error) {
       alert(error);
@@ -49,22 +42,36 @@ export default function DeliveryDetails() {
   }
 
   useEffect(() => {
-    getOrder();
+    getOrderDelivery();
   }, []);
+
+  useEffect(() => {
+    setIsDelivered(true);
+  }, [deliveryStatus]);
 
   return (
     <View>
-      <Text
-        style={{
-          color: "black",
-          marginTop: 50,
-          marginLeft: 70,
-          fontSize: 30,
-          fontWeight: "bold",
-        }}
-      >
-        Delivery Details
-      </Text>
+      <View style={styles.row}>
+        <Button
+          buttonStyle={{
+            marginTop: 50,
+            width: "50%",
+            backgroundColor: "#f2f2f2",
+          }}
+          icon={<Icon name="chevron-left" color="black" />}
+          onPress={() => navigation.navigate("ViewSingleOrder", { id: id })}
+        />
+        <Text
+          style={{
+            color: "black",
+            marginTop: 50,
+            fontSize: 30,
+            fontWeight: "bold",
+          }}
+        >
+          Delivery Details
+        </Text>
+      </View>
 
       <View>
         <Text
@@ -94,7 +101,9 @@ export default function DeliveryDetails() {
               <Card.Divider />
               <Card.Image
                 style={{ padding: 0 }}
-                source= {{ uri: `http://192.168.1.2:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`}}
+                source={{
+                  uri: `http://192.168.1.2:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
+                }}
               />
               <Text
                 style={{
@@ -118,11 +127,15 @@ export default function DeliveryDetails() {
         })}
       </ScrollView>
 
-      <View style={styles.column}>
-        <TouchableOpacity style={styles.deliveryBtn} onPress={makeDelivery}>
-          <Text>Mark as Delivered</Text>
-        </TouchableOpacity>
-      </View>
+      {isDelivered === false ? (
+        <View style={styles.column}>
+          <TouchableOpacity style={styles.deliveryBtn} onPress={makeDelivery}>
+            <Text>Mark as Delivered</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        ""
+      )}
     </View>
   );
 }
@@ -144,5 +157,9 @@ const styles = StyleSheet.create({
     borderColor: "#ffa500",
     marginBottom: 10,
     marginTop: 10,
+  },
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
 });

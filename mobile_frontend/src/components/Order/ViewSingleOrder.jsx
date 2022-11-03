@@ -1,24 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import { Text, Card, Button, Icon } from "@rneui/themed";
-import AuthContext from "../../context/UserContext";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
+import { Text, Card, Icon, Button } from "@rneui/themed";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
 
-export default function ViewSingleCartItem() {
-  const id = "63625be8985430bcd416fc01";
-  const { userId } = useContext(AuthContext);
+export default function ViewSingleOrder({ navigation, route }) {
+  const id = route.params.id;
   const [orderId, setOrderId] = useState("");
   const [totalPrice, setTotalPrice] = useState("");
   const [status, setStatus] = useState("");
   const [productsList, setProductsList] = useState([]);
-  const navigation = useNavigation();
 
   async function getOrder() {
     try {
@@ -26,7 +16,7 @@ export default function ViewSingleCartItem() {
         .get(`http://192.168.1.2:8000/order/getById/${id}`)
         .then((res) => {
           if (res.status === 200) {
-            setOrderId(res.data.data.OrderId?.substring(0, 8));
+            setOrderId(res.data.data.OrderId);
             setStatus(res.data.data.DeliveryStatus);
             setTotalPrice(res.data.data.TotalPrice);
             setProductsList(res.data.data.Cart);
@@ -43,12 +33,22 @@ export default function ViewSingleCartItem() {
 
   return (
     <View>
-      <View>
+      <View style={styles.row}>
+        <Button
+          buttonStyle={{
+            marginTop: 50,
+            marginLeft: 0,
+            width: "50%",
+            backgroundColor: "#f2f2f2",
+          }}
+          icon={<Icon name="chevron-left" color="black" />}
+          onPress={() => navigation.navigate("ViewOrder", {})}
+        />
         <Text
           style={{
             color: "black",
             marginTop: 50,
-            marginLeft: 70,
+            marginLeft: 0,
             fontSize: 30,
             fontWeight: "bold",
           }}
@@ -72,7 +72,7 @@ export default function ViewSingleCartItem() {
               marginLeft: 90,
             }}
           >
-            Status : 
+            Status :
             {status === "Not Delivered" ? (
               <Text
                 style={{
@@ -127,40 +127,23 @@ export default function ViewSingleCartItem() {
               <Text style={{ marginBottom: 10, color: "blue" }}>
                 {element.Qty} Units
               </Text>
-
-              <Button
-                icon={
-                  <Icon
-                    name="code"
-                    color="#ffffff"
-                    iconStyle={{ marginRight: 10 }}
-                  />
-                }
-                buttonStyle={{
-                  borderRadius: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  marginBottom: 0,
-                  width: "50%",
-                }}
-                title="View"
-                onPress={() =>
-                  navigation.navigate("ViewSingleCartItem", {
-                    state: element._id,
-                  })
-                }
-              />
             </Card>
           );
         })}
       </ScrollView>
 
       <View style={styles.column}>
-        <TouchableOpacity style={styles.inquiryBtn}>
+        <TouchableOpacity
+          style={styles.inquiryBtn}
+          onPress={() => navigation.navigate("Inquiry", { id: id })}
+        >
           <Text>Make Inquiry</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.deliveryBtn}>
+        <TouchableOpacity
+          style={styles.deliveryBtn}
+          onPress={() => navigation.navigate("DeliveryDetails", { id: id })}
+        >
           <Text>Delivery Details</Text>
         </TouchableOpacity>
       </View>
@@ -209,5 +192,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderColor: "black",
+  },
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
 });

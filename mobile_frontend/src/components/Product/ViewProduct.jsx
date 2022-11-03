@@ -1,36 +1,56 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import { PricingCard, lightColors } from "@rneui/themed";
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text, Card, Button, Icon } from "@rneui/themed";
-import ViewProducts from "./ViewProducts";
+import axios from "axios";
+import AuthContext from "../../context/UserContext";
 
 const ViewProduct = ({ navigation, route }) => {
   const id = route.params.id;
-  console.log(id, "id")
+  const { userId } = useContext(AuthContext);
   const [getproductdata, setProductdata] = useState([]);
+  const [units, setUnits] = useState(2);
 
   const getdata = async () => {
-    const res = await fetch(`http://192.168.1.2:8000/product/view/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await res.json();
-
-    if (res.status === 422 || !data) {
-      console.log("error ");
-    } else {
-      setProductdata(data);    
+    try {
+      await axios
+        .get(`http://192.168.1.2:8000/product/view/${id}`)
+        .then((res) => {
+          if (res.status === 201) {
+            setProductdata(res.data);
+          }
+        });
+    } catch (error) {
+      alert(error);
     }
   };
+
+  async function addToCart() {
+    try {
+      const cartObject = {
+        SiteManager: userId,
+        ProductName: getproductdata.ProductName,
+        ProductId: getproductdata.ProductCode,
+        ProductImage: getproductdata.Image,
+        Supplier: getproductdata.user.name,
+        Qty: units,
+        Total: getproductdata.Price * units,
+      };
+
+      if (cartObject.length !== 0) {
+        await axios
+          .post(`http://192.168.1.2:8000/cart/add`, cartObject)
+          .then((res) => {
+            if (res.status === 201) {
+              alert(res.data.message);
+              navigation.navigate("ViewProducts", {});
+            }
+          });
+      }
+    } catch (error) {
+      alert(error);
+    }
+  }
 
   useEffect(() => {
     getdata();
@@ -55,7 +75,7 @@ const ViewProduct = ({ navigation, route }) => {
             <Text style={{ marginBottom: 10 }}>
               Total Price {getproductdata.Price}
             </Text>
-            
+
             <Button
               icon={
                 <Icon
@@ -64,7 +84,6 @@ const ViewProduct = ({ navigation, route }) => {
                   iconStyle={{ marginRight: 10 }}
                 />
               }
-              
               buttonStyle={{
                 borderRadius: 0,
                 marginLeft: 0,
@@ -73,6 +92,7 @@ const ViewProduct = ({ navigation, route }) => {
                 backgroundColor: "#f0ac0e",
               }}
               title="Add to Cart"
+              onPress={addToCart}
             />
             <Button
               icon={
@@ -82,7 +102,9 @@ const ViewProduct = ({ navigation, route }) => {
                   iconStyle={{ marginRight: 10 }}
                 />
               }
-              onPress={() => navigation.navigate('ViewProducts', {screen: 'ViewProducts'})}
+              onPress={() =>
+                navigation.navigate("ViewProducts", { screen: "ViewProducts" })
+              }
               buttonStyle={{
                 borderRadius: 0,
                 marginLeft: 0,
@@ -93,9 +115,9 @@ const ViewProduct = ({ navigation, route }) => {
               title="Back to Items"
             />
             <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('ViewProducts')}
-      />
+              title="Go to Details"
+              onPress={() => navigation.navigate("ViewProducts")}
+            />
           </Card>
         </View>
       </ScrollView>
@@ -110,7 +132,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     justifyContent: "center",
     margin: "10%",
-    backgroundColor: "#F5FCFF"
+    backgroundColor: "#F5FCFF",
   },
 
   container1: {

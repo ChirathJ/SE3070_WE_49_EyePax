@@ -11,6 +11,7 @@ router.post("/add", async (req, res) => {
     const inquiry = new Inquiry({
       Order: oldData.Order,
       inquiry: oldData.Inquiry,
+      SiteManager: oldData.SiteManager,
     });
 
     await inquiry.save();
