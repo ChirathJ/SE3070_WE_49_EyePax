@@ -137,7 +137,7 @@ router.get("/product/view/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const productindividual = await products.findById({ _id: id });
+    const productindividual = await products.findById({ _id: id }).populate("user");;
     res.status(201).json(productindividual);
   } catch (error) {
     res.status(422).json(error);
@@ -203,5 +203,6 @@ router.delete("/product/delete/:id", async (req, res) => {
     res.status(422).json(error);
   }
 });
+
 
 module.exports = router;

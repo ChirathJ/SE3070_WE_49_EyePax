@@ -11,6 +11,11 @@ const InquirySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    SiteManager: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
   },
   { timestamps: true }
 );

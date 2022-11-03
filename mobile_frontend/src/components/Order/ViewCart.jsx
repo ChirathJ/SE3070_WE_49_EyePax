@@ -9,21 +9,15 @@ import {
 import { Text, Card, Button, Icon } from "@rneui/themed";
 import AuthContext from "../../context/UserContext";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-function ViewCart() {
+function ViewCart({ navigation }) {
   const { userId } = useContext(AuthContext);
   const [cartList, setCartList] = useState([]);
   const [siteAddress, setSiteAddress] = useState("");
   const [deliveryDate, setDeliveryDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
-  const [comment, setComment] = useState("");
-  let total = 0;
-  const [totalPrice, setTotalPrice] = useState(total);
-  const [clearCart, setClearCart] = useState(false);
-
-  const navigation = useNavigation();
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const changeSelectedDate = (event, selectedDate) => {
     const currentDate = selectedDate || deliveryDate;
@@ -34,6 +28,20 @@ function ViewCart() {
     setIsOpen(true);
   }
 
+  async function getAllData() {
+    try {
+      await axios
+        .get(`http://192.168.1.2:8000/cart/getAll/${userId}`)
+        .then((res) => {
+          if (res.status === 200) {
+            setCartList(res?.data?.data);
+          }
+        });
+    } catch (error) {
+      alert(error);
+    }
+  }
+
   async function handleConfirmOrder() {
     try {
       const orderObject = {
@@ -42,30 +50,40 @@ function ViewCart() {
         SiteAddress: siteAddress,
         DeliveryDate: deliveryDate,
         TotalPrice: totalPrice,
-        Comment: comment,
       };
 
-      await axios
-        .post(`http://192.168.1.2:8000/order/add`, orderObject)
-        .then((res) => {
-          if (res.status === 201) {
-            setSiteAddress("");
-            alert("Order Added");
-          }
+      if (siteAddress === "") {
+        alert("Please Enter a Site Address!");
+      } else if (totalPrice > 100000) {
+        alert("Total Price is greater that Rs.100,000, Request Approval");
+        navigation.navigate("AddNote", {
+          orderObject: orderObject,
         });
+      } else {
+        await axios
+          .post(`http://192.168.1.2:8000/order/add`, orderObject)
+          .then((res) => {
+            if (res.status === 201) {
+              alert(res.data.message);
+              setSiteAddress("");
+              getAllData();
+            }
+          });
+      }
     } catch (error) {
       alert(error);
     }
   }
 
-  async function handleDeleteOrder() {
+  async function handleDeleteCart() {
     try {
       await axios
         .delete(`http://192.168.1.2:8000/cart/delete/${userId}`)
         .then((res) => {
           if (res.status === 200) {
+            setSiteAddress("");
+            getAllData();
             alert("Cart Cleared!");
-            setClearCart(true);
           }
         });
     } catch (error) {
@@ -73,15 +91,22 @@ function ViewCart() {
     }
   }
 
-  async function getAllData() {
+  function calcTotalPrice() {
+    let total = 0;
+    cartList.forEach((item) => {
+      total = total + item.Total;
+    });
+    setTotalPrice(total);
+  }
+
+  async function removeItem(id) {
     try {
       await axios
-        .get(`http://192.168.1.2:8000/cart/getAll/${userId}`)
+        .delete(`http://192.168.1.2:8000/cart/deleteOne/${id}`)
         .then((res) => {
           if (res.status === 200) {
-            setCartList(res.data.data);
-            setTotalPrice(0);
-            cartList.forEach((item) => {total = total + item.Total});
+            getAllData();
+            alert("Item Deleted!");
           }
         });
     } catch (error) {
@@ -90,9 +115,12 @@ function ViewCart() {
   }
 
   useEffect(() => {
-    total = 0;
     getAllData();
   }, []);
+
+  useEffect(() => {
+    calcTotalPrice();
+  }, [cartList]);
 
   return (
     <View>
@@ -101,7 +129,7 @@ function ViewCart() {
           style={{
             color: "black",
             marginTop: 50,
-            marginLeft: 50,
+            marginLeft: 45,
             fontSize: 30,
             fontWeight: "bold",
           }}
@@ -112,21 +140,21 @@ function ViewCart() {
           style={{
             color: "black",
             marginTop: 60,
-            marginLeft: 50,
+            marginLeft: 45,
             fontSize: 20,
           }}
         >
-          Total Price: Rs.{total}
+          Total Price: Rs.{totalPrice}
         </Text>
       </View>
 
       <ScrollView style={{ height: "58%", marginBottom: 10 }}>
         {cartList.map((element, id) => {
           return (
-            <Card key={id}>
+            <Card key={id} style={{ width: "100%", height: 80 }}>
               <Card.Divider />
               <Card.Image
-                style={{ padding: 0 }}
+                style={styles.image}
                 source={{
                   uri: `http://192.168.1.2:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
                 }}
@@ -149,28 +177,19 @@ function ViewCart() {
               <Text style={{ marginBottom: 10, color: "blue" }}>
                 {element.Qty} Units
               </Text>
-
               <Button
-                icon={
-                  <Icon
-                    name="code"
-                    color="#ffffff"
-                    iconStyle={{ marginRight: 10 }}
-                  />
-                }
                 buttonStyle={{
-                  borderRadius: 0,
+                  borderRadius: 15,
                   marginLeft: 0,
                   marginRight: 0,
                   marginBottom: 0,
-                  width: "50%",
+                  width: "30%",
+                  backgroundColor: "red",
                 }}
-                title="View"
-                onPress={() =>
-                  navigation.navigate("ViewSingleCartItem", {
-                    state: element._id,
-                  })
-                }
+                title="Remove"
+                onPress={() => {
+                  removeItem(element._id);
+                }}
               />
             </Card>
           );
@@ -179,15 +198,16 @@ function ViewCart() {
 
       <View style={styles.row}>
         <View>
-          <Text style={styles.TextTitle}>Site Address</Text>
+          <Text style={styles.TextTitle}>Site Address*</Text>
           <TextInput
+            value={siteAddress}
             style={styles.TextInput}
             onChangeText={(SiteAddress) => setSiteAddress(SiteAddress)}
           />
         </View>
 
         <View>
-          <Text style={styles.TextTitle}>Delivery Date</Text>
+          <Text style={styles.TextTitle}>Delivery Date*</Text>
           <TouchableOpacity onPress={handleDateOpen}>
             <Text style={styles.TextInput}>{deliveryDate.toDateString()}</Text>
           </TouchableOpacity>
@@ -211,7 +231,7 @@ function ViewCart() {
           <Text>Confirm Order</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.deleteBtn} onPress={handleDeleteOrder}>
+        <TouchableOpacity style={styles.deleteBtn} onPress={handleDeleteCart}>
           <Text style={{ color: "red" }}>Delete Order</Text>
         </TouchableOpacity>
       </View>
@@ -241,6 +261,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
+  },
+  image: {
+    width: 100,
+    height: 100,
   },
   column: {
     marginHorizontal: 100,
