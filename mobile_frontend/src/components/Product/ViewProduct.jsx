@@ -14,7 +14,7 @@ const ViewProduct = ({ navigation, route }) => {
   const getdata = async () => {
     try {
       await axios
-        .get(`http://192.168.1.2:8000/product/view/${id}`)
+        .get(`http://192.168.1.190:8000/product/view/${id}`)
         .then((res) => {
           if (res.status === 201) {
             setProductdata(res.data);
@@ -39,7 +39,7 @@ const ViewProduct = ({ navigation, route }) => {
 
       if (cartObject.length !== 0) {
         await axios
-          .post(`http://192.168.1.2:8000/cart/add`, cartObject)
+          .post(`http://192.168.1.190:8000/cart/add`, cartObject)
           .then((res) => {
             if (res.status === 201) {
               alert(res.data.message);

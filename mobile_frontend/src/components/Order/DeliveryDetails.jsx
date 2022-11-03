@@ -14,7 +14,7 @@ export default function DeliveryDetails({ navigation, route }) {
   async function getOrderDelivery() {
     try {
       await axios
-        .get(`http://192.168.1.2:8000/order/getById/${id}`)
+        .get(`http://192.168.1.190:8000/order/getById/${id}`)
         .then((res) => {
           if (res.status === 200) {
             setIsDeliveryStatus(res.data.data.DeliveryStatus);
@@ -31,7 +31,7 @@ export default function DeliveryDetails({ navigation, route }) {
   async function makeDelivery() {
     try {
       await axios
-        .put(`http://192.168.1.2:8000/order/update/${id}`)
+        .put(`http://192.168.1.190:8000/order/update/${id}`)
         .then((res) => {
           alert("Marked as Delivered");
           navigation.navigate("ViewSingleOrder", { id: id });
@@ -43,10 +43,14 @@ export default function DeliveryDetails({ navigation, route }) {
 
   useEffect(() => {
     getOrderDelivery();
-  }, []);
+  }, [route]);
 
   useEffect(() => {
-    setIsDelivered(true);
+    if (deliveryStatus === "Delivered") {
+      setIsDelivered(true);
+    } else if (deliveryStatus === "Not Delivered") {
+      setIsDelivered(false);
+    }
   }, [deliveryStatus]);
 
   return (
@@ -54,8 +58,8 @@ export default function DeliveryDetails({ navigation, route }) {
       <View style={styles.row}>
         <Button
           buttonStyle={{
-            marginTop: 50,
-            width: "50%",
+            marginTop: 10,
+            marginRight: 25,
             backgroundColor: "#f2f2f2",
           }}
           icon={<Icon name="chevron-left" color="black" />}
@@ -64,7 +68,8 @@ export default function DeliveryDetails({ navigation, route }) {
         <Text
           style={{
             color: "black",
-            marginTop: 50,
+            marginTop: 10,
+            marginRight: 75,
             fontSize: 30,
             fontWeight: "bold",
           }}
@@ -73,12 +78,11 @@ export default function DeliveryDetails({ navigation, route }) {
         </Text>
       </View>
 
-      <View>
+      <View style={styles.row}>
         <Text
           style={{
             color: "green",
             fontSize: 25,
-            marginLeft: 50,
           }}
         >
           Total Price : Rs. {totalPrice}
@@ -87,14 +91,13 @@ export default function DeliveryDetails({ navigation, route }) {
           style={{
             color: "grey",
             fontSize: 20,
-            marginLeft: 90,
           }}
         >
           Order Id : {orderId}
         </Text>
       </View>
 
-      <ScrollView style={{ height: "58%", marginBottom: 10 }}>
+      <ScrollView style={{ height: "67%", marginBottom: 10 }}>
         {productsList.map((element, id) => {
           return (
             <Card key={id}>
@@ -102,7 +105,7 @@ export default function DeliveryDetails({ navigation, route }) {
               <Card.Image
                 style={{ padding: 0 }}
                 source={{
-                  uri: `http://192.168.1.2:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
+                  uri: `http://192.168.1.190:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
                 }}
               />
               <Text
@@ -161,5 +164,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

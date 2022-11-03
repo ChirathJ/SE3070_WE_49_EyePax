@@ -19,7 +19,7 @@ function ViewProducts({ navigation }) {
   // const navigate = useNavigate();
 
   const getdata = async () => {
-    const res = await fetch(`http://192.168.1.2:8000/product/viewp`, {
+    const res = await fetch(`http://192.168.1.190:8000/product/viewp`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +42,16 @@ function ViewProducts({ navigation }) {
   return (
     <>
       <View style={{ marginTop: 10 }}>
-        <Text style={{ fontSize: 20, marginTop: 20 }}>Products</Text>
+        <Text
+          style={{
+            color: "black",
+            marginLeft: 10,
+            fontSize: 30,
+            fontWeight: "bold",
+          }}
+        >
+          Products
+        </Text>
       </View>
       <View style={{ margin: 10, backgroundColor: "white" }}>
         <SearchBar

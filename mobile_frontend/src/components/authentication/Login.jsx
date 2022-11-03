@@ -14,7 +14,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setType } = useContext(AuthContext);
+  const { setType, setId } = useContext(AuthContext);
   const login = async (e) => {
     e.preventDefault();
     try {
@@ -26,18 +26,19 @@ export default function Login() {
 
       /* Sending a POST request to the server with the user's email and password. */
       const result = await axios.post(
-        "http://exp://e8-x7a.anonymous.mobile-frontend.exp.direct:8000/login",
+        "http://192.168.1.190:8000/login",
         loginData
       );
 
       /* Checking if the status is true. */
-      if (result) {
+      if (result.data.type === "Site Manager") {
         setType(result.data.type);
-        console.log(result.data.type);
+        setId(result.data.userId);
+      } else {
+        alert("Invalid User");
       }
     } catch (err) {
-      // setLoading(false);
-      alert(err.response.data.errorMessage);
+      alert(err?.response?.data?.errorMessage);
       console.log(err);
     }
   };

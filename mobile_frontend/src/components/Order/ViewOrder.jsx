@@ -6,7 +6,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import SearchBar from "react-native-dynamic-search-bar";
 
-function ViewOrder() {
+function ViewOrder(props) {
   const { userId } = useContext(AuthContext);
   const [orderList, setOrderList] = useState([]);
   const navigation = useNavigation();
@@ -14,7 +14,7 @@ function ViewOrder() {
   async function getAllOrder() {
     try {
       await axios
-        .get(`http://192.168.1.2:8000/order/getAll/${userId}`)
+        .get(`http://192.168.1.190:8000/order/getAll/${userId}`)
         .then((res) => {
           if (res.status === 200) {
             setOrderList(res.data.data);
@@ -29,7 +29,7 @@ function ViewOrder() {
     try {
       if (term !== "" || term !== undefined) {
         await axios
-          .get(`http://192.168.1.2:8000/order/search/${term}`)
+          .get(`http://192.168.1.190:8000/order/search/${term}`)
           .then((res) => {
             if (res.status === 200) {
               setOrderList(res.data.data);
@@ -43,15 +43,15 @@ function ViewOrder() {
 
   useEffect(() => {
     getAllOrder();
-  }, []);
+  }, [props]);
 
   return (
     <View>
       <Text
         style={{
           color: "black",
-          marginTop: 50,
-          marginLeft: 70,
+          marginTop: 10,
+          marginLeft: 10,
           fontSize: 30,
           fontWeight: "bold",
         }}

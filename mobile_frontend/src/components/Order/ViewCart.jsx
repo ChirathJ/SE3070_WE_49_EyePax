@@ -31,7 +31,7 @@ function ViewCart({ navigation }) {
   async function getAllData() {
     try {
       await axios
-        .get(`http://192.168.1.2:8000/cart/getAll/${userId}`)
+        .get(`http://192.168.1.190:8000/cart/getAll/${userId}`)
         .then((res) => {
           if (res.status === 200) {
             setCartList(res?.data?.data);
@@ -61,7 +61,7 @@ function ViewCart({ navigation }) {
         });
       } else {
         await axios
-          .post(`http://192.168.1.2:8000/order/add`, orderObject)
+          .post(`http://192.168.1.190:8000/order/add`, orderObject)
           .then((res) => {
             if (res.status === 201) {
               alert(res.data.message);
@@ -78,7 +78,7 @@ function ViewCart({ navigation }) {
   async function handleDeleteCart() {
     try {
       await axios
-        .delete(`http://192.168.1.2:8000/cart/delete/${userId}`)
+        .delete(`http://192.168.1.190:8000/cart/delete/${userId}`)
         .then((res) => {
           if (res.status === 200) {
             setSiteAddress("");
@@ -102,7 +102,7 @@ function ViewCart({ navigation }) {
   async function removeItem(id) {
     try {
       await axios
-        .delete(`http://192.168.1.2:8000/cart/deleteOne/${id}`)
+        .delete(`http://192.168.1.190:8000/cart/deleteOne/${id}`)
         .then((res) => {
           if (res.status === 200) {
             getAllData();
@@ -128,8 +128,8 @@ function ViewCart({ navigation }) {
         <Text
           style={{
             color: "black",
-            marginTop: 50,
-            marginLeft: 45,
+            marginTop: 10,
+            marginRight: 60,
             fontSize: 30,
             fontWeight: "bold",
           }}
@@ -139,7 +139,7 @@ function ViewCart({ navigation }) {
         <Text
           style={{
             color: "black",
-            marginTop: 60,
+            marginTop: 18,
             marginLeft: 45,
             fontSize: 20,
           }}
@@ -156,7 +156,7 @@ function ViewCart({ navigation }) {
               <Card.Image
                 style={styles.image}
                 source={{
-                  uri: `http://192.168.1.2:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
+                  uri: `http://192.168.1.190:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
                 }}
               />
               <Text
