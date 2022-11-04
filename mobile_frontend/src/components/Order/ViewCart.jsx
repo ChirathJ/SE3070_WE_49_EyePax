@@ -10,6 +10,7 @@ import { Text, Card, Button, Icon } from "@rneui/themed";
 import AuthContext from "../../context/UserContext";
 import axios from "axios";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useIsFocused } from "@react-navigation/native";
 
 function ViewCart({ navigation }) {
   const { userId } = useContext(AuthContext);
@@ -18,6 +19,7 @@ function ViewCart({ navigation }) {
   const [deliveryDate, setDeliveryDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const isFocused = useIsFocused();
 
   const changeSelectedDate = (event, selectedDate) => {
     const currentDate = selectedDate || deliveryDate;
@@ -116,7 +118,7 @@ function ViewCart({ navigation }) {
 
   useEffect(() => {
     getAllData();
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     calcTotalPrice();
