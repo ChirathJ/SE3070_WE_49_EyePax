@@ -4,10 +4,12 @@ import { Text, Card, Button, Icon } from "@rneui/themed";
 import AuthContext from "../../context/UserContext";
 import axios from "axios";
 import SearchBar from "react-native-dynamic-search-bar";
+import { useIsFocused } from "@react-navigation/native";
 
 function ViewOrder({ navigation, route }) {
   const { userId } = useContext(AuthContext);
   const [orderList, setOrderList] = useState([]);
+  const isFocused = useIsFocused();
 
   async function getAllOrder() {
     try {
@@ -43,7 +45,7 @@ function ViewOrder({ navigation, route }) {
 
   useEffect(() => {
     getAllOrder();
-  }, [navigation]);
+  }, [isFocused]);
 
   return (
     <View>

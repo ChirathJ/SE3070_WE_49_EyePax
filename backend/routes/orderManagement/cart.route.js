@@ -53,4 +53,18 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
+/* Delete Single Item in Cart */
+router.delete("/deleteOne/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const details = await Cart.findByIdAndDelete({ _id: id });
+
+    return res.status(200).json({
+      data: details,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+});
+
 module.exports = router;
