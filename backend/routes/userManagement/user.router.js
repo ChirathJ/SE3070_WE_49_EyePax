@@ -17,7 +17,7 @@ router.get("/profile", userAccess, async (req, res) => {
 });
 
 /* This is a route handler for the / route. It is used to get all the users. */
-router.get("/", userAccess, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     /* Destructuring the query parameters. */
     let { page, size, search, filter } = req.query;

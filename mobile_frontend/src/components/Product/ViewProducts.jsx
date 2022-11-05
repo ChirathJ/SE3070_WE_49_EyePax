@@ -19,7 +19,7 @@ function ViewProducts({ navigation }) {
   // const navigate = useNavigate();
 
   const getdata = async () => {
-    const res = await fetch(`http://192.168.1.5:8000/product/viewp`, {
+    const res = await fetch(`http://192.168.135.248:8000/products/:id`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -63,16 +63,16 @@ function ViewProducts({ navigation }) {
         />
       </View>
       <View style={styles.item}>
-        <ScrollView style={{ marginBottom: 80 }}>
+        <ScrollView style={{ marginBottom:200 }}>
           {getproductdata
             .filter((element) => {
               if (searchTerm === "") {
                 return element;
               } else if (
-                element.ProductName.toLowerCase().includes(
-                  searchTerm.toLowerCase()
+                element.ProductName.includes(
+                  searchTerm
                 ) ||
-                element.Qty.toLowerCase().includes(searchTerm.toLowerCase())
+                element.Qty.includes(searchTerm)
               ) {
                 return element;
               } else {
@@ -84,11 +84,11 @@ function ViewProducts({ navigation }) {
                 <Card key={id}>
                   <Card.Divider />
                   <Card.Image
-                    style={{ padding: 0 }}
-                    source={{
-                      uri: "https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg",
-                    }}
-                  />
+                style={{padding: 0}}
+                source={{
+                  uri: `http://192.168.135.248:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
+                }}
+              />
                   <Text style={{ marginBottom: 10 }}>
                     {element.ProductName}
                   </Text>
@@ -105,7 +105,7 @@ function ViewProducts({ navigation }) {
                       />
                     }
                     onPress={() =>
-                      navigation.navigate("ViewProduct", {
+                      navigation.navigate("ViewProducts", {
                         id: element._id,
                       })
                     }

@@ -13,7 +13,7 @@ export default function ViewSingleOrder({ navigation, route }) {
   async function getOrder() {
     try {
       await axios
-        .get(`http://192.168.1.5:8000/order/getById/${id}`)
+        .get(`http://192.168.135.248:8000/order/getById/${id}`)
         .then((res) => {
           if (res.status === 200) {
             setOrderId(res.data.data.OrderId);
@@ -106,7 +106,7 @@ export default function ViewSingleOrder({ navigation, route }) {
               <Card.Image
                 style={{ width: 100, height: 100 }}
                 source={{
-                  uri: `http://192.168.1.5:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
+                  uri: `http://192.168.135.248:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
                 }}
               />
               <Text

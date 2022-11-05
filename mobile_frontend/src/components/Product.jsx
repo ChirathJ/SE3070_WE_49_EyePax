@@ -12,7 +12,7 @@ export default function Product() {
         headerShown: false,
       }}
     >
-      {/* <Stack.Screen name="SupplierList" component={SupplierList} /> */}
+      <Stack.Screen name="SupplierList" component={SupplierList} />
       <Stack.Screen name="ViewProducts" component={ViewProducts} />
       <Stack.Screen name="ViewProduct" component={ViewProduct} />
     </Stack.Navigator>

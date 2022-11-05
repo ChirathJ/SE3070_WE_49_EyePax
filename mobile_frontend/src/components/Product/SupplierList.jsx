@@ -1,96 +1,80 @@
-import { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { deldata } from "./context/ContextProvider";
-import { Text, Card, Button } from "@rneui/themed";
-// import { SearchBar } from '@rneui/themed';
-import SearchBar from "react-native-dynamic-search-bar";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  View,
+  ScrollView,
+  Button
+} from "react-native";
+import { Text, Card } from "@rneui/themed";
+import { useNavigation } from '@react-navigation/native';
 
-const SupplierList = () => {
-  const [getproductdata, setProductdata] = useState([]);
+const SupplierList = (navigation) => {
+  const [users, setUsers] = useState([]);
+  // const navigation = useNavigation(); 
+  // function viewProduct(data) {
+  //   navigate("/products/" + data._id, { state: data });
+  // }
+  
+    const getall = async () => {
+      try {
+        await axios.get(
+          `http://192.168.135.248:8000/user/?filter=Supplier`
+        ).then((res) => {
+          if (res.status === 200) {
+            console.log(res?.data?.users);
+            setUsers(res?.data?.users);
+          }
+        });
+      
+      } catch (error) {
+        console.log(error);
+        alert(error);
+      }
+    };
 
-  const { setDLTdata } = useContext(deldata);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const getdata = async () => {
-    const res = await fetch(`http://192.168.1.5:8000/product/viewp`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await res.json();
-
-    if (res.status === 422 || !data) {
-      console.log("error ");
-    } else if (data.user) {
-    } else {
-      setProductdata(data.getproductdata);
-    }
-  };
-
-  useEffect(() => {
-    getdata();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+    getall();
   }, []);
 
   return (
-    <>
-      <View style={{ marginTop: 10 }}>
-        <Text style={{ fontSize: 20, marginTop: 20 }}>Home</Text>
-      </View>
-      <View style={{ margin: 10, backgroundColor: "white" }}>
-        <SearchBar
-          type="search"
-          placeholder="Search Suppliers"
-          onChange={(product) => {
-            setSearchTerm(product.target.value);
-          }}
-        />
-      </View>
-      <ScrollView>
-        <View style={styles.container}>
-          <ScrollView style={{ marginBottom: 80 }}>
-            {getproductdata
-              .filter((element) => {
-                if (searchTerm === "") {
-                  return element;
-                } else if (
-                  element.user
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase()) ||
-                  element.Qty.toLowerCase().includes(searchTerm.toLowerCase())
-                ) {
-                  return element;
-                } else {
-                  return false;
-                }
-              })
-              .map((element, id) => {
-                return (
-                  <Card>
-                    <Card.Title> name{element.user.name}</Card.Title>
-                    <Card.Title> {element.Qty} Items</Card.Title>
-                    {/* <Card.Divider /> */}
-
-                    {/* <Text style={{ marginBottom: 10 }}>
-            The idea with React Native Elements is more about component
-            structure than actual design.
-          </Text> */}
-                    <Button title="View"></Button>
-                  </Card>
-                );
-              })}
-          </ScrollView>
-        </View>
-      </ScrollView>
-    </>
-  );
+<View>
+  <ScrollView>
+    <View>
+      {users?.map((current, index) => {
+        return (
+          <Card key={index}>
+           <Text>{current.id}</Text>
+           <Text>{current.name}</Text>
+           <Text>{current.email}</Text>
+           <Button
+                    // icon={
+                    //   <Icon
+                    //     name="code"
+                    //     color="#ffffff"
+                    //     iconStyle={{ marginRight: 10 }}
+                    //   />
+                    // }
+                    title='View'
+                    onPress={() =>
+                      navigation.navigate("ViewProduct", {
+                        id: current._id,
+                      })
+                    }
+                    // buttonStyle={{
+                    //   borderRadius: 0,
+                    //   marginLeft: 0,
+                    //   marginRight: 0,
+                    //   marginBottom: 0,
+                    //   width: "50%",
+                    // }}
+                  />
+          </Card>
+        )
+      })}
+    </View>
+    </ScrollView>
+    </View>
+  )
 };
 
 export default SupplierList;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
