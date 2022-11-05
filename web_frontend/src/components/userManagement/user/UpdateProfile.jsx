@@ -13,16 +13,8 @@ const UpdateProfile = (props) => {
   const [age, setAge] = useState(state?.age);
   const [tempSex, setTempSex] = useState(state?.sex);
   const [sex, setSex] = useState(state?.sex);
-  const [tempUserType, setTempUserType] = useState(state?.userType);
-  const [userType, setUserType] = useState(state?.userType);
   const [address, setAddress] = useState(state?.address);
   const [loading, setLoading] = useState(false);
-
-  const typeOptions = [
-    { value: "Manager", label: "Manager" },
-    { value: "Accountant", label: "Accountant" },
-    { value: "Site Manager", label: "Site Manager" },
-  ];
 
   const sexOptions = [
     { value: "Male", label: "Male" },
@@ -48,7 +40,7 @@ const UpdateProfile = (props) => {
         mobile,
         age,
         sex,
-        userType,
+        userType: state?.userType,
         address,
       };
 
@@ -85,14 +77,9 @@ const UpdateProfile = (props) => {
     setMobile(state.mobile);
     setAge(state.age);
     setSex(state.sex);
-    setUserType(state.userType);
     setAddress(state.address);
   };
 
-  const userTypeHandler = (e) => {
-    setUserType(e.value);
-    setTempUserType(e);
-  };
   const sexHandler = (e) => {
     setSex(e.value);
     setTempSex(e);
@@ -104,12 +91,6 @@ const UpdateProfile = (props) => {
         label: state?.sex,
       });
       setSex(state?.sex);
-    }
-    if (state?.userType !== undefined) {
-      setTempUserType({
-        label: state?.userType,
-      });
-      setUserType(state?.userType);
     }
   }, [state]);
 
@@ -187,12 +168,8 @@ const UpdateProfile = (props) => {
               </Col>
               <Col>
                 <Form.Group className="mb-3">
-                  <Form.Label>User Type*</Form.Label>
-                  <Select
-                    options={typeOptions}
-                    value={tempUserType}
-                    onChange={userTypeHandler}
-                  />
+                  <Form.Label>User Type</Form.Label>
+                  <Form.Control type="text" disabled value={state?.userType} />
                 </Form.Group>
               </Col>
             </Row>

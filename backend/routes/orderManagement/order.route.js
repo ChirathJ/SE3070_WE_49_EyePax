@@ -2,6 +2,7 @@ const express = require("express");
 const Orders = require("../../models/orderManagement/order.model");
 const router = express.Router();
 const Cart = require("../../models/orderManagement/cart.model");
+const userAccess = require("../../middleware/accessChecker");
 
 /* Add New Order */
 router.post("/add", async (req, res) => {
@@ -156,4 +157,30 @@ router.get("/approval/:status", async (req, res) => {
   }
 });
 
+// /* Get Order by ID */
+// router.get("/getbysmanager", userAccess, async (req, res) => {
+//   try {
+//     console.log(id,"dfdfd");
+//     const id = req.body.user._id;
+//     console.log(id);
+//     const details = await Orders.find();
+
+//     return res.status(200).json({
+//       data: details,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ message: error });
+//   }
+// });
+router.get("/manager", async (req, res) => {
+  try {
+    const details = await Orders.find()
+      .populate("SiteManager")
+      .populate("Cart");
+
+    return res.status(201).json(details);
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+});
 module.exports = router;

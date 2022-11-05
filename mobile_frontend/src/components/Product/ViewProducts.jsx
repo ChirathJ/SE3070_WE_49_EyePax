@@ -19,7 +19,7 @@ function ViewProducts({ navigation }) {
   // const navigate = useNavigate();
 
   const getdata = async () => {
-    const res = await fetch(`http://192.168.135.248:8000/products/:id`, {
+    const res = await fetch(`http://192.168.1.5:8000/product/viewp`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +63,7 @@ function ViewProducts({ navigation }) {
         />
       </View>
       <View style={styles.item}>
-        <ScrollView style={{ marginBottom:200 }}>
+        <ScrollView style={{ marginBottom: 80 }}>
           {getproductdata
             .filter((element) => {
               if (searchTerm === "") {

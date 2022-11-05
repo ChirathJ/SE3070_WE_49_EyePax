@@ -18,9 +18,9 @@ import SupplierList from "../userManagement/user/SupplierList";
 import ViewProductsAdmin from "../productManagement/ViewProductsAdmin";
 import ViewAllProductsAdmin from "../productManagement/ViewAllProductsAdmin";
 import OrderList from "../layout/OrderList";
-import OrderListSupplier from "../layout/OrderListSupplier";
 import OrderListAccountant from "../layout/OrderListAccountant";
 import ViewOrdersProductAdmin from "../layout/ViewOrdersProductAdmin";
+import OrderListSiteManager from "../layout/OrderListSiteManager";
 
 function Router() {
   /* Getting the userType from the AuthContext. */
@@ -81,7 +81,7 @@ function Router() {
               <Route exact path="/products" element={<ViewProducts />} />
               <Route exact path="/edit/:id" element={<UpdateProduct />} />
               <Route exact path="/view/:id" element={<ViewProduct />} />
-              <Route exact path="/orders" element={<OrderListSupplier />} />
+              <Route exact path="/orders" element={<OrderList />} />
             </>
           )}
 
@@ -105,7 +105,13 @@ function Router() {
 
           {userType === "Site Manager" && (
             <>
-              <Route exact path="/" element={<Dashboard />} />
+              <Route exact path="/dashboard" element={<Dashboard />} />
+              <Route exact path="/orders" element={<OrderListSiteManager />} />
+              <Route
+                exact
+                path="/orders/products"
+                element={<ViewOrdersProductAdmin />}
+              />
             </>
           )}
 

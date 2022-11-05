@@ -24,7 +24,7 @@ export default function Inquiry({ navigation, route }) {
       };
 
       await axios
-        .post(`http://192.168.135.248:8000/inquiry/add`, inquiryObjet)
+        .post(`http://192.168.1.5:8000/inquiry/add`, inquiryObjet)
         .then((res) => {
           if (res.status === 201) {
             alert(res.data.message);
