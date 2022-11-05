@@ -66,11 +66,11 @@ const ViewProduct = ({ navigation, route }) => {
             <Text>{getproductdata.Qty} Units remaining</Text>
             <Card.Divider />
             <Card.Image
-              style={{ padding: 0 }}
-              source={{
-                uri: "https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg",
-              }}
-            />
+                style={{}}
+                source={{
+                  uri: `http://192.168.135.248:8000/routes/ProductManagement/ProductImages/${getproductdata.ProductImage}`,
+                }}
+              />
             <Text style={{ marginBottom: 10 }}>Units {getproductdata.Qty}</Text>
             <Text style={{ marginBottom: 10 }}>
               Total Price {getproductdata.Price}
@@ -114,10 +114,10 @@ const ViewProduct = ({ navigation, route }) => {
               }}
               title="Back to Items"
             />
-            <Button
+            {/* <Button
               title="Go to Details"
               onPress={() => navigation.navigate("ViewProducts")}
-            />
+            /> */}
           </Card>
         </View>
       </ScrollView>
