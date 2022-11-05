@@ -26,7 +26,7 @@ export default function AddNote({ navigation, route }) {
         alert("Please Enter a Note");
       } else {
         await axios
-          .post(`http://192.168.1.10:8000/order/add`, newObject)
+          .post(`http://192.168.1.190:8000/order/add`, newObject)
           .then((res) => {
             if (res.status === 201) {
               alert(res.data.message);

@@ -128,7 +128,7 @@ router.get("/search/:searchTerm", async (req, res) => {
 });
 
 /* Get Orders According to Deliver Status */
-router.get("/:deliveryStatus", async (req, res) => {
+router.get("/get-count/:deliveryStatus", async (req, res) => {
   try {
     const details = await Orders.count({
       DeliveryStatus: req.params.deliveryStatus,
@@ -157,30 +157,21 @@ router.get("/approval/:status", async (req, res) => {
   }
 });
 
-// /* Get Order by ID */
-// router.get("/getbysmanager", userAccess, async (req, res) => {
-//   try {
-//     console.log(id,"dfdfd");
-//     const id = req.body.user._id;
-//     console.log(id);
-//     const details = await Orders.find();
-
-//     return res.status(200).json({
-//       data: details,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({ message: error });
-//   }
-// });
-router.get("/manager", async (req, res) => {
+/* Get Order by ID */
+router.get("/getbysmanager", userAccess, async (req, res) => {
   try {
-    const details = await Orders.find()
-      .populate("SiteManager")
-      .populate("Cart");
+    const id = req.body.user._id;
 
-    return res.status(201).json(details);
+    const details = await Orders.find({ SiteManager: id })
+      .populate("Cart")
+      .populate("SiteManager");
+
+    return res.status(200).json({
+      data: details,
+    });
   } catch (error) {
     return res.status(500).json({ message: error });
   }
 });
+
 module.exports = router;
