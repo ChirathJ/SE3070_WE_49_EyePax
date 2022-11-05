@@ -1,18 +1,20 @@
 import { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import { deldata } from "./context/ContextProvider";
 import { Text, Card, Button } from "@rneui/themed";
 // import { SearchBar } from '@rneui/themed';
 import SearchBar from "react-native-dynamic-search-bar";
+import AuthContext from "../../context/UserContext";
 
 const SupplierList = () => {
   const [getproductdata, setProductdata] = useState([]);
+  const { logout } = useContext(AuthContext);
 
   const { setDLTdata } = useContext(deldata);
   const [searchTerm, setSearchTerm] = useState("");
 
   const getdata = async () => {
-    const res = await fetch(`http://192.168.1.5:8000/product/viewp`, {
+    const res = await fetch(`http://192.168.1.10:8000/product/viewp`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -35,9 +37,24 @@ const SupplierList = () => {
 
   return (
     <>
-      <View style={{ marginTop: 10 }}>
-        <Text style={{ fontSize: 20, marginTop: 20 }}>Home</Text>
+      <View style={styles.row}>
+        <Text
+          style={{
+            color: "black",
+            marginTop: 10,
+            marginRight: 100,
+            fontSize: 30,
+            fontWeight: "bold",
+          }}
+        >
+          Home
+        </Text>
+
+        <TouchableOpacity onPress={logout} style={styles.logoutBtn}>
+          <Text>LOGOUT</Text>
+        </TouchableOpacity>
       </View>
+
       <View style={{ margin: 10, backgroundColor: "white" }}>
         <SearchBar
           type="search"
@@ -90,7 +107,22 @@ const SupplierList = () => {
 export default SupplierList;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  row: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  logoutBtn: {
+    width: "30%",
+    borderRadius: 10,
+    marginTop: 18,
+    marginLeft: 45,
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#ffa500",
   },
 });
