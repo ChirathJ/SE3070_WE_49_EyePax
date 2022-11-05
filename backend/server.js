@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const product = require("./routes/productManagement/product.route");
+const path = require("path");
 /* Loading the environment variables from the .env file. */
 dotenv.config();
 
@@ -62,3 +63,12 @@ app.use(product);
 app.use("/order", require("./routes/orderManagement/order.route"));
 app.use("/cart", require("./routes/orderManagement/cart.route"));
 app.use("/inquiry", require("./routes/orderManagement/inquiry.route"));
+app.get("/fetchImage/:file(*)", (req, res) => {
+  let file = req.params.file;
+  let fileLocation = path.join(
+    __dirname,
+    "../backend/routes/productManagement/ProductImages/",
+    file
+  );
+  res.sendFile(`${fileLocation}`);
+});
