@@ -5,7 +5,7 @@ import { Table } from "react-bootstrap";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import OrderModal from "./OrderModal";
 
-const OrderListSupplier = () => {
+const OrderListSiteManager = () => {
   const [search, setSearch] = useState("");
   const [orders, setOrders] = useState([]);
   const [order, setOrder] = useState("");
@@ -14,7 +14,7 @@ const OrderListSupplier = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  function OrderListSupplier() {
+  function OrderListSiteManager() {
     /* Returning the data in the form of a table. */
     return orders?.map((current, index) => {
       /* Checking if the name contains the search string or if the search string is empty. */
@@ -53,10 +53,10 @@ const OrderListSupplier = () => {
      */
     const getall = async () => {
       try {
-        const result = await axios.get(`http://localhost:8000/order/getAll`);
+        const result = await axios.get("http://localhost:8000/order/manager");
         console.log(result);
         /* Setting the state of the notes and totalPage variables. */
-        setOrders(result?.data?.data);
+        setOrders(result.data.data);
       } catch (error) {
         console.error(error);
         alert(error);
@@ -96,7 +96,7 @@ const OrderListSupplier = () => {
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>{OrderListSupplier()}</tbody>
+            <tbody>{OrderListSiteManager()}</tbody>
           </Table>
           <hr />
         </div>
@@ -105,4 +105,4 @@ const OrderListSupplier = () => {
   );
 };
 
-export default OrderListSupplier;
+export default OrderListSiteManager;
