@@ -93,7 +93,7 @@ router.put("/update/:id", async (req, res) => {
   }
 });
 
-/* Update Delivery Status */
+/* Update Approval Status */
 router.put("/update/Approval/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -111,7 +111,7 @@ router.put("/update/Approval/:id", async (req, res) => {
 router.get("/search/:searchTerm", async (req, res) => {
   try {
     // using "$options: 'i'" for case insensitive search
-    const details = await Orders.find({
+    const details = await Orders.find({ Approval: "Approved" }).find({
       $or: [
         {
           OrderId: { $regex: req.params.searchTerm, $options: "i" },

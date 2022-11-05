@@ -14,7 +14,7 @@ export default function DeliveryDetails({ navigation, route }) {
   async function getOrderDelivery() {
     try {
       await axios
-        .get(`http://192.168.1.2:8000/order/getById/${id}`)
+        .get(`http://192.168.1.10:8000/order/getById/${id}`)
         .then((res) => {
           if (res.status === 200) {
             setIsDeliveryStatus(res.data.data.DeliveryStatus);
@@ -31,7 +31,7 @@ export default function DeliveryDetails({ navigation, route }) {
   async function makeDelivery() {
     try {
       await axios
-        .put(`http://192.168.1.2:8000/order/update/${id}`)
+        .put(`http://192.168.1.10:8000/order/update/${id}`)
         .then((res) => {
           alert("Marked as Delivered");
           navigation.navigate("ViewSingleOrder", { id: id });
@@ -103,9 +103,9 @@ export default function DeliveryDetails({ navigation, route }) {
             <Card key={id}>
               <Card.Divider />
               <Card.Image
-                style={{ padding: 0 }}
+                style={styles.image}
                 source={{
-                  uri: `http://192.168.1.2:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
+                  uri: `http://192.168.1.10:8000/fetchImage/${element.ProductImage}`,
                 }}
               />
               <Text
@@ -166,5 +166,10 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "center",
+  },
+  image: {
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
   },
 });

@@ -10,6 +10,7 @@ import { Text, Card, Button, Icon } from "@rneui/themed";
 import AuthContext from "../../context/UserContext";
 import axios from "axios";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useIsFocused } from "@react-navigation/native";
 
 function ViewCart({ navigation }) {
   const { userId } = useContext(AuthContext);
@@ -18,6 +19,7 @@ function ViewCart({ navigation }) {
   const [deliveryDate, setDeliveryDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const isFocused = useIsFocused();
 
   const changeSelectedDate = (event, selectedDate) => {
     const currentDate = selectedDate || deliveryDate;
@@ -31,7 +33,7 @@ function ViewCart({ navigation }) {
   async function getAllData() {
     try {
       await axios
-        .get(`http://192.168.1.2:8000/cart/getAll/${userId}`)
+        .get(`http://192.168.1.10:8000/cart/getAll/${userId}`)
         .then((res) => {
           if (res.status === 200) {
             setCartList(res?.data?.data);
@@ -61,7 +63,7 @@ function ViewCart({ navigation }) {
         });
       } else {
         await axios
-          .post(`http://192.168.1.2:8000/order/add`, orderObject)
+          .post(`http://192.168.1.10:8000/order/add`, orderObject)
           .then((res) => {
             if (res.status === 201) {
               alert(res.data.message);
@@ -78,7 +80,7 @@ function ViewCart({ navigation }) {
   async function handleDeleteCart() {
     try {
       await axios
-        .delete(`http://192.168.1.2:8000/cart/delete/${userId}`)
+        .delete(`http://192.168.1.10:8000/cart/delete/${userId}`)
         .then((res) => {
           if (res.status === 200) {
             setSiteAddress("");
@@ -102,7 +104,7 @@ function ViewCart({ navigation }) {
   async function removeItem(id) {
     try {
       await axios
-        .delete(`http://192.168.1.2:8000/cart/deleteOne/${id}`)
+        .delete(`http://192.168.1.10:8000/cart/deleteOne/${id}`)
         .then((res) => {
           if (res.status === 200) {
             getAllData();
@@ -116,7 +118,7 @@ function ViewCart({ navigation }) {
 
   useEffect(() => {
     getAllData();
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     calcTotalPrice();
@@ -156,7 +158,7 @@ function ViewCart({ navigation }) {
               <Card.Image
                 style={styles.image}
                 source={{
-                  uri: `http://192.168.1.2:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
+                  uri: `http://192.168.1.10:8000/fetchImage/${element.ProductImage}`,
                 }}
               />
               <Text
@@ -265,6 +267,7 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
+    resizeMode: "contain",
   },
   column: {
     marginHorizontal: 100,
