@@ -8,9 +8,13 @@ const Dashboard = () => {
   const [requestedCount, setRequestedCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
+  const [orders, setOrders] = useState([]);
 
   async function getData() {
     try {
+      const result = await axios.get("http://localhost:8000/order/getAll");
+      setOrders(result.data.data);
+
       const resultUsersCount = await axios.get(
         "http://localhost:8000/user/get-count"
       );
@@ -40,6 +44,21 @@ const Dashboard = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  function OrderListSiteManager() {
+    /* Returning the data in the form of a table. */
+    return orders.map((current, index) => {
+      /* Checking if the name contains the search string or if the search string is empty. */
+      return (
+        <tr key={index}>
+          <td>{index+1}</td>
+          <td>{current.SiteAddress}</td>
+          <td>{current.DeliveryStatus}</td>
+          <td>{current.Approval}</td>
+        </tr>
+      );
+    });
+  }
 
   return (
     <div>
@@ -71,43 +90,12 @@ const Dashboard = () => {
                   <thead className="thead-dark">
                     <tr>
                       <th>#</th>
-                      <th>Site Name</th>
-                      <th>Manager</th>
-                      <th>Status</th>
+                      <th>Site Address</th>
+                      <th>Delivery Status</th>
+                      <th>Approval</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Site 1</td>
-                      <td>Manager 1</td>
-                      <td>Pending</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Site 2</td>
-                      <td>Manager 2</td>
-                      <td>Completed</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Site 3</td>
-                      <td>Manager 3</td>
-                      <td>Delivered</td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>Site 4</td>
-                      <td>Manager 4</td>
-                      <td>Completed</td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td>Site 5</td>
-                      <td>Manager 5</td>
-                      <td>Shipped</td>
-                    </tr>
-                  </tbody>
+                  <tbody>{OrderListSiteManager()}</tbody>
                 </Table>
               </div>
             </Col>

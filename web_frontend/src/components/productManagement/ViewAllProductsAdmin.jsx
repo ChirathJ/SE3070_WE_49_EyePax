@@ -16,7 +16,7 @@ const ViewAllProductsAdmin = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const getdata = async () => {
-    const res = await fetch(`http://localhost:8000/product/viewp`, {
+    const res = await fetch(`http://localhost:8000/product/view-all`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -160,7 +160,7 @@ const OrderListAccountant = () => {
           <div className="head-left">
             <input
               className="search-input"
-              placeholder="Search Products"
+              placeholder="Search Orders"
               type="search"
               name="searchQuery"
               onChange={(product) => {

@@ -40,8 +40,8 @@ router.post(
     } else if (Qty > 20) {
       res.status(420).json("Qty should be less than 20");
       return 0;
-    } else if (Qty.length > 20) {
-      res.status(420).json("Description should be less than 20 characters");
+    } else if (Qty.length > 100) {
+      res.status(420).json("Description should be less than 100 characters");
       return 0;
     } else {
       try {
@@ -68,20 +68,23 @@ router.post(
 
 router.get("/product/viewp", async (req, res) => {
   try {
-    const pageNo = req.query.pageNo || 1;
-    const itemsPerPage = req.query.pageSize || 10;
-    const skip = (pageNo - 1) * itemsPerPage;
-    const count = await products.estimatedDocumentCount();
-    const pageCount = Math.ceil(count / itemsPerPage);
-
     const getproductdata = await products
       .find({ Status: "Approved" })
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(itemsPerPage)
       .populate("user");
 
-    res.status(201).json({ pagination: { count, pageCount }, getproductdata });
+    res.status(201).json({ getproductdata });
+  } catch (error) {
+    return res.status(422).json(error);
+  }
+});
+
+// get product data
+
+router.get("/product/view-all", async (req, res) => {
+  try {
+    const getproductdata = await products.find().populate("user");
+
+    res.status(201).json({ getproductdata });
   } catch (error) {
     return res.status(422).json(error);
   }
@@ -137,7 +140,9 @@ router.get("/product/view/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const productindividual = await products.findById({ _id: id }).populate("user");;
+    const productindividual = await products
+      .findById({ _id: id })
+      .populate("user");
     res.status(201).json(productindividual);
   } catch (error) {
     res.status(422).json(error);
@@ -161,8 +166,8 @@ router.patch("/product/update/:id", async (req, res) => {
   } else if (Qty > 20) {
     res.status(420).json("Qty should be less than 20");
     return 0;
-  } else if (Qty.length > 20) {
-    res.status(420).json("Description should be less than 20 characters");
+  } else if (Qty.length > 100) {
+    res.status(420).json("Description should be less than 100 characters");
     return 0;
   }
   try {
@@ -203,6 +208,5 @@ router.delete("/product/delete/:id", async (req, res) => {
     res.status(422).json(error);
   }
 });
-
 
 module.exports = router;

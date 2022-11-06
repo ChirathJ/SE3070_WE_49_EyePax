@@ -9,12 +9,12 @@ const ViewProduct = ({ navigation, route }) => {
   const id = route.params.id;
   const { userId } = useContext(AuthContext);
   const [getproductdata, setProductdata] = useState([]);
-  const [units, setUnits] = useState(2);
+  const [units, setUnits] = useState(10);
 
   const getdata = async () => {
     try {
       await axios
-        .get(`http://192.168.1.190:8000/product/view/${id}`)
+        .get(`http://172.28.19.253:8000/product/view/${id}`)
         .then((res) => {
           if (res.status === 201) {
             setProductdata(res.data);
@@ -39,7 +39,7 @@ const ViewProduct = ({ navigation, route }) => {
 
       if (cartObject.length !== 0) {
         await axios
-          .post(`http://192.168.1.190:8000/cart/add`, cartObject)
+          .post(`http://172.28.19.253:8000/cart/add`, cartObject)
           .then((res) => {
             if (res.status === 201) {
               alert(res.data.message);
@@ -66,11 +66,11 @@ const ViewProduct = ({ navigation, route }) => {
             <Text>{getproductdata.Qty} Units remaining</Text>
             <Card.Divider />
             <Card.Image
-                style={{}}
-                source={{
-                  uri: `http://192.168.135.248:8000/routes/ProductManagement/ProductImages/${getproductdata.ProductImage}`,
-                }}
-              />
+              style={{ width: 100, height: 100, resizeMode: "contain" }}
+              source={{
+                uri: `http://172.28.19.253:8000/fetchImage/${getproductdata.Image}`,
+              }}
+            />
             <Text style={{ marginBottom: 10 }}>Units {getproductdata.Qty}</Text>
             <Text style={{ marginBottom: 10 }}>
               Total Price {getproductdata.Price}
@@ -79,8 +79,8 @@ const ViewProduct = ({ navigation, route }) => {
             <Button
               icon={
                 <Icon
-                  name="code"
-                  color="#0a0906"
+                  name="shopping-cart"
+                  color="white"
                   iconStyle={{ marginRight: 10 }}
                 />
               }
@@ -97,8 +97,8 @@ const ViewProduct = ({ navigation, route }) => {
             <Button
               icon={
                 <Icon
-                  name="code"
-                  color="#0a0906"
+                  name="chevron-left"
+                  color="white"
                   iconStyle={{ marginRight: 10 }}
                 />
               }

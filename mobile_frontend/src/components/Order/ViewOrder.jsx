@@ -14,7 +14,7 @@ function ViewOrder({ navigation, route }) {
   async function getAllOrder() {
     try {
       await axios
-        .get(`http://192.168.1.190:8000/order/getAll/${userId}`)
+        .get(`http://172.28.19.253:8000/order/getAll/${userId}`)
         .then((res) => {
           if (res.status === 200) {
             setOrderList(res.data.data);
@@ -29,7 +29,7 @@ function ViewOrder({ navigation, route }) {
     try {
       if (term) {
         await axios
-          .get(`http://192.168.1.190:8000/order/search/${term}`)
+          .get(`http://172.28.19.253:8000/order/search/${term}`)
           .then((res) => {
             if (res.status === 200) {
               setOrderList(res.data.data);
@@ -72,7 +72,7 @@ function ViewOrder({ navigation, route }) {
         />
       </View>
 
-      <ScrollView style={{ height: "58%", marginBottom: 10 }}>
+      <ScrollView style={{ height: "75%", marginBottom: 10 }}>
         {orderList.length > 0 ? (
           orderList.map((element, id) => {
             return (

@@ -19,7 +19,7 @@ function ViewProducts({ navigation }) {
   // const navigate = useNavigate();
 
   const getdata = async () => {
-    const res = await fetch(`http://192.168.1.190:8000/product/viewp`, {
+    const res = await fetch(`http://172.28.19.253:8000/product/viewp`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -63,15 +63,13 @@ function ViewProducts({ navigation }) {
         />
       </View>
       <View style={styles.item}>
-        <ScrollView style={{ marginBottom: 80 }}>
+        <ScrollView style={{ marginBottom: 10, height: "75%" }}>
           {getproductdata
             .filter((element) => {
               if (searchTerm === "") {
                 return element;
               } else if (
-                element.ProductName.includes(
-                  searchTerm
-                ) ||
+                element.ProductName.includes(searchTerm) ||
                 element.Qty.includes(searchTerm)
               ) {
                 return element;
@@ -84,11 +82,11 @@ function ViewProducts({ navigation }) {
                 <Card key={id}>
                   <Card.Divider />
                   <Card.Image
-                style={{padding: 0}}
-                source={{
-                  uri: `http://192.168.135.248:8000/routes/ProductManagement/ProductImages/${element.ProductImage}`,
-                }}
-              />
+                    style={{ width: 100, height: 100, resizeMode: "contain" }}
+                    source={{
+                      uri: `http://172.28.19.253:8000/fetchImage/${element.Image}`,
+                    }}
+                  />
                   <Text style={{ marginBottom: 10 }}>
                     {element.ProductName}
                   </Text>
@@ -97,15 +95,9 @@ function ViewProducts({ navigation }) {
                   </Text>
 
                   <Button
-                    icon={
-                      <Icon
-                        name="code"
-                        color="#ffffff"
-                        iconStyle={{ marginRight: 10 }}
-                      />
-                    }
+                    title="View Details"
                     onPress={() =>
-                      navigation.navigate("ViewProducts", {
+                      navigation.navigate("ViewProduct", {
                         id: element._id,
                       })
                     }

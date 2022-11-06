@@ -41,8 +41,16 @@ const ViewProduct = () => {
           {getproductdata.ProductName}
         </Modal.Title>
         <br></br>
-        <img src={typeof (getproductdata.Image) !== 'undefined' ? require(`/New folder (11)/SE3070_WE_49_EyePax/backend/routes/productManagement/ProductImages/${getproductdata.Image}`) : 'Error'} style={{ width: "400px", height: "300px", margin: "auto" }} alt="Event" />
-       <Modal.Body>
+        <img
+          src={
+            typeof getproductdata.Image !== "undefined"
+              ? require(`D:/3rd Year 2nd Semester/Case Studies in Software Engineering - SE3070/git project/SE3070_WE_49_EyePax/backend/routes/productManagement/ProductImages/${getproductdata.Image}`)
+              : "Error"
+          }
+          style={{ width: "400px", height: "300px", margin: "auto" }}
+          alt="Event"
+        />
+        <Modal.Body>
           <Table bordered responsive>
             <tbody>
               <tr>
