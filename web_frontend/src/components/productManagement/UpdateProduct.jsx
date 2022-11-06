@@ -104,7 +104,7 @@ const UpdateProduct = (props) => {
       >
 
 <a href='/products'><Modal.Header closeButton></Modal.Header></a>
-        <Modal.Title style={{ textAlign: "center" }}>Add Product</Modal.Title>
+        <Modal.Title style={{ textAlign: "center" }}>Update Product</Modal.Title>
         <br></br>
 
         <Modal.Body>

@@ -55,7 +55,7 @@ const ViewProducts = () => {
     } else {
       alert("Deleted Product Details Successfully");
       console.log("product deleted");
-      setDLTdata(deletedata);
+      // setDLTdata(deletedata);
       getdata();
     }
   };
