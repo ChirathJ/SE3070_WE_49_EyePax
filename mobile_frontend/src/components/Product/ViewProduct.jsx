@@ -9,7 +9,7 @@ const ViewProduct = ({ navigation, route }) => {
   const id = route.params.id;
   const { userId } = useContext(AuthContext);
   const [getproductdata, setProductdata] = useState([]);
-  const [units, setUnits] = useState(10);
+  const [units, setUnits] = useState(3);
 
   const getdata = async () => {
     try {
