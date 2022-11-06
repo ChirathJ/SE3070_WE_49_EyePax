@@ -4,13 +4,33 @@ import logo from "./dash.jpg";
 import axios from "axios";
 
 const Dashboard = () => {
-  const [usersCount, setUsersCount] = useState("");
+  const [usersCount, setUsersCount] = useState(0);
+  const [requestedCount, setRequestedCount] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
 
   async function getData() {
     try {
-      const result = await axios.get("http://localhost:8000/user/get-count");
-      setUsersCount(result.data.total);
-      console.log("result", result);
+      const resultUsersCount = await axios.get(
+        "http://localhost:8000/user/get-count"
+      );
+      setUsersCount(resultUsersCount.data.total);
+
+      const resultRequestedCount = await axios.get(
+        "http://localhost:8000/order/approval/Rejected"
+      );
+      setRequestedCount(resultRequestedCount.data.data);
+
+      const resultCompletedCount = await axios.get(
+        "http://localhost:8000/order/get-count/Delivered"
+      );
+      setCompletedCount(resultCompletedCount.data.data);
+
+      const resultPendingCount = await axios.get(
+        "http://localhost:8000/order/get-count/Not Delivered"
+      );
+      console.log(resultPendingCount.data.data);
+      setPendingCount(resultPendingCount.data.data);
     } catch (err) {
       console.error(err);
     }
@@ -41,7 +61,7 @@ const Dashboard = () => {
                   Requests
                 </h1>
                 <span className="dash_value" style={{ marginLeft: "80px" }}>
-                  0
+                  {requestedCount}
                 </span>
               </div>
               <div className="sub-dash2">
@@ -94,11 +114,11 @@ const Dashboard = () => {
             <Col>
               <div className="sub-dash3">
                 <h1>Pending Orders</h1>
-                <span className="dash_value">0</span>
+                <span className="dash_value">{pendingCount}</span>
               </div>
               <div className="sub-dash3">
                 <h1>Completed Orders</h1>
-                <span className="dash_value">0</span>
+                <span className="dash_value">{completedCount}</span>
               </div>
               <div className="sub-dash3">
                 <h1>Total Users</h1>
